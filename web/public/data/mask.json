@@ -1,0 +1,14 @@
+{
+  "masked": true,
+  "method": "each day's values are multiplied or shifted by random amounts drawn from a private seed: one per day, one per month and one for the whole year",
+  "ranges": {
+    "sleep": "x0.85 to x1.15 per day, x0.93 to x1.07 per month, x0.85 to x1.15 for the whole year",
+    "bedtime": "plus or minus 45 min per day, 20 min per month, 45 min for the whole year",
+    "awake and training minutes": "x0.7 to x1.3 per day, x0.75 to x1.25 for the whole year"
+  },
+  "real": [
+    "which apps, what they wrote, record counts, dates",
+    "which days have data",
+    "workout types"
+  ]
+}

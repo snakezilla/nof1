@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.vercel/
+__pycache__/
+*.pyc
+.DS_Store
+prep/candidates.json
+prep/private/
+web/qa/
+web/coverage/

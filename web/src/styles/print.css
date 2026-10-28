@@ -1,0 +1,27 @@
+@media print {
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"] {
+    --bg: white;
+    --surface: white;
+    --text: black;
+    --muted: black;
+    --rule: gray;
+    --accent: black;
+    --ink: black;
+  }
+
+  .masthead,
+  .checkin,
+  .nights__scroll + .button {
+    display: none;
+  }
+
+  .hero {
+    min-height: 0;
+  }
+
+  html.js .nights__table .is-extra {
+    display: table-row;
+  }
+}

@@ -1,0 +1,114 @@
+/* F1: the year grid. Wide from 640 px (weeks across), tall below it (weeks down, cells 25 px). */
+
+.cal {
+  display: grid;
+}
+
+.cal--wide {
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  grid-template-areas:
+    ". months"
+    "days grid";
+}
+
+.cal--tall {
+  display: none;
+  grid-template-columns: 2.75rem 12.5rem;
+  grid-template-areas:
+    ". days"
+    "months grid";
+}
+
+.cal__months {
+  grid-area: months;
+  position: relative;
+}
+
+.cal__days {
+  grid-area: days;
+  position: relative;
+}
+
+.cal__months span,
+.cal__days span {
+  position: absolute;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.cal__svg {
+  grid-area: grid;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cal__night {
+  fill: var(--ink);
+}
+
+.cal__none {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0.55;
+  stroke-width: 1px;
+}
+
+/* The weekend bracket: Saturday and Sunday nights, the one accent in the grid. */
+.cal__days .cal__weekend {
+  border: 0 solid var(--accent);
+}
+
+.cal--wide .cal__months {
+  height: 1.5rem;
+}
+
+.cal--wide .cal__months span {
+  bottom: var(--space-2);
+}
+
+.cal--wide .cal__days span {
+  left: 0;
+}
+
+.cal--wide .cal__days .cal__weekend {
+  left: auto;
+  right: var(--space-2);
+  bottom: 0;
+  border-right-width: 2px;
+}
+
+.cal--tall .cal__days {
+  height: 1.75rem;
+}
+
+.cal--tall .cal__days span {
+  bottom: var(--space-2);
+  width: 12.5%;
+  text-align: center;
+}
+
+.cal--tall .cal__days .cal__weekend {
+  right: 0;
+  bottom: 0;
+  width: auto;
+  border-bottom-width: 2px;
+}
+
+.cal--tall .cal__months span {
+  left: 0;
+  margin-top: 0.4rem;
+}
+
+@media (max-width: 39.99rem) {
+  .cal--wide {
+    display: none;
+  }
+
+  .cal--tall {
+    display: grid;
+  }
+}

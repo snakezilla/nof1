@@ -1,0 +1,237 @@
+/* Round five: sources and fusion first, the analysis demoted, the mask stated. */
+
+/* The mask note in the hero: its own block, body size, with a small outlined label. */
+
+.mask-note {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  max-width: var(--measure);
+  padding-block: var(--space-4);
+  border-block: var(--hairline);
+}
+
+.mask-note__label {
+  padding: 0 var(--space-2);
+  border: 1px solid var(--text);
+  border-radius: var(--radius-control);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mask-note__text {
+  line-height: 1.55;
+}
+
+.mask-note__text a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  margin-block: calc(-1 * var(--space-3));
+  white-space: nowrap;
+}
+
+@media (min-width: 48rem) {
+  .mask-note {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+}
+
+/* F8: where my data lived. Rows of name, track, count; the track holds the bar and the window band. */
+
+.years {
+  --years-count: 4.5rem;
+}
+
+.years__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.years__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--years-count);
+  grid-template-areas:
+    "name count"
+    "track track";
+  column-gap: var(--space-3);
+  padding-block: var(--space-1);
+  font-size: var(--text-s);
+  line-height: 1.5;
+}
+
+.years__name {
+  grid-area: name;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.years__count {
+  grid-area: count;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.85;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.years__track {
+  grid-area: track;
+  position: relative;
+  height: 0.75rem;
+}
+
+.years__band {
+  position: absolute;
+  inset-block: calc(-1 * var(--space-1));
+  background: var(--surface);
+  border-inline: 1px solid var(--rule);
+}
+
+.years__bar {
+  position: absolute;
+  inset-block: 0.1875rem;
+  min-width: 3px;
+  background: var(--muted);
+}
+
+.years__row.is-used .years__name {
+  font-weight: 500;
+}
+
+.years__row.is-used .years__bar {
+  background: var(--ink);
+}
+
+.years__row.is-other .years__name {
+  color: var(--muted);
+}
+
+.years__row.is-other .years__bar {
+  opacity: 0.55;
+}
+
+.years__row.is-excluded .years__name {
+  color: var(--muted);
+}
+
+.years__row.is-excluded .years__bar {
+  background: transparent;
+  border: 1px dashed var(--muted);
+}
+
+.years__axis {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: var(--space-2);
+}
+
+.years__ticks {
+  position: relative;
+  height: 1.5rem;
+  border-top: var(--hairline);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+.years__tick {
+  position: absolute;
+  top: var(--space-1);
+  padding-left: var(--space-1);
+  border-left: 1px solid var(--rule);
+}
+
+@media (min-width: 40rem) {
+  .years {
+    --years-name: 13rem;
+  }
+
+  .years__row {
+    grid-template-columns: var(--years-name) minmax(0, 1fr) var(--years-count);
+    grid-template-areas: "name track count";
+    align-items: center;
+  }
+
+  .years__axis {
+    grid-template-columns: var(--years-name) minmax(0, 1fr) var(--years-count);
+    column-gap: var(--space-3);
+  }
+
+  .years__ticks {
+    grid-column: 2;
+  }
+}
+
+.key__swatch.is-used {
+  background: var(--ink);
+}
+
+.key__swatch.is-other {
+  background: var(--muted);
+  opacity: 0.55;
+}
+
+.key__swatch.is-excluded {
+  background: transparent;
+  border: 1px dashed var(--muted);
+}
+
+.key__swatch.is-window {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+}
+
+/* Joining it */
+
+.joining {
+  display: grid;
+  gap: var(--space-2);
+  max-width: var(--measure);
+  margin-top: var(--space-4);
+  padding-left: var(--space-5);
+  font-variant-numeric: tabular-nums;
+}
+
+.joining__next {
+  max-width: var(--measure);
+  margin-top: var(--space-4);
+  color: var(--muted);
+}
+
+/* What a joined year looks like: one part heading over five sub-sections. */
+
+.part__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.part > .section:first-of-type {
+  margin-top: var(--space-7);
+}
+
+/* How the masking works */
+
+.mask__para,
+.mask__ranges {
+  max-width: var(--measure);
+  margin-top: var(--space-3);
+}
+
+.mask__ranges {
+  padding-left: var(--space-5);
+  font-variant-numeric: tabular-nums;
+}

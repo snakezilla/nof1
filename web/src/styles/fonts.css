@@ -1,0 +1,20 @@
+/* Fallback faces sized to the web fonts, measured on 2026-10-27, so text does not reflow
+   when Fraunces and Inter arrive. Fraunces: ascent 0.978, descent 0.255, width 0.881 of Georgia.
+   Inter: ascent 0.969, descent 0.242, width 1.073 of Arial. */
+@font-face {
+  font-family: "Fraunces fallback";
+  src: local("Georgia");
+  size-adjust: 88.1%;
+  ascent-override: 111%;
+  descent-override: 28.9%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Inter fallback";
+  src: local("Arial"), local("Helvetica");
+  size-adjust: 107.3%;
+  ascent-override: 90.3%;
+  descent-override: 22.6%;
+  line-gap-override: 0%;
+}

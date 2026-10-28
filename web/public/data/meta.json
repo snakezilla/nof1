@@ -1,0 +1,260 @@
+{
+  "range": {
+    "from": "2024-05-01",
+    "to": "2025-04-30"
+  },
+  "days": 365,
+  "nights": 240,
+  "provenance": {
+    "hub": "Apple Health (HealthKit) on my iPhone",
+    "exporter": "HealthExporter, my own iOS app: anchored HealthKit queries, lifetime backfill, JSONL and CSV to an iCloud Documents container, run on launch, from an iOS Shortcut at 2:05 am and 2:05 pm, and on HealthKit observer callbacks",
+    "nights_by_app": {
+      "WHOOP": 250,
+      "SnoreLab": 3
+    },
+    "workouts_by_app": {
+      "WHOOP": 226,
+      "Strava": 27
+    },
+    "excluded": [
+      {
+        "what": "Unstrap HRV stream",
+        "rows": 20341,
+        "why": "read straight from the strap over Bluetooth by an open-source tool; its HRV figures are not SDNN in milliseconds, so they are not comparable"
+      },
+      {
+        "what": "Unstrap sleep segments",
+        "rows": 2,
+        "why": "two 2026 nights of overlapping segments that do not add up to a night"
+      },
+      {
+        "what": "nights under 1 hour",
+        "rows": 6,
+        "why": "naps or partial syncs, not nights"
+      },
+      {
+        "what": "Apple Watch HRV",
+        "rows": 30,
+        "why": "30 readings from 2022, outside the window"
+      }
+    ],
+    "window": {
+      "from": "2024-05-01",
+      "to": "2025-04-30"
+    },
+    "all_sources": [
+      {
+        "app": "WHOOP",
+        "record_types": [
+          "heart rate",
+          "sleep",
+          "resting heart rate",
+          "breathing rate",
+          "blood oxygen",
+          "workouts"
+        ],
+        "records": 126257,
+        "first": "2024-05-14",
+        "last": "2025-04-24",
+        "in_window": 126257,
+        "status": "used: sleep and workouts"
+      },
+      {
+        "app": "Strava",
+        "record_types": [
+          "routes",
+          "workouts"
+        ],
+        "records": 181,
+        "first": "2023-11-19",
+        "last": "2026-04-26",
+        "in_window": 92,
+        "status": "used: workouts"
+      },
+      {
+        "app": "SnoreLab",
+        "record_types": [
+          "sleep"
+        ],
+        "records": 3,
+        "first": "2025-02-13",
+        "last": "2025-02-15",
+        "in_window": 3,
+        "status": "used: sleep"
+      },
+      {
+        "app": "iPhone (motion sensors, with AirPods for headphone levels)",
+        "record_types": [
+          "headphone audio levels",
+          "walking speed",
+          "step length",
+          "steps",
+          "walking distance",
+          "double support time",
+          "walking asymmetry",
+          "flights climbed",
+          "cycling distance",
+          "walking steadiness",
+          "active energy",
+          "weight",
+          "resting energy",
+          "height"
+        ],
+        "records": 93690,
+        "first": "2022-07-14",
+        "last": "2026-05-06",
+        "in_window": 0,
+        "status": "outside the window"
+      },
+      {
+        "app": "Apple Watch",
+        "record_types": [
+          "heart rate",
+          "exercise minutes",
+          "stand minutes",
+          "stand hours",
+          "HRV",
+          "heartbeat series",
+          "walking heart rate",
+          "resting heart rate",
+          "high heart rate alerts",
+          "mindful minutes"
+        ],
+        "records": 23665,
+        "first": "2022-07-15",
+        "last": "2022-09-06",
+        "in_window": 0,
+        "status": "outside the window"
+      },
+      {
+        "app": "Unstrap (open-source WHOOP Bluetooth reader)",
+        "record_types": [
+          "HRV",
+          "sleep"
+        ],
+        "records": 20609,
+        "first": "2026-05-11",
+        "last": "2026-05-13",
+        "in_window": 0,
+        "status": "excluded: HRV is not SDNN in milliseconds, sleep segments overlap"
+      },
+      {
+        "app": "Garmin Connect",
+        "record_types": [
+          "heart rate",
+          "sleep",
+          "resting heart rate",
+          "weight",
+          "workouts"
+        ],
+        "records": 2375,
+        "first": "2023-07-04",
+        "last": "2023-07-07",
+        "in_window": 0,
+        "status": "outside the window"
+      },
+      {
+        "app": "VeSync (smart scale)",
+        "record_types": [
+          "weight",
+          "BMI",
+          "lean mass",
+          "body fat",
+          "height"
+        ],
+        "records": 429,
+        "first": "2020-05-04",
+        "last": "2021-04-27",
+        "in_window": 0,
+        "status": "outside the window"
+      },
+      {
+        "app": "Balance (meditation app)",
+        "record_types": [
+          "mindful minutes"
+        ],
+        "records": 80,
+        "first": "2023-05-28",
+        "last": "2026-04-26",
+        "in_window": 23,
+        "status": "not used: mindful minutes on 19 days, too few to show"
+      },
+      {
+        "app": "Nike Run Club",
+        "record_types": [
+          "workouts"
+        ],
+        "records": 77,
+        "first": "2020-04-21",
+        "last": "2022-05-10",
+        "in_window": 0,
+        "status": "outside the window"
+      },
+      {
+        "app": "VeSync (smart scale, newer app)",
+        "record_types": [
+          "weight",
+          "BMI",
+          "body fat",
+          "lean mass"
+        ],
+        "records": 28,
+        "first": "2024-01-18",
+        "last": "2024-02-09",
+        "in_window": 0,
+        "status": "outside the window"
+      },
+      {
+        "app": "Wim Hof Method",
+        "record_types": [
+          "mindful minutes"
+        ],
+        "records": 3,
+        "first": "2022-07-15",
+        "last": "2022-07-15",
+        "in_window": 0,
+        "status": "outside the window"
+      },
+      {
+        "app": "ECG app on Apple Watch",
+        "record_types": [
+          "ECG"
+        ],
+        "records": 1,
+        "first": "2022-07-15",
+        "last": "2022-07-15",
+        "in_window": 0,
+        "status": "outside the window"
+      },
+      {
+        "app": "Unwind (unknown app)",
+        "record_types": [
+          "mindful minutes"
+        ],
+        "records": 1,
+        "first": "2022-07-15",
+        "last": "2022-07-15",
+        "in_window": 0,
+        "status": "outside the window"
+      }
+    ],
+    "fusion": {
+      "raw_lines": 609918,
+      "repeats": 363564,
+      "records": 267399,
+      "dropped_streams": 1,
+      "days": 365
+    }
+  },
+  "days_with_data": 258,
+  "workout_days": 156,
+  "tagline": "A year of nights and training days, one experiment at a time.",
+  "masked": true,
+  "sources": [
+    "SnoreLab",
+    "Strava",
+    "WHOOP"
+  ],
+  "built": "2026-10-27",
+  "repo": "https://github.com/snakezilla/nof1"
+}

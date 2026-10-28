@@ -1,0 +1,202 @@
+.test__title {
+  max-width: 20ch;
+  margin-top: var(--space-5);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.test__hypothesis,
+.test__why {
+  max-width: var(--measure);
+  margin-top: var(--space-3);
+}
+
+.test__why a {
+  display: inline-block;
+  padding-block: var(--space-3);
+  margin-block: calc(-1 * var(--space-3));
+}
+
+.test__grid {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.test__block + .test__block {
+  margin-top: var(--space-5);
+}
+
+.test__label {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-m);
+  font-weight: 500;
+}
+
+.test__block p {
+  max-width: var(--measure);
+}
+
+.protocol {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: 1.5em;
+}
+
+.protocol li::marker {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.baseline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+}
+
+@media (min-width: 48rem) {
+  .test__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7);
+  }
+}
+
+/* The check-in */
+
+.checkin {
+  margin-top: var(--space-7);
+  padding: var(--space-5);
+  background: var(--surface);
+}
+
+.checkin__title {
+  font-size: var(--text-m);
+  font-weight: 500;
+}
+
+.checkin__status {
+  margin-top: var(--space-1);
+  color: var(--muted);
+  font-size: var(--text-s);
+  font-variant-numeric: tabular-nums;
+}
+
+.no-js-only {
+  margin-top: var(--space-2);
+  color: var(--muted);
+  font-size: var(--text-s);
+}
+
+.strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.strip__dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid var(--muted);
+  border-radius: 50%;
+  transition: background-color var(--ease);
+}
+
+.strip__dot.is-filled {
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.strip__dot.is-today {
+  outline: 1px solid var(--text);
+  outline-offset: 2px;
+}
+
+.checkin__questions {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+}
+
+.question__q {
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.choice {
+  min-width: var(--target);
+  min-height: var(--target);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--muted);
+  border-radius: var(--radius-control);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    background-color var(--ease),
+    color var(--ease);
+}
+
+.choice:hover {
+  border-color: var(--text);
+}
+
+.choice.is-active {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
+}
+
+.numfield {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.numfield__input {
+  width: 6rem;
+  min-height: var(--target);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--muted);
+  border-radius: var(--radius-control);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.numfield__error {
+  color: var(--text);
+  font-size: var(--text-s);
+}
+
+.checkin__note {
+  margin-top: var(--space-5);
+  color: var(--muted);
+  font-size: var(--text-s);
+}
+
+@media (min-width: 48rem) {
+  .checkin {
+    padding: var(--space-6);
+  }
+
+  .checkin__questions {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5) var(--space-7);
+  }
+}

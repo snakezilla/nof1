@@ -1,0 +1,47 @@
+[
+ {
+  "id": "short-sleep-hrv",
+  "title": "Short nights cost me HRV the next morning",
+  "finding": "After nights under 6 hours my next-day HRV ran about 9 ms lower than after nights of 7 hours or more.",
+  "numbers": {
+   "a_label": "nights under 6 h",
+   "a_value": "48 ms next morning",
+   "b_label": "nights 7 h or more",
+   "b_value": "57 ms",
+   "n_a": 283,
+   "n_b": 410,
+   "window": "Jul 2022 to May 2026"
+  },
+  "caveat": "Short nights often follow late work or travel, so sleep may not be the only cause."
+ },
+ {
+  "id": "training-day-sleep",
+  "title": "I sleep longer on days I train",
+  "finding": "On days with a workout of 30 minutes or more I slept about 25 minutes longer that night.",
+  "numbers": {
+   "a_label": "workout 30 min or more",
+   "a_value": "7.0 h",
+   "b_label": "no workout",
+   "b_value": "6.5 h",
+   "n_a": 561,
+   "n_b": 642,
+   "window": "Jul 2022 to May 2026"
+  },
+  "caveat": "I train more on weekends, when I also sleep in, so this mixes two effects."
+ },
+ {
+  "id": "mindful-deep-sleep",
+  "title": "Mindfulness days show a little more deep sleep",
+  "finding": "Nights after 10 or more mindful minutes had slightly more deep sleep, but the gap is small.",
+  "numbers": {
+   "a_label": "10 min or more",
+   "a_value": "1.2 h deep",
+   "b_label": "none logged",
+   "b_value": "1.0 h deep",
+   "n_a": 96,
+   "n_b": 703,
+   "window": "Sep 2023 to May 2026"
+  },
+  "caveat": "Sleep stages from a wrist device are estimates, and the sample of mindful days is small."
+ }
+]

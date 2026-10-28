@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-ssr
+coverage
+qa
+public/data
+src/fixtures
+pnpm-lock.yaml

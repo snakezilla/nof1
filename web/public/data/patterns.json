@@ -1,0 +1,53 @@
+[
+  {
+    "id": "weekend-sleep",
+    "title": "Weekends cost me sleep",
+    "finding": "On Saturday and Sunday mornings I had slept 5.9 h on average, against 6.3 h on weekdays. 28 of 64 weekend nights were under 6 h; on weekdays it was 55 of 176.",
+    "numbers": {
+      "a_label": "weekend nights",
+      "a_value": "5.9 h",
+      "b_label": "weekday nights",
+      "b_value": "6.3 h",
+      "n_a": 64,
+      "n_b": 176,
+      "window": "May 2024 to Apr 2025",
+      "diff": "-0.4 h",
+      "ci95": "-0.8 to -0.0 h"
+    },
+    "caveat": "Observational. Weekends also hold the late dinners and the travel, so the weekend is a bundle, not one cause."
+  },
+  {
+    "id": "rebound",
+    "title": "I do not catch up the next night",
+    "finding": "After a night under 6 h, the next night averaged 5.7 h. After a night of 7 h or more, 6.4 h. Short nights came in runs instead of being repaid.",
+    "numbers": {
+      "a_label": "night after a short night",
+      "a_value": "5.7 h",
+      "b_label": "night after 7 h or more",
+      "b_value": "6.4 h",
+      "n_a": 71,
+      "n_b": 60,
+      "window": "May 2024 to Apr 2025",
+      "diff": "-0.7 h",
+      "ci95": "-1.2 to -0.3 h"
+    },
+    "caveat": "The interval (-1.2 to -0.3 h) stays below zero, but it rests on 71 short nights, so treat it as likely, not settled."
+  },
+  {
+    "id": "workout-sleep",
+    "title": "Training days do not cost sleep",
+    "finding": "Nights after a day with 30 or more minutes of training averaged 6.0 h; nights after a rest day, 6.2 h. The gap is -0.2 h and its interval (-0.6 to +0.1 h) includes zero.",
+    "numbers": {
+      "a_label": "after a training day",
+      "a_value": "6.0 h",
+      "b_label": "after a rest day",
+      "b_value": "6.2 h",
+      "n_a": 103,
+      "n_b": 99,
+      "window": "May 2024 to Apr 2025",
+      "diff": "-0.2 h",
+      "ci95": "-0.6 to +0.1 h"
+    },
+    "caveat": "A null result is still a result. It rules out the \"I slept badly because I trained\" story, for me."
+  }
+]

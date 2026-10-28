@@ -1,0 +1,18 @@
+{
+ "range": {
+  "from": "2022-07-15",
+  "to": "2026-05-13"
+ },
+ "days": 1399,
+ "nights": 1233,
+ "workout_days": 697,
+ "tagline": "Four years of my own health data, one experiment at a time.",
+ "sources": [
+  "Apple Watch",
+  "Unstrap",
+  "Strava",
+  "Nike Run Club"
+ ],
+ "built": "2026-10-26",
+ "repo": "https://github.com/snakezilla/nof1"
+}
