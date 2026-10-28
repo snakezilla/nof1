@@ -1,7 +1,5 @@
 import { describe, expect, it } from "vitest";
 import {
-  BED_DOMAIN,
-  BED_TICKS,
   CELL,
   CELL_GAP,
   HOURS_DOMAIN,
@@ -9,21 +7,14 @@ import {
   SLEEP_STEPS,
   cellOrigin,
   clamp,
-  countOutside,
   fraction,
   gridSize,
   groupForPattern,
-  hourTick,
   laneFraction,
-  minutesBetween,
-  monthSegments,
-  nightAxis,
   pct,
   sleepStep,
   stripDots,
-  tintFor,
   ticks,
-  totalMinutes,
   verdictTone,
 } from "../figures";
 
@@ -41,10 +32,6 @@ describe("axis scaling", () => {
     expect(pct(0.25)).toBe("25.00%");
     expect(ticks(0, 12, 3)).toEqual([0, 3, 6, 9, 12]);
     expect(ticks(0, 3600, 1200)).toEqual([0, 1200, 2400, 3600]);
-  });
-
-  it("counts the values drawn pinned at the ends", () => {
-    expect(countOutside([21, 22, 24.5, 27, 28.75], BED_DOMAIN)).toBe(2);
   });
 });
 
@@ -115,60 +102,6 @@ describe("strip-plot dot positions", () => {
     const values = Object.freeze([7, 6.9, 7.1, 7]);
     expect(stripDots(values, opts)).toEqual(stripDots(values, opts));
     expect(values).toEqual([7, 6.9, 7.1, 7]);
-  });
-});
-
-describe("bedtime clock labels", () => {
-  it("names whole hours on a clock that runs past midnight", () => {
-    expect(BED_TICKS.map(hourTick)).toEqual([
-      "10 pm",
-      "11 pm",
-      "12 am",
-      "1 am",
-      "2 am",
-      "3 am",
-    ]);
-    expect(hourTick(12)).toBe("12 pm");
-    expect(hourTick(32)).toBe("8 am");
-  });
-
-  it("gives a typical night an hour of air and even-hour ticks", () => {
-    expect(nightAxis(24.23, 32.22)).toEqual({
-      domain: [23, 34],
-      ticks: [24, 26, 28, 30, 32, 34],
-    });
-  });
-
-  it("measures the gap between two medians in minutes", () => {
-    expect(minutesBetween(24.54, 24.19)).toBe(21);
-  });
-});
-
-describe("tint assignment", () => {
-  it("maps raw workout types to cycling, strength and everything else", () => {
-    expect(tintFor("cycling")).toBe("cycling");
-    expect(tintFor("traditional_strength_training")).toBe("strength");
-    expect(tintFor("running")).toBe("other");
-    expect(tintFor("walking")).toBe("other");
-  });
-
-  it("stacks a month in tint order and drops empty segments", () => {
-    const minutes = {
-      running: 100,
-      cycling: 300,
-      traditional_strength_training: 50,
-      hiking: 20,
-    };
-    expect(monthSegments(minutes)).toEqual([
-      { tint: "cycling", minutes: 300, offset: 0 },
-      { tint: "strength", minutes: 50, offset: 300 },
-      { tint: "other", minutes: 120, offset: 350 },
-    ]);
-    expect(monthSegments({ other: 40 })).toEqual([
-      { tint: "other", minutes: 40, offset: 0 },
-    ]);
-    expect(monthSegments({})).toEqual([]);
-    expect(totalMinutes(minutes)).toBe(470);
   });
 });
 

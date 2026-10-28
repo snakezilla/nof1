@@ -7,18 +7,34 @@ import { publicData, publicRaw } from "../../test/fixtures";
 import { OtherProjects } from "../OtherProjects";
 
 describe("Other things I'm building", () => {
-  it("sits directly before the three findings, as an aside", () => {
+  it("sits between the join and the joined year, as an aside", () => {
     render(<App state={{ status: "ready", data: publicData() }} />);
     const aside = screen.getByRole("complementary", {
       name: "Other things I'm building",
     });
-    const findings = screen.getByRole("heading", { name: "Three findings" });
-    expect(aside.nextElementSibling).toBe(findings.closest("section"));
+    expect(aside.previousElementSibling).toBe(
+      screen.getByRole("region", { name: "Joining it" }),
+    );
+    expect(aside.nextElementSibling).toBe(
+      screen.getByRole("region", { name: "What a joined year looks like" }),
+    );
   });
 
-  it("shows the five byahsan.com lines, each a link, then the way to the rest", () => {
+  it("shows the patent first with its sub-line and no link, then five byahsan.com links", () => {
     render(<OtherProjects projects={publicData().projects} />);
     const aside = screen.getByRole("complementary");
+    const items = within(aside).getAllByRole("listitem");
+    expect(items).toHaveLength(6);
+    expect(within(items[0]).queryByRole("link")).toBeNull();
+    expect(items[0].querySelector(".elsewhere__line")).toHaveTextContent(
+      "AI that scores breast cancer slides after chemo",
+    );
+    expect(items[0].querySelector(".elsewhere__em")).toHaveTextContent(
+      /^breast cancer slides$/,
+    );
+    expect(items[0].querySelector(".elsewhere__sub")).toHaveTextContent(
+      "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center. Pathologists review the cases it is unsure of.",
+    );
     const links = within(aside).getAllByRole("link");
     expect(links.map((a) => a.textContent)).toEqual([
       "A cancer diagnostics lab, running itself",
@@ -26,25 +42,29 @@ describe("Other things I'm building", () => {
       "Helping build 198 units of senior living",
       "Managing my beehive with edge compute + infrared",
       "Site inspection through smart glasses",
-      "And more on byahsan.com",
+      "More on byahsan.com",
     ]);
     expect(links[0]).toHaveAttribute(
       "href",
       "https://www.byahsan.com/projects/delphi",
     );
     expect(links.at(-1)).toHaveAttribute("href", "https://www.byahsan.com");
-    expect(aside.querySelectorAll(".elsewhere__em")[0]).toHaveTextContent(
+    expect(aside.querySelectorAll(".elsewhere__em")[1]).toHaveTextContent(
       /^cancer diagnostics$/,
     );
     expect(aside.querySelectorAll("img")).toHaveLength(0);
+    // Only the unlinked patent item carries a sub-line.
+    expect(aside.querySelectorAll(".elsewhere__sub")).toHaveLength(1);
   });
 
   it("never renders an item that still has a todo", () => {
     const { container } = render(
       <OtherProjects projects={publicData().projects} />,
     );
-    expect(container.textContent).not.toMatch(/placeholder|todo|not confirmed/i);
-    expect(container.querySelectorAll("li")).toHaveLength(5);
+    expect(container.textContent).not.toMatch(
+      /placeholder|todo|not confirmed/i,
+    );
+    expect(container.querySelectorAll("li")).toHaveLength(6);
   });
 
   it("renders the page without projects.json, and drops a wrong one", () => {
@@ -53,10 +73,12 @@ describe("Other things I'm building", () => {
     expect(state.status).toBe("ready");
     render(<App state={state} />);
     expect(screen.queryByRole("complementary")).toBeNull();
-    expect(screen.getByText("Three findings")).toBeInTheDocument();
     expect(
-      toState({ ...publicRaw(), projects: { items: 1 } }).status,
-    ).toBe("ready");
+      screen.getByRole("heading", { name: "What a joined year looks like" }),
+    ).toBeInTheDocument();
+    expect(toState({ ...publicRaw(), projects: { items: 1 } }).status).toBe(
+      "ready",
+    );
   });
 
   it("renders nothing when every item is still a todo", () => {

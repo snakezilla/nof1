@@ -1,7 +1,5 @@
 import {
   GROUP_KEYS,
-  type Bedtime,
-  type BedtimeGroup,
   type Calendar,
   type CalendarCell,
   type Claim,
@@ -9,7 +7,6 @@ import {
   type MonthRow,
   type SleepGroup,
   type Stat,
-  type TypicalNight,
 } from "./figure-types";
 import { DataShapeError } from "./validate";
 
@@ -61,18 +58,6 @@ const isGroup = (v: unknown): v is SleepGroup =>
 const isPair = (v: unknown): boolean =>
   Array.isArray(v) && v.length === 2 && v.every(isGroup);
 
-const isBedGroup = (v: unknown): v is BedtimeGroup =>
-  isObj(v) && isNumArr(v.values) && numbers(v, ["median", "n"]);
-
-const isBedtime = (v: unknown): v is Bedtime =>
-  isObj(v) &&
-  isBedGroup(v.weekend) &&
-  isBedGroup(v.weekday) &&
-  numbers(v, ["after_1am", "before_midnight", "n"]);
-
-const isTypical = (v: unknown): v is TypicalNight =>
-  isObj(v) && numbers(v, ["bed_h", "sleep_h", "awake_min", "wake_h", "n"]);
-
 const isMonth = (v: unknown): v is MonthRow =>
   isObj(v) &&
   strings(v, ["month", "label"]) &&
@@ -103,8 +88,6 @@ const firstProblem = (v: unknown): string | null => {
   const groups = v.sleep_groups;
   const badGroup = GROUP_KEYS.find((k) => !isPair(groups[k]));
   if (badGroup) return `sleep_groups.${badGroup}`;
-  if (!isBedtime(v.bedtime)) return "bedtime";
-  if (!isTypical(v.typical_night)) return "typical_night";
   if (!arrayOf(isMonth)(v.months)) return "months";
   if (!arrayOf(isClaim)(v.claims)) return "claims";
   return null;

@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = resolve(fileURLToPath(import.meta.url), "../..");
 const dist = join(root, "dist");
-const FILES = ["daily", "patterns", "test", "meta"];
+const FILES = ["patterns", "meta"];
 
 const readData = async () => {
   const entries = await Promise.all(

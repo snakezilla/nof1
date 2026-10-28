@@ -19,14 +19,16 @@ describe("prerender", () => {
       '<span class="hero__figure">Twelve</span> apps measured me.',
     );
     expect(html).toContain("Weekends cost me 24 minutes of sleep.");
-    expect(html).toContain("Three findings");
-    expect(html).toContain("Show all 60 nights");
+    expect(html).toContain('class="finding__line"');
+    expect(html).not.toContain("Show all 60 nights");
     expect(html.replace(/<[^>]+>/g, " ")).not.toMatch(/\bnone\b/);
     expect(html).toContain("Masked data.");
   });
 
   it("refuses to render when the data shape is wrong, so the build fails", () => {
-    expect(() => render({ ...publicRaw(), test: {} })).toThrow("test.json");
+    expect(() => render({ ...publicRaw(), patterns: {} })).toThrow(
+      "patterns.json",
+    );
   });
 
   it("hydrates the server markup without a mismatch", async () => {

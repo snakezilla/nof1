@@ -1,26 +1,21 @@
 import type { DataState } from "./lib/dataset";
-import { mindfulDaysIn } from "./lib/provenance-text";
-import { DECK, headline, sourceStats } from "./lib/sources-text";
+import { DECK, headline, sourceLine, sourceStats } from "./lib/sources-text";
 import type { Dataset } from "./lib/types";
-import { Claims } from "./components/Claims";
 import { DataError } from "./components/DataError";
 import { Findings } from "./components/Findings";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
-import { Nights } from "./components/Nights";
 import { OtherProjects } from "./components/OtherProjects";
 import { Provenance } from "./components/provenance/Provenance";
 import { JoinedYear } from "./components/sources/JoinedYear";
 import { Joining } from "./components/sources/Joining";
 import { MaskSection } from "./components/sources/MaskSection";
 import { WhereSection } from "./components/sources/WhereSection";
-import { TestSection } from "./components/TestSection";
 import { YearSection } from "./components/YearSection";
 
-function Page({ data, today }: { data: Dataset; today?: string }) {
-  const { daily, patterns, test, meta, figures, rawStream, mask, projects } =
-    data;
+function Page({ data }: { data: Dataset }) {
+  const { patterns, meta, figures, rawStream, mask, projects } = data;
   const masked = mask !== null;
   return (
     <>
@@ -30,30 +25,19 @@ function Page({ data, today }: { data: Dataset; today?: string }) {
           deck={DECK}
           masked={masked}
           stats={sourceStats(meta.provenance)}
+          source={sourceLine(meta.provenance)}
         />
         <WhereSection provenance={meta.provenance} />
-        <Provenance
-          provenance={meta.provenance}
-          repo={meta.repo}
-          mindfulDays={mindfulDaysIn(daily, meta.provenance?.window)}
-          rawStream={rawStream}
-        />
+        <Provenance provenance={meta.provenance} rawStream={rawStream} />
         <Joining fusion={meta.provenance?.fusion} />
+        <OtherProjects projects={projects} />
         <JoinedYear masked={masked}>
           <YearSection figures={figures} />
-          <OtherProjects projects={projects} />
-          <Findings patterns={patterns} groups={figures?.sleep_groups} />
-          <TestSection
-            test={test}
+          <Findings
             patterns={patterns}
-            today={today}
-            night={figures?.typical_night}
-            bedtime={figures?.bedtime}
+            groups={figures?.sleep_groups}
+            claims={figures?.claims}
           />
-          <Nights days={daily} months={figures?.months} />
-          {figures && figures.claims.length > 0 && (
-            <Claims claims={figures.claims} />
-          )}
         </JoinedYear>
         <MaskSection mask={mask} />
       </main>
@@ -62,17 +46,11 @@ function Page({ data, today }: { data: Dataset; today?: string }) {
   );
 }
 
-export default function App({
-  state,
-  today,
-}: {
-  state: DataState;
-  today?: string;
-}) {
+export default function App({ state }: { state: DataState }) {
   return (
     <div className="page" id="top">
       <Header />
-      {state.status === "ready" && <Page data={state.data} today={today} />}
+      {state.status === "ready" && <Page data={state.data} />}
       {state.status === "error" && (
         <main id="main">
           <DataError detail={state.message} />

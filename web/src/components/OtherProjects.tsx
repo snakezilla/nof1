@@ -1,6 +1,9 @@
 import { shownItems, splitLine, type Projects } from "../lib/projects";
 
-/** An aside of the other things I'm building, from projects.json. Renders nothing without it. */
+/**
+ * An aside of the other things I'm building, one linked line each, from projects.json. An item
+ * with no link shows its sub-line instead. Renders nothing without the file.
+ */
 export function OtherProjects({ projects }: { projects: Projects | null }) {
   const items = projects ? shownItems(projects) : [];
   if (!projects || items.length === 0) return null;
@@ -12,14 +15,25 @@ export function OtherProjects({ projects }: { projects: Projects | null }) {
       <ul className="elsewhere__list">
         {items.map((item) => {
           const [before, em, after] = splitLine(item);
+          const line = (
+            <>
+              {before}
+              <span className="elsewhere__em">{em}</span>
+              {after}
+            </>
+          );
           return (
             <li className="elsewhere__item" key={item.id}>
-              <a className="elsewhere__line" href={item.href}>
-                {before}
-                <span className="elsewhere__em">{em}</span>
-                {after}
-              </a>
-              <p className="elsewhere__sub">{item.sub}</p>
+              {item.href ? (
+                <a className="elsewhere__line" href={item.href}>
+                  {line}
+                </a>
+              ) : (
+                <>
+                  <p className="elsewhere__line">{line}</p>
+                  <p className="elsewhere__sub">{item.sub}</p>
+                </>
+              )}
             </li>
           );
         })}

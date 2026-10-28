@@ -43,10 +43,9 @@ describe("raw stream", () => {
     expect(parseRawStreamOrNull(undefined)).toBeNull();
   });
 
-  it("rounds the hours down and formats the counts", () => {
+  it("says it in two sentences with the count from the file", () => {
     expect(rawSignalText(stream)).toBe(
-      "WHOOP's app gives you summaries. I wanted the raw signal, so I built a Bluetooth reader on my Mac on top of an open-source decoder of the strap's protocol. One night of it: 66,658 readings in 18 hours, one a second: heart rate, beat-to-beat intervals on 38,917 of them, skin temperature and motion. It is not on this page yet. It covers one night, and its HRV does not match WHOOP's. Next: make it run every night.",
+      "I also built a Bluetooth reader on an open-source decoder to get the raw signal off the strap: 66,658 readings in one night, one a second. It is not joined yet.",
     );
-    expect(rawSignalText({ ...stream, hours: 1.9 })).toContain("in 1 hour,");
   });
 });

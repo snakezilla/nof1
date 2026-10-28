@@ -1,4 +1,5 @@
 import type { Stat } from "./figure-types";
+import { formatMonthYearLong } from "./dates";
 import { fmt, plural } from "./provenance";
 import type { Fusion, HealthSource, Provenance } from "./types";
 
@@ -60,7 +61,7 @@ export const headline = (p?: Provenance): Headline => {
 export const headlineText = (h: Headline): string => `${h.figure}${h.rest}`;
 
 export const DECK =
-  "WHOOP had my sleep. Strava had my rides. My phone had my steps. A scale had my weight. Each kept its own piece. I got them out and joined them into one row per day. This page shows how.";
+  "WHOOP had my sleep, Strava my rides, my phone my steps, a scale my weight. I got them out and joined them into one row per day.";
 
 /** The short form of the deck, for the meta description. */
 export const SUMMARY =
@@ -107,12 +108,18 @@ export const sourceStats = (p?: Provenance): readonly Stat[] | null => {
   ];
 };
 
-/** "Joining it": the four lines, with the counts from provenance.fusion. */
+/** The mono line under the counts: "May 2024 to April 2025. WHOOP strap → Apple Health → an export app I wrote → this page." */
+export const sourceLine = (p?: Provenance): string | null =>
+  p
+    ? `${formatMonthYearLong(p.window.from)} to ${formatMonthYearLong(p.window.to)}. WHOOP strap → Apple Health → an export app I wrote → this page.`
+    : null;
+
+/** "Joining it": four counts from provenance.fusion, one short line each. */
 export const fusionLines = (f: Fusion): readonly string[] => [
-  `${fmt(f.raw_lines)} lines in the raw export, ${fmt(f.repeats)} of them repeats across sync batches, matched by sample ID.`,
-  "On nights where two apps recorded sleep, the one with the most minutes asleep wins.",
-  `${capitalise(countWord(f.dropped_streams))} ${f.dropped_streams === 1 ? "stream was" : "streams were"} dropped because ${f.dropped_streams === 1 ? "its" : "their"} units did not match.`,
-  `Result: one row per day, ${plural(f.days, "day")}.`,
+  `${fmt(f.raw_lines)} lines in the raw export.`,
+  `${fmt(f.repeats)} repeats across sync batches, matched by sample ID.`,
+  `${capitalise(countWord(f.dropped_streams))} ${f.dropped_streams === 1 ? "stream" : "streams"} dropped for the wrong units.`,
+  `One row per day: ${plural(f.days, "day")}.`,
 ];
 
 export const FUSION_NEXT =

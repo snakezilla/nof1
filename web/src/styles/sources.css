@@ -209,7 +209,7 @@
   color: var(--muted);
 }
 
-/* What a joined year looks like: one part heading over five sub-sections. */
+/* What a joined year looks like: one heading, the mask said once, the calendar, the findings. */
 
 .part__title {
   font-family: var(--font-display);
@@ -219,19 +219,22 @@
   letter-spacing: -0.01em;
 }
 
-.part > .section:first-of-type {
-  margin-top: var(--space-7);
+.part__mask {
+  width: fit-content;
+  margin-top: var(--space-3);
+  padding: 0 var(--space-2);
+  border: 1px solid var(--text);
+  border-radius: var(--radius-control);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* How the masking works */
 
-.mask__para,
-.mask__ranges {
+.mask__para {
   max-width: var(--measure);
   margin-top: var(--space-3);
-}
-
-.mask__ranges {
-  padding-left: var(--space-5);
-  font-variant-numeric: tabular-nums;
 }

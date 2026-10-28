@@ -15,14 +15,14 @@ describe("Sources, joining and masking", () => {
     );
     const hero = screen.getByRole("region", { name: "Summary" });
     expect(hero.querySelector(".hero__deck")?.textContent).toBe(
-      "WHOOP had my sleep. Strava had my rides. My phone had my steps. A scale had my weight. Each kept its own piece. I got them out and joined them into one row per day. This page shows how.",
+      "WHOOP had my sleep, Strava my rides, my phone my steps, a scale my weight. I got them out and joined them into one row per day.",
     );
     const note = hero.querySelector(".mask-note");
     expect(note?.querySelector(".mask-note__label")).toHaveTextContent(
       /^Masked$/,
     );
     expect(note).toHaveTextContent(
-      "The health numbers on this page are not my real ones. Each day's values are shifted by a random amount from a private seed. The apps, record counts and dates are real. How the masking works",
+      "Health numbers here are masked with a private seed; apps, counts and dates are real. How the masking works",
     );
     const link = screen.getByRole("link", { name: "How the masking works" });
     expect(link).toHaveAttribute("href", "#how-the-masking-works");
@@ -45,21 +45,12 @@ describe("Sources, joining and masking", () => {
     const section = screen.getByRole("region", {
       name: "How the masking works",
     });
-    expect(section).toHaveTextContent(
-      "The health numbers on this page are masked: each day's values are multiplied or shifted by random amounts drawn from a private seed: one per day, one per month and one for the whole year.",
+    const paras = section.querySelectorAll("p");
+    expect(paras).toHaveLength(1);
+    expect(paras[0].textContent).toBe(
+      "Each day's values are multiplied or shifted by random amounts drawn from a private seed: one per day, one per month and one for the whole year. The seed stays on my machine, so the shifts cannot be undone.",
     );
-    expect(
-      within(section)
-        .getAllByRole("listitem")
-        .map((li) => li.textContent),
-    ).toEqual([
-      "Sleep: ×0.85 to ×1.15 per day, ×0.93 to ×1.07 per month, ×0.85 to ×1.15 for the whole year",
-      "Bedtime: plus or minus 45 min per day, 20 min per month, 45 min for the whole year",
-      "Awake and training minutes: ×0.7 to ×1.3 per day, ×0.75 to ×1.25 for the whole year",
-    ]);
-    expect(section).toHaveTextContent(
-      "Real, not masked: which apps, what they wrote, record counts, dates; which days have data; workout types.",
-    );
+    expect(within(section).queryAllByRole("listitem")).toHaveLength(0);
     expect(section.nextElementSibling).toBeNull();
   });
 
@@ -71,10 +62,10 @@ describe("Sources, joining and masking", () => {
         .getAllByRole("listitem")
         .map((li) => li.textContent),
     ).toEqual([
-      "609,918 lines in the raw export, 363,564 of them repeats across sync batches, matched by sample ID.",
-      "On nights where two apps recorded sleep, the one with the most minutes asleep wins.",
-      "One stream was dropped because its units did not match.",
-      "Result: one row per day, 365 days.",
+      "609,918 lines in the raw export.",
+      "363,564 repeats across sync batches, matched by sample ID.",
+      "One stream dropped for the wrong units.",
+      "One row per day: 365 days.",
     ]);
     expect(section).toHaveTextContent(
       "Next: fuse the raw strap signal, a second each, with the daily rows.",
@@ -95,7 +86,7 @@ describe("Sources, joining and masking", () => {
     expect(section.querySelectorAll(".years__row.is-excluded")).toHaveLength(1);
     expect(section.querySelectorAll(".years__band")).toHaveLength(14);
     expect(section).toHaveTextContent(
-      "Each app kept its own years. The page uses the one year where WHOOP, Strava and SnoreLab overlap.",
+      "One bar per app, first record to last; the shaded band is the year joined here.",
     );
     expect(within(section).getByRole("img")).toHaveAccessibleName(
       "When each app wrote to my Health store, 2020 to 2026",
@@ -124,12 +115,9 @@ describe("Sources, joining and masking", () => {
   it("shows the raw signal with the counts from raw-stream.json", () => {
     render(<App state={toState(publicRaw())} />);
     const heading = screen.getByRole("heading", { name: "The raw signal" });
-    const text = heading.nextElementSibling?.textContent ?? "";
-    expect(text).toContain(
-      "One night of it: 66,658 readings in 18 hours, one a second: heart rate, beat-to-beat intervals on 38,917 of them, skin temperature and motion.",
+    expect(heading.nextElementSibling?.textContent).toBe(
+      "I also built a Bluetooth reader on an open-source decoder to get the raw signal off the strap: 66,658 readings in one night, one a second. It is not joined yet.",
     );
-    expect(text).toMatch(/Next: make it run every night\.$/);
-    expect(screen.queryByText(/I also read the strap directly/)).toBeNull();
   });
 
   it("drops the raw signal when raw-stream.json is missing or wrong", () => {
@@ -169,7 +157,9 @@ describe("Sources, joining and masking", () => {
     expect(img.querySelectorAll("svg")).toHaveLength(3);
     expect(img.querySelectorAll(".pipe__wire.is-dashed")).toHaveLength(3);
     expect(img.querySelectorAll(".pipe__node.is-mine")).toHaveLength(3);
-    const table = within(section).getAllByRole("table")[0];
+    const tables = within(section).getAllByRole("table");
+    expect(tables).toHaveLength(1);
+    const table = tables[0];
     expect(
       within(table)
         .getAllByRole("row")
@@ -181,13 +171,11 @@ describe("Sources, joining and masking", () => {
     expect(
       img.querySelector(".is-wide .pipe__node.is-excluded"),
     ).toHaveTextContent("raw signal, one night, not used yet");
-    expect(
-      within(section).getByRole("link", { name: "github.com/snakezilla/nof1" }),
-    ).toHaveAttribute("href", "https://github.com/snakezilla/nof1");
-    expect(section).toHaveTextContent(
-      "Every cut is code: prep/load.py in github.com/snakezilla/nof1.",
+    expect(table.nextElementSibling).toHaveTextContent(
+      /^Dropped: one stream with the wrong units, and nights under an hour\.$/,
     );
-    expect(section).toHaveTextContent("Left out, and why");
+    expect(section).not.toHaveTextContent("Left out, and why");
+    expect(section).not.toHaveTextContent("Why through Apple Health");
     expect(section.textContent).not.toMatch(/hack/i);
   });
 

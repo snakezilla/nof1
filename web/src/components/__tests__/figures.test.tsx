@@ -9,34 +9,33 @@ import { FIGURES_MISSING } from "../YearSection";
 const ready = () => ({ status: "ready" as const, data: publicData() });
 
 describe("figures on the page", () => {
-  it("draws nine figures, each an image with a label and a hidden summary", () => {
+  it("draws six figures, each an image with a label and a hidden summary", () => {
     const { container } = render(<App state={ready()} />);
     const images = screen
       .getAllByRole("img")
       .filter((el) => el.classList.contains("fig__drawing"));
-    // F8 and F7 (drawn from meta.json), then F1, three F2, F3, F4, F5.
-    expect(images).toHaveLength(9);
+    // F8 and F7 (drawn from meta.json), then F1 and three F2.
+    expect(images).toHaveLength(6);
     images.forEach((img) => {
       expect(img.getAttribute("aria-label")).toBeTruthy();
       const summary = img.nextElementSibling;
       expect(summary).toHaveClass("visually-hidden");
       expect(summary?.textContent).toMatch(/\d/);
     });
-    expect(container.querySelectorAll(".fig__caption")).toHaveLength(9);
+    // The strip plots carry no caption; their rows say the mean and the share under 6 h.
+    expect(container.querySelectorAll(".fig__caption")).toHaveLength(3);
   });
 
-  it("marks every figure drawn from the masked rows, and none of the source figures", () => {
+  it("says the data is masked once, at the head of the joined year, and on no figure", () => {
     const { container } = render(<App state={ready()} />);
-    const kickers = [...container.querySelectorAll(".fig__kicker")].map(
-      (k) => k.textContent ?? "",
-    );
-    expect(kickers.slice(0, 2).some((k) => k.startsWith("Masked"))).toBe(false);
-    expect(kickers.slice(2)).toHaveLength(7);
-    kickers.slice(2).forEach((k) => expect(k).toMatch(/^Masked data\. \S/));
+    expect(container.querySelectorAll(".fig__kicker")).toHaveLength(0);
     const part = screen.getByRole("region", {
       name: "What a joined year looks like",
     });
-    expect(part.querySelectorAll(".fig__kicker")).toHaveLength(7);
+    expect(part.querySelector("h2")?.nextElementSibling).toHaveTextContent(
+      /^Masked data\.$/,
+    );
+    expect(container.textContent?.match(/Masked data\./g)).toHaveLength(1);
   });
 
   it("shows the four source counts under the mask note", () => {
@@ -55,6 +54,14 @@ describe("figures on the page", () => {
       "1app I wrote to get them out",
     ]);
     expect(stats.previousElementSibling).toHaveClass("mask-note");
+    const source = stats.nextElementSibling as HTMLElement;
+    expect(source.textContent).toBe(
+      "May 2024 to April 2025. WHOOP strap → Apple Health → an export app I wrote → this page. How the data got here",
+    );
+    expect(
+      within(source).getByRole("link", { name: "How the data got here" }),
+    ).toHaveAttribute("href", "#how-i-got-it-out");
+    expect(document.getElementById("how-i-got-it-out")).not.toBeNull();
   });
 
   it("draws every night of the year in both orientations, outlining the gaps", () => {
@@ -67,7 +74,7 @@ describe("figures on the page", () => {
     expect(wide?.querySelector(".cal__weekend")).not.toBeNull();
   });
 
-  it("puts a strip plot under each finding's sentence", () => {
+  it("gives each finding a title, a strip plot and one line with the verdict", () => {
     render(<App state={ready()} />);
     const findings = screen
       .getAllByRole("listitem")
@@ -75,50 +82,24 @@ describe("figures on the page", () => {
     expect(findings).toHaveLength(3);
     findings.forEach((f) => {
       const fig = f.querySelector(".fig--strips");
-      expect(fig?.previousElementSibling).toHaveClass("finding__sentence");
+      expect(fig?.previousElementSibling?.tagName).toBe("H3");
+      expect(fig?.nextElementSibling).toHaveClass("finding__line");
       expect(fig?.querySelector(".strip-row__dots.is-accent")).not.toBeNull();
       expect(fig?.querySelector(".strip-row__dots.is-ink")).not.toBeNull();
+      expect(
+        f.querySelectorAll("p:not(.visually-hidden):not(.fig__legend)").length,
+      ).toBeLessThanOrEqual(f.querySelectorAll(".strip-row p").length + 1);
     });
+    expect(
+      findings.map((f) => f.querySelector(".finding__line")?.textContent),
+    ).toEqual([
+      "5.9 h vs 6.3 h, difference −0.4 h, 95% interval −0.8 to 0.0 h: at the edge.",
+      "5.7 h vs 6.4 h, difference −0.7 h, 95% interval −1.2 to −0.3 h: holds.",
+      "6.0 h vs 6.2 h, difference −0.2 h, 95% interval −0.6 to +0.1 h: not shown.",
+    ]);
+    expect(document.querySelectorAll(".verdict.is-edge")).toHaveLength(1);
+    expect(document.querySelectorAll(".verdict.is-holds")).toHaveLength(1);
     expect(screen.getByText("44% under 6 h")).toBeInTheDocument();
-  });
-
-  it("puts the typical night and the bedtimes above the protocol", () => {
-    const { container } = render(<App state={ready()} />);
-    const figs = container.querySelector(".test__figures");
-    expect(figs?.nextElementSibling).toHaveClass("test__grid");
-    expect(figs?.textContent).toContain("lights out 12:46 am");
-    expect(figs?.textContent).toContain("up 7:38 am");
-    expect(figs?.textContent).toContain("22 min");
-  });
-
-  it("draws December as an outlined row with no readings", () => {
-    const { container } = render(<App state={ready()} />);
-    const rows = container.querySelectorAll(
-      ".months__row:not(.months__head):not(.months__scale)",
-    );
-    expect(rows).toHaveLength(12);
-    const dec = [...rows].find((r) => r.textContent?.startsWith("Dec 24"));
-    expect(dec).toHaveClass("is-empty");
-    expect(dec?.textContent).toContain("no readings");
-    expect(container.querySelector(".fig__legend")?.textContent).toBeTruthy();
-    expect(container.textContent).toContain("everything else");
-  });
-
-  it("scores every claim in a table, marking only the edge verdict", () => {
-    render(<App state={ready()} />);
-    const table = screen.getByRole("table", {
-      name: /Every claim on this page/,
-    });
-    const rows = within(table).getAllByRole("row").slice(1);
-    expect(rows).toHaveLength(3);
-    expect(rows[0]).toHaveTextContent("5.9 h vs 6.3 h");
-    expect(rows[2]).toHaveTextContent("−0.6 to");
-    expect(table.querySelectorAll(".verdict.is-edge")).toHaveLength(1);
-    expect(table.querySelectorAll(".verdict.is-holds")).toHaveLength(1);
-    expect(within(rows[1]).getByRole("link")).toHaveAttribute(
-      "href",
-      "#finding-rebound",
-    );
   });
 
   it("says one plain sentence when figures.json is missing or wrong", () => {
@@ -131,9 +112,7 @@ describe("figures on the page", () => {
       expect(screen.getByText(FIGURES_MISSING)).toBeInTheDocument();
       // Only F8 and F7 are left: they are drawn from meta.json, not figures.json.
       expect(container.querySelectorAll(".fig__drawing")).toHaveLength(2);
-      expect(
-        screen.queryByRole("heading", { name: "Every claim, scored" }),
-      ).toBeNull();
+      expect(container.querySelectorAll(".finding__line")).toHaveLength(3);
       unmount();
     }
   });
@@ -141,7 +120,7 @@ describe("figures on the page", () => {
   it("pre-renders the figures, and the build refuses a wrong figures.json", () => {
     const html = renderPage(publicRaw());
     expect(html).toContain('class="cal__svg"');
-    expect(html).toContain("Every claim, scored");
+    expect(html).toContain('class="finding__line"');
     expect(() => renderPage({ ...publicRaw(), figures: { bad: 1 } })).toThrow(
       "figures.json",
     );

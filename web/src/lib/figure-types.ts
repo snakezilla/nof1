@@ -53,29 +53,6 @@ export type GroupKey = (typeof GROUP_KEYS)[number];
 
 export type SleepGroups = Readonly<Record<GroupKey, GroupPair>>;
 
-export interface BedtimeGroup {
-  /** Decimal hours on a clock that runs past 24: 25.0 = 1:00 am. */
-  readonly values: readonly number[];
-  readonly median: number;
-  readonly n: number;
-}
-
-export interface Bedtime {
-  readonly weekend: BedtimeGroup;
-  readonly weekday: BedtimeGroup;
-  readonly after_1am: number;
-  readonly before_midnight: number;
-  readonly n: number;
-}
-
-export interface TypicalNight {
-  readonly bed_h: number;
-  readonly sleep_h: number;
-  readonly awake_min: number;
-  readonly wake_h: number;
-  readonly n: number;
-}
-
 export interface MonthRow {
   readonly month: string;
   readonly label: string;
@@ -101,8 +78,6 @@ export interface Figures {
   readonly stats: readonly Stat[];
   readonly calendar: Calendar;
   readonly sleep_groups: SleepGroups;
-  readonly bedtime: Bedtime;
-  readonly typical_night: TypicalNight;
   readonly months: readonly MonthRow[];
   readonly claims: readonly Claim[];
 }

@@ -5,17 +5,11 @@ import { YearGrid } from "./figures/YearGrid";
 export const FIGURES_MISSING =
   "The figures could not be read, so they are left out. The repo has the raw JSON.";
 
+/** F1, the year of nights, or one sentence when figures.json is missing. */
 export function YearSection({ figures }: { figures: Figures | null }) {
-  return (
-    <section className="section" aria-labelledby="year-title">
-      <h3 className="section__title" id="year-title">
-        A year of nights
-      </h3>
-      {figures ? (
-        <YearGrid figures={figures} />
-      ) : (
-        <p className="section__intro">{FIGURES_MISSING}</p>
-      )}
-    </section>
+  return figures ? (
+    <YearGrid figures={figures} />
+  ) : (
+    <p className="section__intro">{FIGURES_MISSING}</p>
   );
 }

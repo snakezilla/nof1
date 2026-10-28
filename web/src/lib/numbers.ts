@@ -16,22 +16,10 @@ export const formatTenths = (v: number): string => {
 /** Hours with one decimal: "7.6 h". */
 export const formatHours = (h: number): string => `${formatTenths(h)} h`;
 
-/** Whole minutes: "12 min". Never signed. */
-export const formatMinutes = (m: number): string =>
-  `${Math.round(Math.abs(m))} min`;
-
 /** "-0.2 h" or "6.4 h" -> number of hours; null when the text holds no number. */
 export const parseHours = (text: string | undefined): number | null => {
   const m = text?.replace(MINUS, "-").match(/-?\d+(?:\.\d+)?/);
   return m ? Number(m[0]) : null;
-};
-
-/** "-0.9 to -0.2 h" -> [-0.9, -0.2]; null when it is not a range. */
-export const parseInterval = (
-  text: string | undefined,
-): readonly [number, number] | null => {
-  const nums = text?.replace(/−/g, "-").match(/-?\d+(?:\.\d+)?/g);
-  return nums && nums.length >= 2 ? [Number(nums[0]), Number(nums[1])] : null;
 };
 
 /**

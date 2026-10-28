@@ -11,7 +11,7 @@ import {
   sleepStep,
   type Orientation,
 } from "../../lib/figures";
-import { yearCaption, yearLabel, yearSummary } from "../../lib/figure-text";
+import { YEAR_CAPTION, yearLabel, yearSummary } from "../../lib/figure-text";
 import { FigureFrame, Key } from "./FigureFrame";
 
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -86,10 +86,9 @@ export function YearGrid({ figures }: { figures: Figures }) {
   return (
     <FigureFrame
       className="fig--wide"
-      kicker="One square per night, shaded by hours asleep"
       label={yearLabel(figures)}
       summary={yearSummary(figures)}
-      caption={yearCaption(figures)}
+      caption={YEAR_CAPTION}
       legend={
         <>
           {SLEEP_STEPS.map((s, i) => (

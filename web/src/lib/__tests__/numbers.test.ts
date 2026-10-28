@@ -3,10 +3,8 @@ import {
   MINUS,
   cleanNumbers,
   formatHours,
-  formatMinutes,
   formatTenths,
   parseHours,
-  parseInterval,
 } from "../numbers";
 import { publicData } from "../../test/fixtures";
 
@@ -25,22 +23,15 @@ describe("formatTenths and formatHours", () => {
     });
     expect(formatHours(-0)).toBe("0.0 h");
   });
-
-  it("prints whole minutes without a sign", () => {
-    expect(formatMinutes(12.4)).toBe("12 min");
-    expect(formatMinutes(-3)).toBe("3 min");
-  });
 });
 
-describe("parseHours and parseInterval", () => {
+describe("parseHours", () => {
   it("reads numbers from the data strings", () => {
     expect(parseHours("-0.2 h")).toBe(-0.2);
     expect(parseHours(`${MINUS}1.3 h`)).toBe(-1.3);
     expect(parseHours("6.4 h")).toBe(6.4);
     expect(parseHours(undefined)).toBeNull();
     expect(parseHours("none")).toBeNull();
-    expect(parseInterval("-0.9 to -0.2 h")).toEqual([-0.9, -0.2]);
-    expect(parseInterval("6.4 h")).toBeNull();
   });
 });
 

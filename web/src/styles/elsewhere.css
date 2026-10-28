@@ -18,7 +18,7 @@
 
 .elsewhere__list {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-1);
   margin-top: var(--space-3);
   padding: 0;
   list-style: none;
@@ -41,19 +41,21 @@
   text-wrap: balance;
 }
 
-.elsewhere__line:hover {
+/* Only an item with no link shows its sub-line. */
+.elsewhere__sub {
+  max-width: 52ch;
+  padding-bottom: var(--space-3);
+  color: var(--muted);
+  font-size: var(--text-s);
+  line-height: 1.5;
+}
+
+a.elsewhere__line:hover {
   text-decoration-color: var(--muted);
 }
 
 .elsewhere__em {
   color: var(--accent);
-}
-
-.elsewhere__sub {
-  max-width: 52ch;
-  color: var(--muted);
-  font-size: var(--text-s);
-  line-height: 1.5;
 }
 
 .elsewhere__more {

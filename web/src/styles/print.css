@@ -11,17 +11,7 @@
     --ink: black;
   }
 
-  .masthead,
-  .checkin,
-  .nights__scroll + .button {
+  .masthead {
     display: none;
-  }
-
-  .hero {
-    min-height: 0;
-  }
-
-  html.js .nights__table .is-extra {
-    display: table-row;
   }
 }

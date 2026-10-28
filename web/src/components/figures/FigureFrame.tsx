@@ -1,9 +1,6 @@
-import { useContext, type ReactNode } from "react";
-import { MaskedContext, maskedKicker } from "../../lib/masked";
+import type { ReactNode } from "react";
 
 interface Props {
-  /** What the marks are, one mono line above the drawing. */
-  kicker: string;
   /** Short name of the drawing for assistive tech. */
   label: string;
   /** One sentence with the key numbers, read in place of the drawing. */
@@ -14,9 +11,8 @@ interface Props {
   children: ReactNode;
 }
 
-/** Kicker, drawing, legend, caption: the frame every figure shares. */
+/** Drawing, legend, caption: the frame every figure shares. */
 export function FigureFrame({
-  kicker,
   label,
   summary,
   legend,
@@ -24,12 +20,8 @@ export function FigureFrame({
   className,
   children,
 }: Props) {
-  const masked = useContext(MaskedContext);
   return (
     <figure className={`fig${className ? ` ${className}` : ""}`}>
-      <p className="fig__kicker" aria-hidden="true">
-        {maskedKicker(kicker, masked)}
-      </p>
       <div className="fig__drawing" role="img" aria-label={label}>
         {children}
       </div>

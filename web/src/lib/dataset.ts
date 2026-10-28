@@ -1,10 +1,5 @@
 import type { Dataset } from "./types";
-import {
-  parseDaily,
-  parseExperiment,
-  parseMeta,
-  parsePatterns,
-} from "./validate";
+import { parseMeta, parsePatterns } from "./validate";
 import { parseFiguresOrNull } from "./validate-figures";
 import { parseRawStreamOrNull } from "./raw-stream";
 import { parseMaskOrNull } from "./mask";
@@ -12,9 +7,7 @@ import { parseProjectsOrNull } from "./projects";
 
 /** The data files as read from disk or the network, not yet checked. Figures, the raw stream, the mask and the projects are optional. */
 export interface RawDataset {
-  readonly daily: unknown;
   readonly patterns: unknown;
-  readonly test: unknown;
   readonly meta: unknown;
   readonly figures?: unknown;
   readonly raw_stream?: unknown;
@@ -22,7 +15,7 @@ export interface RawDataset {
   readonly projects?: unknown;
 }
 
-export const DATA_FILES = ["daily", "patterns", "test", "meta"] as const;
+export const DATA_FILES = ["patterns", "meta"] as const;
 
 export type DataState =
   | { readonly status: "loading" }
@@ -32,9 +25,7 @@ export type DataState =
 export type ParsedState = Exclude<DataState, { readonly status: "loading" }>;
 
 export const parseDataset = (raw: RawDataset): Dataset => ({
-  daily: parseDaily(raw.daily),
   patterns: parsePatterns(raw.patterns),
-  test: parseExperiment(raw.test),
   meta: parseMeta(raw.meta),
   figures: parseFiguresOrNull(raw.figures),
   rawStream: parseRawStreamOrNull(raw.raw_stream),

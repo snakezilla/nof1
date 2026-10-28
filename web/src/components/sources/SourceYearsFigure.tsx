@@ -4,7 +4,7 @@ import type { Provenance } from "../../lib/types";
 import { FigureFrame, Key } from "../figures/FigureFrame";
 
 const CAPTION =
-  "Each app kept its own years. The page uses the one year where WHOOP, Strava and SnoreLab overlap.";
+  "One bar per app, first record to last; the shaded band is the year joined here.";
 
 /** F8: where my data lived. Text is HTML placed by percent, so labels never scale. */
 export function SourceYearsFigure({ provenance }: { provenance: Provenance }) {
@@ -14,7 +14,6 @@ export function SourceYearsFigure({ provenance }: { provenance: Provenance }) {
   return (
     <FigureFrame
       className="fig--wide fig--years"
-      kicker="One bar per app, first record to last, with its record count"
       label="When each app wrote to my Health store, 2020 to 2026"
       summary={sourceYearsSummary(provenance, f)}
       caption={CAPTION}

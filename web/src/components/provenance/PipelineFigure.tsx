@@ -11,10 +11,9 @@ export function PipelineFigure({ provenance }: { provenance: Provenance }) {
   return (
     <FigureFrame
       className="fig--wide fig--pipe"
-      kicker="From the strap to this page"
       label="How the data got from the strap to this page"
       summary={pipelineSummary(provenance)}
-      caption="Solid lines are the data on this page. The dashed line is a second way in that I built and have not used yet."
+      caption="Solid lines are the data on this page; the dashed line is the raw signal, not joined yet."
     >
       <div className="pipe">
         <PipelineSvg layout={drawn.narrow} className="is-narrow" />

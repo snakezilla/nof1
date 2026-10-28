@@ -76,7 +76,6 @@
 @media (min-width: 64rem) {
   :root {
     --gutter: var(--space-8);
-    --section-gap: var(--space-9);
   }
 }
 

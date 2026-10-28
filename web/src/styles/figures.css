@@ -1,26 +1,11 @@
-/* The frame every figure shares: kicker, drawing, legend, caption. */
+/* The frame every figure shares: drawing, legend, caption. */
 
 .fig {
   margin-top: var(--space-6);
 }
 
-.fig--wide,
-.test__figures {
+.fig--wide {
   max-width: 55rem;
-}
-
-.fig__kicker,
-.months__head {
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  line-height: 1.5;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.fig__kicker {
-  margin-bottom: var(--space-3);
 }
 
 .fig__legend {
@@ -111,8 +96,7 @@
 }
 
 .axis__tick,
-.strip-row__value span,
-.gap__label {
+.strip-row__value span {
   position: absolute;
   top: var(--space-1);
   color: var(--muted);
@@ -199,98 +183,4 @@
 .strip-row__value span {
   top: 0;
   color: var(--text);
-}
-
-.gap {
-  position: relative;
-  height: 1.5rem;
-}
-
-.gap__span {
-  position: absolute;
-  top: 0;
-  height: var(--space-2);
-  border: 1px solid var(--muted);
-  border-top: 0;
-}
-
-.gap__label {
-  top: -0.2rem;
-  margin-left: var(--space-2);
-  color: var(--text);
-}
-
-/* F3: a typical night */
-
-.test__figures {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.night__ends,
-.night__awake-label {
-  position: relative;
-  height: 1.75rem;
-  font-size: var(--text-s);
-  line-height: 1.5;
-  font-variant-numeric: tabular-nums;
-}
-
-.night__ends span,
-.night__awake-label span {
-  position: absolute;
-  white-space: nowrap;
-}
-
-.night__ends span {
-  bottom: var(--space-1);
-}
-
-.night__awake-label span {
-  top: var(--space-1);
-  color: var(--muted);
-}
-
-.night__bar {
-  position: relative;
-}
-
-.night__bar svg {
-  display: block;
-  width: 100%;
-  height: 2rem;
-}
-
-.night__asleep {
-  fill: var(--ink);
-}
-
-.night__awake {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 1px;
-}
-
-/* The span carries the ink itself, over the drawn bar, so its contrast is measurable. */
-.night__hours {
-  position: absolute;
-  inset-block: 0;
-  background: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--bg);
-  font-size: var(--text-s);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.night .axis {
-  margin-top: 0;
-}
-
-/* The sleep line's intro follows F5; give it a section's breath, not a caption's. */
-.fig + .section__intro {
-  margin-top: var(--space-7);
 }

@@ -3,22 +3,6 @@ import type { MaskInfo } from "./mask";
 import type { Projects } from "./projects";
 import type { RawStream } from "./raw-stream";
 
-export interface Day {
-  readonly date: string;
-  readonly hrv_ms: number | null;
-  readonly hrv_n: number;
-  readonly sleep_h: number | null;
-  readonly deep_h: number | null;
-  readonly rem_h: number | null;
-  readonly workout_min: number;
-  readonly workout_types: readonly string[];
-  readonly mindful_min: number;
-  /** Minutes awake during the night. */
-  readonly awake_min?: number | null;
-  /** Bedtime as a decimal hour that runs past midnight: 23.5 = 11:30 pm, 25 = 1:00 am. */
-  readonly bed_h?: number | null;
-}
-
 export interface PatternNumbers {
   readonly a_label: string;
   readonly a_value: string;
@@ -37,41 +21,6 @@ export interface Pattern {
   readonly finding: string;
   readonly numbers: PatternNumbers;
   readonly caveat: string;
-}
-
-export type CheckinQuestion =
-  | {
-      readonly id: string;
-      readonly q: string;
-      readonly type: "scale";
-      readonly min: number;
-      readonly max: number;
-    }
-  | { readonly id: string; readonly q: string; readonly type: "yesno" }
-  | {
-      readonly id: string;
-      readonly q: string;
-      readonly type: "number";
-      readonly min?: number;
-      readonly max?: number;
-      readonly step?: number;
-    };
-
-export interface Experiment {
-  readonly title: string;
-  readonly hypothesis: string;
-  readonly why: string;
-  readonly pattern_id: string;
-  readonly duration_days: number;
-  readonly protocol: readonly string[];
-  readonly checkin: readonly CheckinQuestion[];
-  readonly baseline: {
-    readonly label: string;
-    readonly sleep_h: number | null;
-    readonly hrv_ms: number | null;
-    readonly weekday_sleep_h?: number | null;
-  };
-  readonly success: string;
 }
 
 export interface Meta {
@@ -133,9 +82,7 @@ export interface HealthSource {
 }
 
 export interface Dataset {
-  readonly daily: readonly Day[];
   readonly patterns: readonly Pattern[];
-  readonly test: Experiment;
   readonly meta: Meta;
   /** Null when figures.json is missing or has the wrong shape; the page says so in one sentence. */
   readonly figures: Figures | null;

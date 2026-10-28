@@ -23,43 +23,11 @@ export const ticks = (lo: number, hi: number, step: number): number[] =>
     (_, i) => lo + i * step,
   );
 
-/** How many values fall outside the domain (they are drawn pinned to its ends). */
-export const countOutside = (
-  values: readonly number[],
-  [lo, hi]: Domain,
-): number => values.filter((v) => v < lo || v > hi).length;
-
 /* Hours of sleep, F2 */
 
 export const HOURS_DOMAIN: Domain = [0, 12];
 export const HOURS_TICKS = ticks(0, 12, 3);
 export const SHORT_NIGHT_H = 6;
-
-/* Clock times on a clock that runs past 24 (25.0 = 1:00 am) */
-
-/** 22 -> "10 pm", 24 -> "12 am", 25 -> "1 am". Whole hours, for axis ticks. */
-export const hourTick = (h: number): string => {
-  const h24 = ((Math.round(h) % 24) + 24) % 24;
-  const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
-  return `${h12} ${h24 < 12 ? "am" : "pm"}`;
-};
-
-export const BED_DOMAIN: Domain = [22, 27];
-export const BED_TICKS = ticks(22, 27, 1);
-
-/** The axis for a typical night: an hour of air either side, ticks every two hours. */
-export const nightAxis = (
-  bed: number,
-  wake: number,
-): { readonly domain: Domain; readonly ticks: number[] } => {
-  const lo = Math.floor(bed) - 1;
-  const hi = Math.ceil(wake) + 1;
-  return { domain: [lo, hi], ticks: ticks(Math.ceil(lo / 2) * 2, hi, 2) };
-};
-
-/** Decimal hours between two clock times, in whole minutes: 24.54 - 24.19 -> 21. */
-export const minutesBetween = (a: number, b: number): number =>
-  Math.round(Math.abs(a - b) * 60);
 
 /* The calendar, F1 */
 
@@ -166,51 +134,6 @@ export const stripDots = (
     };
   }, start).dots;
 };
-
-/* Training tints, F5 */
-
-export type Tint = "cycling" | "strength" | "other";
-
-export const TINTS: readonly {
-  readonly key: Tint;
-  readonly label: string;
-  readonly opacity: number;
-}[] = [
-  { key: "cycling", label: "cycling", opacity: 1 },
-  { key: "strength", label: "strength", opacity: 0.58 },
-  { key: "other", label: "everything else", opacity: 0.26 },
-];
-
-/** Raw workout types to the three tints: traditional_strength_training -> "strength". */
-export const tintFor = (type: string): Tint =>
-  type === "cycling" ? "cycling" : /strength/.test(type) ? "strength" : "other";
-
-export interface Segment {
-  readonly tint: Tint;
-  readonly minutes: number;
-  /** Minutes before this segment in the bar. */
-  readonly offset: number;
-}
-
-/** A month's minutes as three stacked segments in tint order, empty ones left out. */
-export const monthSegments = (
-  minutes: Readonly<Record<string, number>>,
-): readonly Segment[] => {
-  const totals = TINTS.map(({ key }) =>
-    Object.entries(minutes)
-      .filter(([type]) => tintFor(type) === key)
-      .reduce((sum, [, m]) => sum + m, 0),
-  );
-  return TINTS.map(({ key }, i) => ({
-    tint: key,
-    minutes: totals[i],
-    offset: totals.slice(0, i).reduce((a, b) => a + b, 0),
-  })).filter((s) => s.minutes > 0);
-};
-
-export const totalMinutes = (
-  minutes: Readonly<Record<string, number>>,
-): number => Object.values(minutes).reduce((a, b) => a + b, 0);
 
 /* Which strip plot sits under which finding, F2 */
 

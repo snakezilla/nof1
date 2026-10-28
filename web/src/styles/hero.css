@@ -3,9 +3,7 @@
   flex-direction: column;
   justify-content: center;
   gap: var(--space-5);
-  /* Fill the first screen under the masthead, so the next section starts below the fold. */
-  min-height: calc(100svh - 4.25rem);
-  padding-block: var(--space-6) var(--space-7);
+  padding-block: var(--space-7);
 }
 
 .hero__line {
@@ -31,6 +29,25 @@
   font-size: var(--text-l);
   line-height: 1.45;
   letter-spacing: -0.005em;
+}
+
+/* One mono line: the window, the way the records came, and the link to how. */
+.hero__source {
+  max-width: var(--measure);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* A 44 px target that does not open up the line it sits in. */
+.hero__source a {
+  display: inline-block;
+  padding-block: var(--space-3);
+  margin-block: calc(-1 * var(--space-3));
+  white-space: nowrap;
 }
 
 .hero + .section {

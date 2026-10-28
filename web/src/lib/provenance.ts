@@ -33,11 +33,6 @@ const DEVICES: Readonly<Record<string, string>> = {
   WHOOP: "WHOOP 4.0 strap",
 };
 
-/** The same hardware in running text, without the model number. */
-const DEVICE_SHORT: Readonly<Record<string, string>> = {
-  WHOOP: "WHOOP strap",
-};
-
 /** What happens after the exporter, in order. These are this repo's own steps. */
 const DOWNSTREAM = ["iCloud", "CSV on my Mac", "prep/, Python", "this page"];
 
@@ -100,14 +95,8 @@ export const parseExporter = (exporter: string): Exporter => {
   };
 };
 
-export const leadApp = (p: Provenance): string | null =>
-  appCounts(p)[0]?.app ?? null;
-
 export const deviceOf = (app: string | null): string | null =>
   app ? (DEVICES[app] ?? null) : null;
-
-export const deviceShort = (app: string | null): string | null =>
-  app ? (DEVICE_SHORT[app] ?? null) : null;
 
 /** The excluded stream read straight off the device, if any. */
 export const directStream = (p: Provenance): Exclusion | null =>

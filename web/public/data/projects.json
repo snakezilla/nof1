@@ -2,12 +2,10 @@
   "source": "Hand-curated from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live), 2026-10-28. Lines are his wording in sentence case; sub-lines are cut from each project's own description.",
   "items": [
     {
-      "id": "pending-1",
-      "todo": "TODO: placeholder, not confirmed. Fill line, emphasis, sub and href from the source document, then delete this field. Items with a todo never render.",
-      "line": "",
-      "emphasis": "",
-      "sub": "",
-      "href": ""
+      "id": "patent",
+      "line": "AI that scores breast cancer slides after chemo",
+      "emphasis": "breast cancer slides",
+      "sub": "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center. Pathologists review the cases it is unsure of."
     },
     {
       "id": "delphi",
@@ -46,7 +44,7 @@
     }
   ],
   "more": {
-    "text": "And more on byahsan.com",
+    "text": "More on byahsan.com",
     "href": "https://www.byahsan.com"
   }
 }

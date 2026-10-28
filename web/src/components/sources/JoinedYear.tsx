@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { MaskedContext } from "../../lib/masked";
+import { MASKED_LABEL } from "../../lib/mask";
 
-/** The analysis, demoted under one heading. Inside it every figure kicker says the data is masked. */
+/** The analysis under one heading. The mask is said once, here, not on every figure. */
 export function JoinedYear({
   masked,
   children,
@@ -14,12 +14,8 @@ export function JoinedYear({
       <h2 className="part__title" id="joined-title">
         What a joined year looks like
       </h2>
-      <p className="section__intro">
-        {masked
-          ? "One year of the joined rows, from the masked values. The shapes are what one row per day makes possible; the numbers are not my real ones."
-          : "One year of the joined rows."}
-      </p>
-      <MaskedContext.Provider value={masked}>{children}</MaskedContext.Provider>
+      {masked && <p className="part__mask">{MASKED_LABEL}</p>}
+      {children}
     </section>
   );
 }

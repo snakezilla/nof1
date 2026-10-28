@@ -379,3 +379,30 @@ at 42 px and up. 27 px counts as large text, and the accent passes the 3:1 bar f
 both themes. The validator only lets through links to byahsan.com, needs the accent phrase to be
 inside its line, and refuses em dashes, exclamation marks and the words customers, pilots, ManageXR
 and Luke. An item with a `todo` field never renders; the first item is such a placeholder. No images.
+
+## Lean pass (2026-10-28)
+
+Ahsan: "make it more lean, to the point." Long pages that keep every figure and caveat now read as
+generated. The page is cut to: hero (two-sentence deck, one-sentence mask note, four counts, a mono
+source line), "Where my data lived" (F8), "How I got it out" (three steps, F7, the used-apps table
+with one "Dropped" line, the raw signal in two sentences), "Joining it" (four counts, then Next), the
+aside (five lines, no sub-lines), "What a joined year looks like" (the "Masked data." label once,
+F1, then three findings as title, strip plot and one line with the numbers and the verdict), and
+"How the masking works" in two sentences. The footer is one line and the repo link.
+
+Cut: the typical night, bedtimes, month rows, the sleep line, the 60-night table, The test and its
+check-in, the claims table (its verdicts now sit on each finding's line), the second sources table,
+"Why through Apple Health", "Left out, and why" as a list, every figure kicker and the per-figure
+mask prefix. The page no longer loads daily.json or test.json (prep/ still writes them). Tests pin
+the five h2s in order and two sentences at most per visible paragraph.
+
+Changed on purpose: the hero no longer fills the first screen; the desktop section gap is 64 px,
+not 96; from 1024 px each finding is one band, the title and its line on the left and the strip
+plot on the right. Height of the full page: 1440 went from 12,619 to 4,996 px (40%), 390 from
+19,149 to 8,549 px (45%). The three strip plots are most of what keeps 1440 above one third.
+
+Patent item (2026-10-28): the aside's first item is the filed provisional patent. It has no link,
+so it shows its sub-line in place of one; the validator allows a missing href only when a sub-line
+is there. Its sub-line is three sentences, the lead's wording word for word, and is the one
+exception to the two-sentence rule (the test names it). After this item, 1440 is 5,101 px and 390
+is 8,706 px.

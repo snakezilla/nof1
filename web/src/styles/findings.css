@@ -1,3 +1,5 @@
+/* Each finding: a title, its strip plot, one line with the numbers and the verdict. */
+
 .findings {
   margin-top: var(--space-5);
   padding: 0;
@@ -5,21 +7,9 @@
 }
 
 .finding {
-  display: grid;
-  gap: var(--space-5);
+  max-width: 55rem;
   padding-block: var(--space-6);
   border-top: var(--hairline);
-}
-
-.finding:first-child {
-  border-top: 0;
-  padding-top: var(--space-2);
-}
-
-.finding__text {
-  display: grid;
-  gap: var(--space-3);
-  max-width: var(--measure);
 }
 
 .finding__title {
@@ -30,69 +20,58 @@
   letter-spacing: -0.01em;
 }
 
-.finding__sentence {
-  font-size: var(--text-m);
+.finding .fig {
+  margin-top: var(--space-4);
 }
 
-.finding__caveat {
-  color: var(--muted);
-  font-size: var(--text-s);
-  line-height: 1.5;
-}
-
-.finding__numbers {
-  display: grid;
-  gap: var(--space-3);
-  align-content: start;
-}
-
-.finding__pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
-}
-
-.figure__value {
-  font-size: var(--text-xl);
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
-}
-
-.figure__label {
-  margin-top: var(--space-1);
+.finding__line {
+  max-width: var(--measure);
+  margin-top: var(--space-3);
   color: var(--muted);
   font-size: var(--text-s);
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
 }
 
-.figure__n {
+.verdict {
+  color: var(--text);
+  font-weight: 500;
   white-space: nowrap;
 }
 
-.finding__stats {
-  color: var(--muted);
-  font-size: var(--text-s);
-  line-height: 1.5;
-  font-variant-numeric: tabular-nums;
+/* "At the edge" carries the accent as a mark, not as text colour: terracotta is 3.5:1 on cream. */
+.verdict.is-edge::before {
+  content: "";
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  margin-right: var(--space-2);
+  background: var(--accent);
 }
 
-.finding:target .finding__title {
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.15em;
-}
-
+/* Laptops: the title and its line on the left, the strip plot beside them, so a finding is one band. */
 @media (min-width: 64rem) {
   .finding {
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: var(--space-7);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "title fig"
+      "line fig";
+    column-gap: var(--space-7);
+    align-items: start;
   }
 
-  .finding__numbers {
-    padding-top: var(--space-1);
+  .finding__title {
+    grid-area: title;
+  }
+
+  .finding .fig {
+    grid-area: fig;
+    margin-top: 0;
+  }
+
+  .finding__line {
+    grid-area: line;
   }
 }

@@ -1,10 +1,7 @@
 import type {
-  CheckinQuestion,
-  Day,
   Exclusion,
   Fusion,
   HealthSource,
-  Experiment,
   Meta,
   Pattern,
   Provenance,
@@ -17,11 +14,9 @@ const isObj = (v: unknown): v is Rec =>
 const isStr = (v: unknown): v is string => typeof v === "string";
 const isNum = (v: unknown): v is number =>
   typeof v === "number" && Number.isFinite(v);
-const isNumOrNull = (v: unknown): v is number | null => v === null || isNum(v);
 const isStrArr = (v: unknown): v is string[] =>
   Array.isArray(v) && v.every(isStr);
 const optNum = (v: unknown): boolean => v === undefined || isNum(v);
-const optNumOrNull = (v: unknown): boolean => v === undefined || isNumOrNull(v);
 const optStr = (v: unknown): boolean => v === undefined || isStr(v);
 const isIsoDate = (v: unknown): v is string =>
   isStr(v) && /^\d{4}-\d{2}-\d{2}$/.test(v);
@@ -32,20 +27,6 @@ export class DataShapeError extends Error {
     this.name = "DataShapeError";
   }
 }
-
-export const isDay = (v: unknown): v is Day =>
-  isObj(v) &&
-  isIsoDate(v.date) &&
-  isNumOrNull(v.hrv_ms) &&
-  isNum(v.hrv_n) &&
-  isNumOrNull(v.sleep_h) &&
-  isNumOrNull(v.deep_h) &&
-  isNumOrNull(v.rem_h) &&
-  isNum(v.workout_min) &&
-  isStrArr(v.workout_types) &&
-  isNum(v.mindful_min) &&
-  optNumOrNull(v.awake_min) &&
-  optNumOrNull(v.bed_h);
 
 export const isPattern = (v: unknown): v is Pattern =>
   isObj(v) &&
@@ -61,30 +42,6 @@ export const isPattern = (v: unknown): v is Pattern =>
   isNum(v.numbers.n_b) &&
   optStr(v.numbers.diff) &&
   optStr(v.numbers.ci95);
-
-export const isCheckinQuestion = (v: unknown): v is CheckinQuestion => {
-  if (!isObj(v) || !isStr(v.id) || !isStr(v.q)) return false;
-  if (v.type === "scale") return isNum(v.min) && isNum(v.max) && v.min <= v.max;
-  if (v.type === "yesno") return true;
-  if (v.type === "number")
-    return optNum(v.min) && optNum(v.max) && optNum(v.step);
-  return false;
-};
-
-export const isExperiment = (v: unknown): v is Experiment =>
-  isObj(v) &&
-  ["title", "hypothesis", "why", "pattern_id", "success"].every((k) =>
-    isStr(v[k]),
-  ) &&
-  isNum(v.duration_days) &&
-  isStrArr(v.protocol) &&
-  Array.isArray(v.checkin) &&
-  v.checkin.every(isCheckinQuestion) &&
-  isObj(v.baseline) &&
-  isStr(v.baseline.label) &&
-  isNumOrNull(v.baseline.sleep_h) &&
-  isNumOrNull(v.baseline.hrv_ms) &&
-  optNumOrNull(v.baseline.weekday_sleep_h);
 
 const isCountMap = (v: unknown): v is Record<string, number> =>
   isObj(v) && Object.values(v).every((n) => isNum(n) && n >= 0);
@@ -172,18 +129,6 @@ export const isMeta = (v: unknown): v is Meta =>
   isStr(v.built) &&
   isStr(v.repo);
 
-export const parseDaily = (v: unknown): readonly Day[] => {
-  if (!Array.isArray(v))
-    throw new DataShapeError("daily.json", "expected an array");
-  const bad = v.findIndex((d) => !isDay(d));
-  if (bad >= 0)
-    throw new DataShapeError(
-      "daily.json",
-      `row ${bad} does not match the schema`,
-    );
-  return [...(v as Day[])].sort((a, b) => a.date.localeCompare(b.date));
-};
-
 export const parsePatterns = (v: unknown): readonly Pattern[] => {
   if (!Array.isArray(v))
     throw new DataShapeError("patterns.json", "expected an array");
@@ -194,12 +139,6 @@ export const parsePatterns = (v: unknown): readonly Pattern[] => {
       `item ${bad} does not match the schema`,
     );
   return v as Pattern[];
-};
-
-export const parseExperiment = (v: unknown): Experiment => {
-  if (!isExperiment(v))
-    throw new DataShapeError("test.json", "does not match the schema");
-  return v;
 };
 
 /** A wrong provenance block is dropped, not fatal: the page says so in one sentence. */

@@ -161,35 +161,6 @@ const patterns = [
   },
 ];
 
-const test = {
-  title: "Two weeks of a 10:30 pm lights-out",
-  hypothesis:
-    "If I turn the lights out by 10:30 pm for 14 nights, my average sleep goes up by 30 minutes and my morning HRV goes up by 4 ms.",
-  why: "Short nights are the clearest link to lower HRV in four years of my data.",
-  pattern_id: "short-sleep-hrv",
-  duration_days: 14,
-  protocol: [
-    "Lights out by 10:30 pm",
-    "No screens after 10:00 pm",
-    "Same wake time every day, weekends too",
-    "No caffeine after 1:00 pm",
-  ],
-  checkin: [
-    { id: "energy", q: "Energy this morning?", type: "scale", min: 1, max: 5 },
-    { id: "lights", q: "Lights out by 10:30 last night?", type: "yesno" },
-    {
-      id: "screens_off",
-      q: "Minutes of screen time after 10 pm?",
-      type: "number",
-      min: 0,
-      max: 240,
-    },
-  ],
-  baseline: { label: "last 30 nights", sleep_h: 6.3, hrv_ms: 51 },
-  success:
-    "Average sleep of 7.0 h or more and average HRV of 55 ms or more across the 14 nights, with lights out on time at least 11 nights.",
-};
-
 const meta = {
   range: { from: FROM, to: TO },
   days: daily.length,
@@ -201,10 +172,9 @@ const meta = {
   repo: "https://github.com/snakezilla/nof1",
 };
 
+// daily rows only feed the meta counts; the page no longer reads daily.json or test.json.
 const files = {
-  "daily.json": daily,
   "patterns.json": patterns,
-  "test.json": test,
   "meta.json": meta,
 };
 const write = (dir, name, data) => {

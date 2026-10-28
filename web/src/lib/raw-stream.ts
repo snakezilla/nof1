@@ -37,12 +37,6 @@ export const isRawStream = (v: unknown): v is RawStream =>
 export const parseRawStreamOrNull = (v: unknown): RawStream | null =>
   isRawStream(v) ? v : null;
 
-/** "The raw signal": what the Bluetooth reader got, with the counts from raw-stream.json. */
-export const rawSignalText = (s: RawStream): string => {
-  const hours = Math.floor(s.hours);
-  return [
-    "WHOOP's app gives you summaries. I wanted the raw signal, so I built a Bluetooth reader on my Mac on top of an open-source decoder of the strap's protocol.",
-    `One night of it: ${fmt(s.readings)} readings in ${hours} ${hours === 1 ? "hour" : "hours"}, one a second: heart rate, beat-to-beat intervals on ${fmt(s.with_rr)} of them, skin temperature and motion.`,
-    "It is not on this page yet. It covers one night, and its HRV does not match WHOOP's. Next: make it run every night.",
-  ].join(" ");
-};
+/** "The raw signal": two sentences, the count from raw-stream.json. */
+export const rawSignalText = (s: RawStream): string =>
+  `I also built a Bluetooth reader on an open-source decoder to get the raw signal off the strap: ${fmt(s.readings)} readings in one night, one a second. It is not joined yet.`;

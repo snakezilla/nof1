@@ -21,10 +21,8 @@ export function SleepStrips({ pair }: { pair: GroupPair }) {
   return (
     <FigureFrame
       className="fig--strips"
-      kicker="One dot per night, hours asleep"
       label={stripLabel(pair)}
       summary={stripSummary(pair)}
-      caption={`The dark tick is the mean; the hairline marks ${SHORT_NIGHT_H} h.`}
     >
       {pair.map((g, i) => (
         <StripRow

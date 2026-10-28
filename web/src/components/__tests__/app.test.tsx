@@ -9,21 +9,49 @@ const ready = () => ({ status: "ready" as const, data: publicData() });
 
 afterEach(() => vi.unstubAllGlobals());
 
+/** The lean page: these h2s and no others, in this order. */
+const KEPT_H2S = [
+  "Where my data lived",
+  "How I got it out",
+  "Joining it",
+  "What a joined year looks like",
+  "How the masking works",
+];
+
 describe("App", () => {
-  it("puts the sources first, then how I got it out, the join, the joined year, and the masking", () => {
-    render(<App state={ready()} />);
+  it("has exactly the kept h2s, in order", () => {
+    const { container } = render(<App state={ready()} />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "Twelve apps measured me. None of them talked to each other.",
     );
     expect(
-      screen.getAllByRole("heading", { level: 2 }).map((h) => h.textContent),
-    ).toEqual([
-      "Where my data lived",
-      "How I got it out",
-      "Joining it",
-      "What a joined year looks like",
-      "How the masking works",
-    ]);
+      [...container.querySelectorAll("h2")].map((h) => h.textContent),
+    ).toEqual(KEPT_H2S);
+  });
+
+  it("leaves out the cut parts", () => {
+    const { container } = render(<App state={ready()} />);
+    const text = container.textContent ?? "";
+    [
+      "The test",
+      "The nights",
+      "Every claim, scored",
+      "A typical night",
+      "Three findings",
+      "Why through Apple Health",
+      "Everything else in my Health store",
+      "Left out, and why",
+    ].forEach((cut) => expect(text).not.toContain(cut));
+    expect(
+      container.querySelectorAll("input, button[type=submit]"),
+    ).toHaveLength(0);
+  });
+
+  it("titles the first finding with its number, from the masked data", () => {
+    render(<App state={ready()} />);
+    expect(screen.getAllByRole("heading", { level: 3 })[0]).toHaveTextContent(
+      "The raw signal",
+    );
     const part = screen.getByRole("region", {
       name: "What a joined year looks like",
     });
@@ -32,20 +60,31 @@ describe("App", () => {
         .getAllByRole("heading", { level: 3 })
         .map((h) => h.textContent),
     ).toEqual([
-      "A year of nights",
-      "Other things I'm building",
-      "Three findings",
-      "The test",
-      "The nights",
-      "Every claim, scored",
+      "Weekends cost me 24 minutes of sleep.",
+      "I do not catch up the next night",
+      "Training days do not cost sleep",
     ]);
   });
 
-  it("titles the first finding with its number, from the masked data", () => {
-    render(<App state={ready()} />);
-    expect(screen.getAllByRole("heading", { level: 4 })[0]).toHaveTextContent(
-      "Weekends cost me 24 minutes of sleep.",
-    );
+  it("keeps every paragraph to two sentences at most", () => {
+    const { container } = render(<App state={ready()} />);
+    // Visible paragraphs only; the hidden figure summaries are read in place of a drawing. The
+    // patent sub-line is the lead's wording, word for word, and is the one exception.
+    container
+      .querySelectorAll(
+        "main p:not(.visually-hidden):not(.elsewhere__sub), footer p",
+      )
+      .forEach((p) => {
+        // A link that ends a paragraph ("How the data got here") is a way on, not a sentence.
+        const tail = p.lastElementChild?.matches("a:last-child")
+          ? (p.lastElementChild.textContent ?? "")
+          : "";
+        const sentences = (p.textContent ?? "")
+          .slice(0, (p.textContent ?? "").length - tail.length)
+          .replace(/\d\.\d/g, "0")
+          .split(/[.?]\s+(?=[A-Z])/);
+        expect(sentences.length, p.textContent ?? "").toBeLessThanOrEqual(2);
+      });
   });
 
   it("prints no 'none', no negative zero and no hyphen minus signs", () => {
@@ -58,21 +97,9 @@ describe("App", () => {
     expect(text).not.toMatch(/\bnone\b/i);
     expect(text).not.toMatch(/[-−]0\.0(?!\d)/);
     expect(text).not.toMatch(/(^|[\s(])-\d/);
-    // The Mindful column is gone; the one allowed use is Balance's reason in the sources table.
-    expect(text).not.toMatch(
-      /Mindful(?! minutes on \d+ days, too few to show)/,
-    );
     expect(text).not.toContain("—");
+    expect(text).not.toContain("·");
     expect(text).not.toContain("!");
-  });
-
-  it("shows the protocol as a numbered list with no fake controls", () => {
-    render(<App state={ready()} />);
-    const protocol = screen.getByText(/Protocol/).nextElementSibling;
-    expect(protocol?.tagName).toBe("OL");
-    expect(within(protocol as HTMLElement).queryAllByRole("checkbox")).toEqual(
-      [],
-    );
   });
 
   it("states the data-shape error in a plain sentence", () => {
@@ -106,7 +133,7 @@ describe("Loader (dev path)", () => {
     render(<Loader base="/data" />);
     expect(screen.getByRole("status")).toHaveTextContent("Loading");
     expect(
-      await screen.findByRole("heading", { name: "The nights" }),
+      await screen.findByRole("heading", { name: "How I got it out" }),
     ).toBeInTheDocument();
   });
 
@@ -117,7 +144,7 @@ describe("Loader (dev path)", () => {
     );
     render(<Loader base="/data" />);
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "/data/daily.json returned 404",
+      "/data/patterns.json returned 404",
     );
   });
 });

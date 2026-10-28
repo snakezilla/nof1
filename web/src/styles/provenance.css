@@ -104,10 +104,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.prov__block .sources {
-  margin-top: var(--space-3);
-}
-
 .sources th,
 .sources td {
   padding: var(--space-3) var(--space-4) var(--space-3) 0;
@@ -138,10 +134,6 @@
   text-align: right;
   font-family: var(--font-mono);
   white-space: nowrap;
-}
-
-.sources__merged {
-  display: none;
 }
 
 .sources tr.is-mine th {
@@ -191,30 +183,24 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-
-  /* The second table folds Dates into the Records cell. */
-  .sources--other .sources__dates {
-    display: none;
-  }
-
-  .sources--other .sources__merged {
-    display: inline;
-  }
-
-  .sources--other td.num::before {
-    content: "Records, dates";
-  }
 }
 
-/* How I got it out, left out, the closing line */
+/* How I got it out: the table and its one line, the raw signal */
 
 .prov__block {
   max-width: var(--measure);
   margin-top: var(--space-7);
 }
 
-.prov__block:has(.sources) {
+.prov__table {
   max-width: 55rem;
+}
+
+.prov__dropped {
+  margin-top: var(--space-3);
+  color: var(--muted);
+  font-size: var(--text-s);
+  line-height: 1.5;
 }
 
 .prov__heading {
@@ -225,36 +211,6 @@
 
 .prov__para {
   margin-top: var(--space-3);
-}
-
-.left-out {
-  margin-top: var(--space-3);
-  padding-left: var(--space-5);
-  color: var(--muted);
-  font-size: var(--text-s);
-  line-height: 1.5;
-  font-variant-numeric: tabular-nums;
-}
-
-.left-out li + li {
-  margin-top: var(--space-2);
-}
-
-.prov__closing {
-  max-width: var(--measure);
-  margin-top: var(--space-7);
-  font-variant-numeric: tabular-nums;
-}
-
-.prov__closing a {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--target);
-}
-
-.prov code {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
 }
 
 /* The three steps under the section title. */

@@ -1,18 +1,19 @@
 import { describe, expect, it } from "vitest";
 import {
+  MASK_NOTE,
   isMaskInfo,
   maskParagraphs,
   parseMaskOrNull,
-  rangeLines,
 } from "../mask";
-import { maskedKicker } from "../masked";
 import { shortNames, sourceYears } from "../source-years";
 import {
   appsThatMeasured,
   countWord,
+  DECK,
   fusionLines,
   headline,
   headlineText,
+  sourceLine,
   sourceStats,
   yearsCovered,
 } from "../sources-text";
@@ -91,6 +92,27 @@ describe("source stats", () => {
   });
 });
 
+describe("hero copy", () => {
+  it("keeps the deck to two sentences", () => {
+    expect(DECK).toBe(
+      "WHOOP had my sleep, Strava my rides, my phone my steps, a scale my weight. I got them out and joined them into one row per day.",
+    );
+  });
+
+  it("dates the window in words and draws the way in, in the mono line", () => {
+    expect(sourceLine(prov([]))).toBe(
+      "May 2024 to April 2025. WHOOP strap → Apple Health → an export app I wrote → this page.",
+    );
+    expect(
+      sourceLine({
+        ...prov([]),
+        window: { from: "2023-01-01", to: "2023-12-31" },
+      }),
+    ).toMatch(/^January 2023 to December 2023\. /);
+    expect(sourceLine(undefined)).toBeNull();
+  });
+});
+
 describe("fusion lines", () => {
   it("states the counts, and plural streams read right", () => {
     const lines = fusionLines({
@@ -100,13 +122,12 @@ describe("fusion lines", () => {
       dropped_streams: 2,
       days: 1,
     });
-    expect(lines[0]).toBe(
-      "1,000 lines in the raw export, 400 of them repeats across sync batches, matched by sample ID.",
-    );
-    expect(lines[2]).toBe(
-      "Two streams were dropped because their units did not match.",
-    );
-    expect(lines[3]).toBe("Result: one row per day, 1 day.");
+    expect(lines).toEqual([
+      "1,000 lines in the raw export.",
+      "400 repeats across sync batches, matched by sample ID.",
+      "Two streams dropped for the wrong units.",
+      "One row per day: 1 day.",
+    ]);
   });
 });
 
@@ -171,19 +192,16 @@ describe("mask", () => {
     expect(parseMaskOrNull(undefined)).toBeNull();
   });
 
-  it("writes the ranges with a times sign and the paragraphs from the file", () => {
-    expect(rangeLines(info)).toEqual(["Sleep: ×0.85 to ×1.15"]);
-    const [method, real] = maskParagraphs(info);
-    expect(method).toBe(
-      "The health numbers on this page are masked: shifted by a seed.",
-    );
-    expect(real).toBe("Real, not masked: dates; workout types.");
+  it("says how the masking works in two sentences, the method from the file", () => {
+    expect(maskParagraphs(info)).toEqual([
+      "Shifted by a seed.",
+      "The seed stays on my machine, so the shifts cannot be undone.",
+    ]);
   });
 
-  it("prefixes a kicker only inside the masked part", () => {
-    expect(maskedKicker("One dot per night", true)).toBe(
-      "Masked data. One dot per night",
+  it("says the mask in one sentence in the hero", () => {
+    expect(MASK_NOTE).toBe(
+      "Health numbers here are masked with a private seed; apps, counts and dates are real.",
     );
-    expect(maskedKicker("One dot per night", false)).toBe("One dot per night");
   });
 });

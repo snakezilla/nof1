@@ -7,7 +7,8 @@ export interface ProjectItem {
   /** One phrase inside `line`, set in the accent. */
   readonly emphasis: string;
   readonly sub: string;
-  readonly href: string;
+  /** Absent only on an item shown with its sub-line instead of a link. */
+  readonly href?: string;
 }
 
 export interface Projects {
@@ -36,7 +37,8 @@ const isShown = (v: Rec): boolean =>
   isFilled(v.emphasis) &&
   v.line.includes(v.emphasis) &&
   isFilled(v.sub) &&
-  isOurLink(v.href) &&
+  /* No link is allowed only because the sub-line is then shown in its place. */
+  (v.href === undefined || isOurLink(v.href)) &&
   ![v.line, v.sub].some(breaksCopyRules);
 
 const isItem = (v: unknown): v is ProjectItem =>

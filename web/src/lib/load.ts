@@ -31,11 +31,9 @@ export const loadDataset = async (
     fetchOptional(fetcher, `${base}/projects.json`),
     ...DATA_FILES.map((name) => fetchJson(fetcher, `${base}/${name}.json`)),
   ]);
-  const [daily, patterns, test, meta] = required;
+  const [patterns, meta] = required;
   return parseDataset({
-    daily,
     patterns,
-    test,
     meta,
     figures,
     raw_stream: rawStream,

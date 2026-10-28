@@ -34,10 +34,6 @@ describe("parseFigures", () => {
     expect(() => parseFigures({ ...real(), sleep_groups: 3 })).toThrow(
       "sleep_groups does not",
     );
-    expect(() => parseFigures({ ...real(), bedtime: {} })).toThrow("bedtime");
-    expect(() => parseFigures({ ...real(), typical_night: {} })).toThrow(
-      "typical_night",
-    );
     expect(() =>
       parseFigures({ ...real(), months: [{ month: "x", label: "x" }] }),
     ).toThrow("months");
