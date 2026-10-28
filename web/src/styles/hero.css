@@ -44,9 +44,11 @@
 
 /* A 44 px target that does not open up the line it sits in. */
 .hero__source a {
-  display: inline-block;
-  padding-block: var(--space-3);
-  margin-block: calc(-1 * var(--space-3));
+  display: inline-flex;
+  align-items: center;
+  /* A full 44 px box; the negative margin keeps the 11 px line from opening up. */
+  min-height: var(--target);
+  margin-block: calc((1.5em - var(--target)) / 2);
   white-space: nowrap;
 }
 
