@@ -1,0 +1,75 @@
+/* Other things I'm building: an aside, not a section. Narrower and quieter than the sections
+   around it, hairlines above and below, one Fraunces line per item with one phrase in the accent,
+   as on byahsan.com. The lines are 27 px, so the accent passes the 3:1 large-text bar. */
+
+.elsewhere {
+  max-width: 40rem;
+  margin-top: var(--section-gap);
+  padding-block: var(--space-6);
+  border-block: var(--hairline);
+}
+
+.elsewhere__title {
+  color: var(--muted);
+  font-size: var(--text-m);
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.elsewhere__list {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  padding: 0;
+  list-style: none;
+}
+
+.elsewhere__item {
+  display: grid;
+}
+
+.elsewhere__line {
+  justify-self: start;
+  padding-block: var(--space-2);
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-decoration-color: var(--rule);
+  text-wrap: balance;
+}
+
+.elsewhere__line:hover {
+  text-decoration-color: var(--muted);
+}
+
+.elsewhere__em {
+  color: var(--accent);
+}
+
+.elsewhere__sub {
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: var(--text-s);
+  line-height: 1.5;
+}
+
+.elsewhere__more {
+  margin-top: var(--space-5);
+  color: var(--muted);
+  font-size: var(--text-s);
+}
+
+.elsewhere__more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+}
+
+/* The aside's bottom hairline is the next section's top rule, so the two never double up. */
+.elsewhere + .section {
+  margin-top: 0;
+  border-top: 0;
+}

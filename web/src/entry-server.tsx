@@ -4,6 +4,7 @@ import App from "./App";
 import { OgCard } from "./components/OgCard";
 import { embedJson, toState, type RawDataset } from "./lib/dataset";
 import { isMaskInfo } from "./lib/mask";
+import { isProjects } from "./lib/projects";
 import { SUMMARY, headline, headlineText } from "./lib/sources-text";
 import { isRawStream } from "./lib/raw-stream";
 import { parseFigures } from "./lib/validate-figures";
@@ -12,7 +13,7 @@ export { embedJson };
 
 /**
  * The page body for dist/index.html. Throws when the data shape is wrong, so the build fails.
- * figures.json, raw-stream.json and mask.json may be absent (the page then drops what they
+ * figures.json, raw-stream.json, mask.json and projects.json may be absent (the page then drops what they
  * feed), but when present they must be right.
  */
 export const render = (raw: RawDataset): string => {
@@ -21,6 +22,8 @@ export const render = (raw: RawDataset): string => {
     throw new Error("raw-stream.json does not match the schema");
   if (raw.mask !== undefined && !isMaskInfo(raw.mask))
     throw new Error("mask.json does not match the schema");
+  if (raw.projects !== undefined && !isProjects(raw.projects))
+    throw new Error("projects.json does not match the schema");
   const state = toState(raw);
   if (state.status !== "ready") throw new Error(state.message);
   return renderToString(

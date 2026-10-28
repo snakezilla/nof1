@@ -16,7 +16,7 @@ export const fetchJson = async (
   }
 };
 
-/** figures.json, raw-stream.json and mask.json are optional: when one cannot be read the page renders without it. */
+/** figures.json, raw-stream.json, mask.json and projects.json are optional: when one cannot be read the page renders without it. */
 const fetchOptional = (fetcher: Fetcher, url: string): Promise<unknown> =>
   fetchJson(fetcher, url).catch(() => undefined);
 
@@ -24,10 +24,11 @@ export const loadDataset = async (
   fetcher: Fetcher,
   base = "/data",
 ): Promise<Dataset> => {
-  const [figures, rawStream, mask, ...required] = await Promise.all([
+  const [figures, rawStream, mask, projects, ...required] = await Promise.all([
     fetchOptional(fetcher, `${base}/figures.json`),
     fetchOptional(fetcher, `${base}/raw-stream.json`),
     fetchOptional(fetcher, `${base}/mask.json`),
+    fetchOptional(fetcher, `${base}/projects.json`),
     ...DATA_FILES.map((name) => fetchJson(fetcher, `${base}/${name}.json`)),
   ]);
   const [daily, patterns, test, meta] = required;
@@ -39,5 +40,6 @@ export const loadDataset = async (
     figures,
     raw_stream: rawStream,
     mask,
+    projects,
   });
 };

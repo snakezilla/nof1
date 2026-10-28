@@ -33,6 +33,7 @@ describe("App", () => {
         .map((h) => h.textContent),
     ).toEqual([
       "A year of nights",
+      "Other things I'm building",
       "Three findings",
       "The test",
       "The nights",

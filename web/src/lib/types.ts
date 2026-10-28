@@ -1,5 +1,6 @@
 import type { Figures } from "./figure-types";
 import type { MaskInfo } from "./mask";
+import type { Projects } from "./projects";
 import type { RawStream } from "./raw-stream";
 
 export interface Day {
@@ -142,4 +143,6 @@ export interface Dataset {
   readonly rawStream: RawStream | null;
   /** Null when mask.json is missing or wrong; the page then makes no masked claims. */
   readonly mask: MaskInfo | null;
+  /** Null when projects.json is missing or wrong; the aside is dropped. */
+  readonly projects: Projects | null;
 }

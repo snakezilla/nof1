@@ -9,6 +9,7 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { Nights } from "./components/Nights";
+import { OtherProjects } from "./components/OtherProjects";
 import { Provenance } from "./components/provenance/Provenance";
 import { JoinedYear } from "./components/sources/JoinedYear";
 import { Joining } from "./components/sources/Joining";
@@ -18,7 +19,8 @@ import { TestSection } from "./components/TestSection";
 import { YearSection } from "./components/YearSection";
 
 function Page({ data, today }: { data: Dataset; today?: string }) {
-  const { daily, patterns, test, meta, figures, rawStream, mask } = data;
+  const { daily, patterns, test, meta, figures, rawStream, mask, projects } =
+    data;
   const masked = mask !== null;
   return (
     <>
@@ -39,6 +41,7 @@ function Page({ data, today }: { data: Dataset; today?: string }) {
         <Joining fusion={meta.provenance?.fusion} />
         <JoinedYear masked={masked}>
           <YearSection figures={figures} />
+          <OtherProjects projects={projects} />
           <Findings patterns={patterns} groups={figures?.sleep_groups} />
           <TestSection
             test={test}

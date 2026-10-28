@@ -22,7 +22,7 @@ const readData = async () => {
   return Object.fromEntries(entries);
 };
 
-// figures.json, raw-stream.json and mask.json are optional to the page; mask.json is required to publish.
+// figures.json, raw-stream.json, mask.json and projects.json are optional to the page; mask.json is required to publish.
 const readOptional = async (name, without) => {
   const path = join(root, "public/data", `${name}.json`);
   try {
@@ -47,11 +47,13 @@ const main = async () => {
   const figures = await readOptional("figures", "figures");
   const rawStream = await readOptional("raw-stream", "the raw signal");
   const mask = await readOptional("mask", "the masking note");
+  const projects = await readOptional("projects", "the other projects aside");
   const raw = {
     ...(await readData()),
     ...(figures === undefined ? {} : { figures }),
     ...(rawStream === undefined ? {} : { raw_stream: rawStream }),
     ...(mask === undefined ? {} : { mask }),
+    ...(projects === undefined ? {} : { projects }),
   };
   // Never publish real values: the build stops unless prep/ masked the data.
   server.assertMasked(raw);

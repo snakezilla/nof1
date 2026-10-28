@@ -366,3 +366,16 @@ masked values for the current seed; a new seed means new pins. "How I got it out
 Note on the numbers in this file: rounds two to four were written against the real data. Every
 health value quoted in them has been replaced with a placeholder or neutral wording, because the page
 now ships masked values only (round five). Counts of nights and days, dates and app names are real.
+
+## Aside: other things I'm building (2026-10-28)
+
+An `<aside>` directly before "Three findings", from `public/data/projects.json` (hand-curated from
+byahsan.com, validated by `src/lib/projects.ts`; the page renders without it and the build refuses a
+wrong one). It is 40rem wide, muted, with hairlines above and below. The bottom hairline stands in for
+the findings section's top rule so the two rules never sit on top of each other. Each item is one
+Fraunces line in `--muted` with one phrase in `--accent`, as on byahsan.com, followed by a muted
+sub-line. The whole line is the link. Changed on purpose: the accent appears here at 27 px, not only
+at 42 px and up. 27 px counts as large text, and the accent passes the 3:1 bar for large text in
+both themes. The validator only lets through links to byahsan.com, needs the accent phrase to be
+inside its line, and refuses em dashes, exclamation marks and the words customers, pilots, ManageXR
+and Luke. An item with a `todo` field never renders; the first item is such a placeholder. No images.

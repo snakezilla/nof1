@@ -1,0 +1,52 @@
+{
+  "source": "Hand-curated from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live), 2026-10-28. Lines are his wording in sentence case; sub-lines are cut from each project's own description.",
+  "items": [
+    {
+      "id": "pending-1",
+      "todo": "TODO: placeholder, not confirmed. Fill line, emphasis, sub and href from the source document, then delete this field. Items with a todo never render.",
+      "line": "",
+      "emphasis": "",
+      "sub": "",
+      "href": ""
+    },
+    {
+      "id": "delphi",
+      "line": "A cancer diagnostics lab, running itself",
+      "emphasis": "cancer diagnostics",
+      "sub": "I wrote the tools that take in requisitions and print specimen labels. They run on the lab's own machines, offline.",
+      "href": "https://www.byahsan.com/projects/delphi"
+    },
+    {
+      "id": "japan",
+      "line": "Working on a cargo ship in the Japan Sea",
+      "emphasis": "cargo ship",
+      "sub": "A season on a cargo ship, crossing the Japan Sea.",
+      "href": "https://www.byahsan.com/japan"
+    },
+    {
+      "id": "villasola",
+      "line": "Helping build 198 units of senior living",
+      "emphasis": "senior living",
+      "sub": "A community in Orillia. I'm supporting the build-out and the software to run the place.",
+      "href": "https://www.byahsan.com/projects/villasola"
+    },
+    {
+      "id": "beecolony",
+      "line": "Managing my beehive with edge compute + infrared",
+      "emphasis": "edge compute + infrared",
+      "sub": "A Pi Zero 2 with a NoIR camera above the hive entrance counts bees in and out.",
+      "href": "https://www.byahsan.com/projects/beecolony"
+    },
+    {
+      "id": "oversite",
+      "line": "Site inspection through smart glasses",
+      "emphasis": "smart glasses",
+      "sub": "An inspector walks a site wearing smart glasses. The system watches, listens and writes the report.",
+      "href": "https://www.byahsan.com/projects/oversite"
+    }
+  ],
+  "more": {
+    "text": "And more on byahsan.com",
+    "href": "https://www.byahsan.com"
+  }
+}

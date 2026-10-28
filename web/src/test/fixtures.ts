@@ -46,6 +46,7 @@ export const publicRaw = (): RawDataset => {
     figures: read("figures"),
     raw_stream: read("raw-stream"),
     mask: read("mask"),
+    projects: read("projects"),
   };
 };
 

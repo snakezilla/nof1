@@ -15,6 +15,7 @@ import "./styles/calendar.css";
 import "./styles/tables.css";
 import "./styles/provenance.css";
 import "./styles/sources.css";
+import "./styles/elsewhere.css";
 import "./styles/print.css";
 
 const root = document.getElementById("root");

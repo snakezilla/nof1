@@ -8,8 +8,9 @@ import {
 import { parseFiguresOrNull } from "./validate-figures";
 import { parseRawStreamOrNull } from "./raw-stream";
 import { parseMaskOrNull } from "./mask";
+import { parseProjectsOrNull } from "./projects";
 
-/** The data files as read from disk or the network, not yet checked. Figures, the raw stream and the mask are optional. */
+/** The data files as read from disk or the network, not yet checked. Figures, the raw stream, the mask and the projects are optional. */
 export interface RawDataset {
   readonly daily: unknown;
   readonly patterns: unknown;
@@ -18,6 +19,7 @@ export interface RawDataset {
   readonly figures?: unknown;
   readonly raw_stream?: unknown;
   readonly mask?: unknown;
+  readonly projects?: unknown;
 }
 
 export const DATA_FILES = ["daily", "patterns", "test", "meta"] as const;
@@ -37,6 +39,7 @@ export const parseDataset = (raw: RawDataset): Dataset => ({
   figures: parseFiguresOrNull(raw.figures),
   rawStream: parseRawStreamOrNull(raw.raw_stream),
   mask: parseMaskOrNull(raw.mask),
+  projects: parseProjectsOrNull(raw.projects),
 });
 
 /** Never throws: a wrong shape becomes an error state the page can show. */
