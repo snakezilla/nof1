@@ -37,7 +37,7 @@ describe("WakeLight", () => {
       document.querySelectorAll(
         "main figure.feature__media, .feature__media figure",
       ),
-    ).toHaveLength(2);
+    ).toHaveLength(3);
   });
 
   it("says the lamp's facts as Ahsan states them, in two sentences, and leaves the rest to the timeline", () => {
@@ -90,11 +90,12 @@ describe("WakeLight", () => {
     expect(figures.map((f) => f.firstElementChild?.tagName)).toEqual([
       "VIDEO",
       "VIDEO",
+      "IMG",
     ]);
     expect(
       figures.map((f) => f.querySelector("figcaption")?.textContent),
-    ).toEqual(["The travel lamp", "How it moves"]);
-    expect(container.querySelectorAll("figcaption")).toHaveLength(2);
+    ).toEqual(["The travel lamp", "How it moves", "The fold-out version"]);
+    expect(container.querySelectorAll("figcaption")).toHaveLength(3);
     container
       .querySelectorAll("video")
       .forEach((v) =>

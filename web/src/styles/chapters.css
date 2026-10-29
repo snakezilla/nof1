@@ -65,13 +65,14 @@
    height at every width. Each has one mono label. */
 .feature__media {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-3);
-  width: min(100%, 20rem);
+  width: min(100%, 30rem);
   margin-top: var(--space-5);
 }
 
-.feature__media video {
+.feature__media video,
+.feature__media img {
   display: block;
   width: 100%;
   height: auto;

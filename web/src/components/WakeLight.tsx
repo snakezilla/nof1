@@ -35,7 +35,7 @@ const loopWhileSeen = (v: HTMLVideoElement | null) => {
  * short label.
  */
 export function WakeLightMedia() {
-  const { clip, motion } = WAKELIGHT;
+  const { clip, motion, foldout } = WAKELIGHT;
   return (
     <div className="feature__media">
       <figure>
@@ -69,6 +69,17 @@ export function WakeLightMedia() {
           <source src={motion.mp4} type="video/mp4" />
         </video>
         <figcaption>{motion.caption}</figcaption>
+      </figure>
+      <figure>
+        <img
+          src={foldout.src}
+          width={foldout.width}
+          height={foldout.height}
+          alt={foldout.alt}
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>{foldout.caption}</figcaption>
       </figure>
     </div>
   );

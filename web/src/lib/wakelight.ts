@@ -24,4 +24,11 @@ export const WAKELIGHT = {
       "Animation: the lamp's top rises, leans and nods in small steps, with a pause between each move, as the cam in its base turns.",
     caption: "How it moves",
   },
+  foldout: {
+    src: "/media/wakelight-foldout.jpg",
+    width: 720,
+    height: 1280,
+    alt: "The fold-out version lit: three glowing panels on a desk, the side panels angled in.",
+    caption: "The fold-out version",
+  },
 } as const;
