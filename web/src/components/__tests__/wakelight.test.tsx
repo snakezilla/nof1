@@ -8,14 +8,17 @@ import { OtherProjects } from "../OtherProjects";
 import { WakeLight } from "../WakeLight";
 
 describe("WakeLight", () => {
-  it("sits in the aside after the list and before the way to byahsan.com", () => {
+  it("is the first item in the aside, right under its title", () => {
     render(<OtherProjects projects={publicData().projects} />);
     const aside = screen.getByRole("complementary");
     const block = within(aside).getByRole("group", {
       name: "A sunrise lamp for travel",
     });
-    expect(block.previousElementSibling).toHaveClass("elsewhere__list");
-    expect(block.nextElementSibling).toHaveClass("elsewhere__more");
+    const first = within(aside).getAllByRole("listitem")[0];
+    expect(block.parentElement).toBe(first);
+    expect(first.parentElement?.previousElementSibling).toHaveClass(
+      "elsewhere__title",
+    );
   });
 
   it("links the line to its byahsan.com page, with the accent on one phrase", () => {
@@ -33,7 +36,7 @@ describe("WakeLight", () => {
     );
   });
 
-  it("is the line, the two pictures in one row, then two one-sentence lines", () => {
+  it("is the line, the two pictures in one row, then three one-sentence lines", () => {
     const { container } = render(<WakeLight />);
     const block = container.firstElementChild as HTMLElement;
     expect([...block.children].map((c) => c.tagName)).toEqual([
@@ -41,17 +44,22 @@ describe("WakeLight", () => {
       "DIV",
       "P",
       "P",
+      "P",
     ]);
     const lines = [...block.querySelectorAll(":scope > p")].map(
       (p) => p.textContent,
     );
-    expect(lines).toEqual([WAKELIGHT.why, WAKELIGHT.what]);
+    expect(lines).toEqual([WAKELIGHT.why, WAKELIGHT.how, WAKELIGHT.cost]);
     lines.forEach((l) => expect(l?.match(/[.?]/g)).toHaveLength(1));
     const text = block.textContent ?? "";
     expect(breaksCopyRules(text)).toBe(false);
     // 10,000 lux is computed for the fold-out concept, never measured; the copy says so.
     expect(text).toContain("on paper a fold-out version reaches 10,000 lux");
     expect(text).not.toMatch(/300 lux|night light|bright enough/i);
+    // The app sets the alarm by hand, and the boards alone are over $20 (DESIGN.md, WakeLight).
+    expect(text).toContain("set it from my phone");
+    expect(text).toContain("about $24");
+    expect(text).not.toMatch(/automatic|under \$20|not a gadget/i);
   });
 
   it("labels each picture with one short line: the clip now, the render next", () => {

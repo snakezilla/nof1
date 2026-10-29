@@ -1,6 +1,7 @@
 /* Other things I'm building: an aside, not a section. Narrower and quieter than the sections
-   around it, hairlines above and below, one Fraunces line per item with one phrase in the accent,
-   as on byahsan.com. The lines are 27 px, so the accent passes the 3:1 large-text bar. */
+   around it, hairlines above and below. Three items are large Fraunces lines with one phrase in the
+   accent, as on byahsan.com; the lines are 27 px, so the accent passes the 3:1 large-text bar. The
+   rest are a quiet list of small muted links with no accent. */
 
 .elsewhere {
   max-width: 40rem;
@@ -18,7 +19,7 @@
 
 .elsewhere__list {
   display: grid;
-  gap: var(--space-1);
+  gap: var(--space-4);
   margin-top: var(--space-3);
   padding: 0;
   list-style: none;
@@ -50,24 +51,41 @@
   line-height: 1.5;
 }
 
-a.elsewhere__line:hover {
+a.elsewhere__line:hover,
+a.elsewhere__small:hover {
   text-decoration-color: var(--muted);
+}
+
+/* The quiet list: after a hairline, one small line each, still a full tap target. */
+.elsewhere__list--quiet {
+  gap: 0;
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  border-top: var(--hairline);
+}
+
+.elsewhere__small {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: var(--target);
+  color: var(--muted);
+  font-size: var(--text-m);
+  line-height: 1.4;
+  text-decoration-color: var(--rule);
 }
 
 .elsewhere__em {
   color: var(--accent);
 }
 
-/* WakeLight: the one item with pictures, after a hairline. The clip (now) and the render (next)
-   are both 9:16, so two equal columns share one height; on phones they stack. Each has one mono
-   label, the only text besides the line and the two sentences. */
+/* WakeLight: the first large item, the one with pictures. The clip (now) and the render (next)
+   are both 9:16, so two equal columns share one height. Each has one mono label, the only text
+   besides the line and the three sentences. */
 .feature {
   display: grid;
   justify-items: start;
   gap: var(--space-2);
-  margin-top: var(--space-5);
-  padding-top: var(--space-4);
-  border-top: var(--hairline);
 }
 
 /* Two narrow pictures side by side at every width, so the aside stays short on phones. */
@@ -110,7 +128,7 @@ a.elsewhere__line:hover {
 }
 
 .elsewhere__more {
-  margin-top: var(--space-5);
+  margin-top: var(--space-3);
   color: var(--muted);
   font-size: var(--text-s);
 }

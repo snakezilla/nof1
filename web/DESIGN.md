@@ -471,3 +471,18 @@ sentences, see the headline note below); proof 5 (QA run 27 clean in 13 frames, 
 both themes). Removed one thing: the clip's extra margin, and it went from 15rem to 13rem wide.
 
 Imperfect: on phones the two 9:16 pictures stack to about 800 px. QA run 30 is clean in 13 frames.
+
+## Aside order and size (2026-10-29)
+
+Three items are large, in this order: WakeLight (the first list item, with its pictures), the lab,
+then the patent with its sub-line. They keep the 27 px Fraunces line with the accent. Items marked
+`"lead": true` in projects.json follow WakeLight; the validator takes `lead` only as `true`. The
+other four are a quiet list after a hairline: 17 px Inter, muted, no accent, 44 px targets.
+WakeLight lost its own hairline. Removed one thing: the extra space before "More on byahsan.com".
+
+WakeLight now has three lines. "Set from my phone", not "syncs automatically": the iPhone app sends
+the time when you tap Connect, and you save the alarm by hand (travel-v1/software/PhoneApp.swift).
+"About $24": the four boards in share/H2D_REVIEWED_2026-09-28/WakeLight_Collapsible_R6_H2D/BOM.md at
+list price on 2026-10-29 (XIAO ESP32-C3 $4.90, Adafruit 5807 $5.95, Pololu 4945 $7.95, TPS2553
+carrier GBP 3.87), before LEDs, switches, fuse, antenna, print and metal. So the full build is over
+$20 and the page does not say "under $20". QA run 32 clean in 13 frames.

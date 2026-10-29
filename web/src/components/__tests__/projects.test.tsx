@@ -24,43 +24,49 @@ describe("Other things I'm building", () => {
     );
   });
 
-  it("shows the patent first with its sub-line and no link, then five byahsan.com links", () => {
+  it("sets WakeLight, the lab and the patent large, in that order, then a quiet list of four", () => {
     render(<OtherProjects projects={publicData().projects} />);
     const aside = screen.getByRole("complementary");
-    const items = within(aside).getAllByRole("listitem");
-    expect(items).toHaveLength(6);
-    expect(within(items[0]).queryByRole("link")).toBeNull();
-    expect(items[0].querySelector(".elsewhere__line")).toHaveTextContent(
+    const [large, quiet] = within(aside).getAllByRole("list");
+    const leads = within(large).getAllByRole("listitem");
+    expect(leads).toHaveLength(3);
+    expect(
+      leads.map((li) => li.querySelector(".elsewhere__line")?.textContent),
+    ).toEqual([
+      "A sunrise lamp for travel",
+      "A cancer diagnostics lab, running itself",
       "AI that scores breast cancer slides after chemo",
+    ]);
+    expect(
+      [...large.querySelectorAll(".elsewhere__em")].map((e) => e.textContent),
+    ).toEqual(["sunrise lamp", "cancer diagnostics", "breast cancer slides"]);
+    expect(within(leads[1]).getByRole("link")).toHaveAttribute(
+      "href",
+      "https://www.byahsan.com/projects/delphi",
     );
-    expect(items[0].querySelector(".elsewhere__em")).toHaveTextContent(
-      /^breast cancer slides$/,
-    );
-    expect(items[0].querySelector(".elsewhere__sub")).toHaveTextContent(
+    // The patent has no link, so it shows its sub-line in place of one.
+    expect(within(leads[2]).queryByRole("link")).toBeNull();
+    expect(leads[2].querySelector(".elsewhere__sub")).toHaveTextContent(
       "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center. Pathologists review the cases it is unsure of.",
     );
-    const links = within(aside).getAllByRole("link");
-    expect(links.map((a) => a.textContent)).toEqual([
-      "A cancer diagnostics lab, running itself",
+    expect(aside.querySelectorAll(".elsewhere__sub")).toHaveLength(1);
+
+    expect(quiet).toHaveClass("elsewhere__list--quiet");
+    const small = within(quiet).getAllByRole("link");
+    expect(small.map((a) => a.textContent)).toEqual([
       "Working on a cargo ship in the Japan Sea",
       "Helping build 198 units of senior living",
       "Managing my beehive with edge compute + infrared",
       "Site inspection through smart glasses",
-      "A sunrise lamp for travel",
-      "More on byahsan.com",
     ]);
-    expect(links[0]).toHaveAttribute(
-      "href",
-      "https://www.byahsan.com/projects/delphi",
-    );
-    expect(links.at(-1)).toHaveAttribute("href", "https://www.byahsan.com");
-    expect(aside.querySelectorAll(".elsewhere__em")[1]).toHaveTextContent(
-      /^cancer diagnostics$/,
-    );
-    // Only WakeLight, after the list, carries pictures.
-    expect(aside.querySelectorAll(".elsewhere__list img")).toHaveLength(0);
-    // Only the unlinked patent item carries a sub-line.
-    expect(aside.querySelectorAll(".elsewhere__sub")).toHaveLength(1);
+    small.forEach((a) => expect(a).toHaveClass("elsewhere__small"));
+    // The quiet list is small and plain: no accent, no Fraunces line, no pictures.
+    expect(quiet.querySelectorAll(".elsewhere__em, .elsewhere__line, img, video")).toHaveLength(0);
+
+    const more = within(aside).getAllByRole("link").at(-1);
+    expect(more).toHaveTextContent(/^More on byahsan.com$/);
+    expect(more).toHaveAttribute("href", "https://www.byahsan.com");
+    expect(quiet.nextElementSibling).toHaveClass("elsewhere__more");
   });
 
   it("never renders an item that still has a todo", () => {
@@ -70,7 +76,8 @@ describe("Other things I'm building", () => {
     expect(container.textContent).not.toMatch(
       /placeholder|todo|not confirmed/i,
     );
-    expect(container.querySelectorAll("li")).toHaveLength(6);
+    // WakeLight plus the six items in projects.json.
+    expect(container.querySelectorAll("li")).toHaveLength(7);
   });
 
   it("renders the page without projects.json, and drops a wrong one", () => {

@@ -14,7 +14,7 @@ const mute = (v: HTMLVideoElement | null) => {
 
 /**
  * The one project in the aside with pictures: its line, then the travel lamp's clip (never plays by
- * itself) and the fold-out render side by side at one height, each with a short label, then two lines.
+ * itself) and the fold-out render side by side at one height, each with a short label, then three lines.
  */
 export function WakeLight() {
   const { clip, foldout } = WAKELIGHT;
@@ -56,7 +56,8 @@ export function WakeLight() {
         </figure>
       </div>
       <p className="feature__text">{WAKELIGHT.why}</p>
-      <p className="feature__text">{WAKELIGHT.what}</p>
+      <p className="feature__text">{WAKELIGHT.how}</p>
+      <p className="feature__text">{WAKELIGHT.cost}</p>
     </div>
   );
 }

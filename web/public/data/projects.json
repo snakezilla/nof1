@@ -2,17 +2,19 @@
   "source": "Hand-curated from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live), 2026-10-28. Lines are his wording in sentence case; sub-lines are cut from each project's own description.",
   "items": [
     {
-      "id": "patent",
-      "line": "AI that scores breast cancer slides after chemo",
-      "emphasis": "breast cancer slides",
-      "sub": "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center. Pathologists review the cases it is unsure of."
-    },
-    {
       "id": "delphi",
       "line": "A cancer diagnostics lab, running itself",
       "emphasis": "cancer diagnostics",
       "sub": "I wrote the tools that take in requisitions and print specimen labels. They run on the lab's own machines, offline.",
-      "href": "https://www.byahsan.com/projects/delphi"
+      "href": "https://www.byahsan.com/projects/delphi",
+      "lead": true
+    },
+    {
+      "id": "patent",
+      "line": "AI that scores breast cancer slides after chemo",
+      "emphasis": "breast cancer slides",
+      "sub": "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center. Pathologists review the cases it is unsure of.",
+      "lead": true
     },
     {
       "id": "japan",

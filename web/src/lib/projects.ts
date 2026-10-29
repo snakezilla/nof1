@@ -9,6 +9,8 @@ export interface ProjectItem {
   readonly sub: string;
   /** Absent only on an item shown with its sub-line instead of a link. */
   readonly href?: string;
+  /** Set on the items shown large, after WakeLight; the rest follow as a quiet list. */
+  readonly lead?: true;
 }
 
 export interface Projects {
@@ -44,6 +46,7 @@ const isShown = (v: Rec): boolean =>
 const isItem = (v: unknown): v is ProjectItem =>
   isObj(v) &&
   isFilled(v.id) &&
+  (v.lead === undefined || v.lead === true) &&
   (v.todo === undefined
     ? isShown(v)
     : isFilled(v.todo) &&

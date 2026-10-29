@@ -26,28 +26,40 @@ describe("projects.json", () => {
     expect(isProjects(publicRaw().projects)).toBe(true);
   });
 
-  it("shows the filed patent first, with no link, and nothing still a todo", () => {
+  it("leads with the lab, then the filed patent with no link, and nothing still a todo", () => {
     const p = parseProjectsOrNull(publicRaw().projects)!;
     expect(p.items.some((i) => i.todo !== undefined)).toBe(false);
-    const [patent] = shownItems(p);
+    const patent = shownItems(p)[1];
     expect(patent).toEqual({
       id: "patent",
       line: "AI that scores breast cancer slides after chemo",
       emphasis: "breast cancer slides",
       sub: "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center. Pathologists review the cases it is unsure of.",
+      lead: true,
     });
     // No month, application number, inventor or assignee on the page.
     expect(patent.sub).not.toMatch(
       /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\d{2}\/\d|inventor|assign/i,
     );
     expect(shownItems(p).map((i) => i.id)).toEqual([
-      "patent",
       "delphi",
+      "patent",
       "japan",
       "villasola",
       "beecolony",
       "oversite",
     ]);
+    // Only the lab and the patent are set large with WakeLight; the rest are the quiet list.
+    expect(shownItems(p).filter((i) => i.lead).map((i) => i.id)).toEqual([
+      "delphi",
+      "patent",
+    ]);
+  });
+
+  it("takes lead only as true", () => {
+    expect(isProjects(file([{ ...item, lead: true }]))).toBe(true);
+    expect(isProjects(file([{ ...item, lead: false }]))).toBe(false);
+    expect(isProjects(file([{ ...item, lead: "yes" }]))).toBe(false);
   });
 
   it("links only to byahsan.com", () => {
