@@ -5,7 +5,7 @@ import {
   funnelSummary,
   type Funnel,
 } from "../../lib/funnel";
-import { MASK_ID, MASK_NOTE } from "../../lib/mask";
+import { MASK_NOTE } from "../../lib/mask";
 import type { Headline } from "../../lib/sources-text";
 import { ME_LABEL } from "../../lib/story";
 import { Chapter } from "./Chapter";
@@ -15,9 +15,7 @@ function MaskNote() {
   return (
     <div className="mask-note">
       <p className="mask-note__label">Masked</p>
-      <p className="mask-note__text">
-        {MASK_NOTE} <a href={`#${MASK_ID}`}>How the masking works</a>
-      </p>
+      <p className="mask-note__text">{MASK_NOTE}</p>
     </div>
   );
 }

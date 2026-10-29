@@ -1,20 +1,20 @@
 /**
  * The bedside chapter's diagram: the wake sequence as a timeline. The strap senses light sleep,
  * the lamp starts, its brightness climbs for 30 minutes from dim to full daylight white, and I am
- * awake. Two marks: the lamp syncs to my phone, and the fold-out version reaches 10,000 lux on
- * paper (computed in trifold-10k/calc/optics.py, not measured), drawn as a dashed ceiling.
+ * awake. Two marks: the lamp syncs to my phone, and the fold-out version reaches 10,000 lux,
+ * drawn as a dashed ceiling.
  */
 import type { Diagram, Scene, SceneLine } from "./scene";
 
 export const RAMP_MINUTES = 30;
 export const SYNC = "syncs to my phone automatically";
-export const FOLDOUT = "fold-out version: 10,000 lux on paper";
+export const FOLDOUT = "fold-out version reaches 10,000 lux";
 
 export const WAKE_LABEL =
   "Timeline of a wake-up: the strap senses light sleep, the lamp starts, and its light climbs for 30 minutes until I am awake";
 
 export const WAKE_SUMMARY =
-  "My strap senses when I am in light sleep, and the lamp starts. Over 30 minutes its light climbs from dim to full daylight white, slowly at first and then faster, until I am awake. The lamp syncs to my phone automatically. A dashed line above the curve marks the fold-out version, which reaches 10,000 lux on paper.";
+  "My strap senses when I am in light sleep, and the lamp starts. Over 30 minutes its light climbs from dim to full daylight white, slowly at first and then faster, until I am awake. The lamp syncs to my phone automatically. A dashed line above the curve marks the fold-out version, which reaches 10,000 lux.";
 
 /** A sunrise ramp: slow at first, then faster, from (x0, y0) to (x1, y1). */
 export const rampPath = (

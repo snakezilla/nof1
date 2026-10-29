@@ -84,6 +84,18 @@ export const stepFor = (
   id: StepId,
 ): ProjectStep | undefined => projects?.steps.find((s) => s.id === id);
 
+export interface TextRun {
+  readonly text: string;
+  readonly title: boolean;
+}
+
+/** "the book *Protocols*." -> plain, a title, plain. A title is set in italics, as a book title. */
+export const splitTitles = (text: string): readonly TextRun[] =>
+  text
+    .split(/\*([^*]+)\*/)
+    .map((t, i) => ({ text: t, title: i % 2 === 1 }))
+    .filter((r) => r.text !== "");
+
 /** "A cancer diagnostics lab" -> ["A ", "cancer diagnostics", " lab"]. */
 export const splitLine = (
   step: Pick<ProjectStep, "line" | "emphasis">,

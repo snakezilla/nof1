@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   MASK_NOTE,
   isMaskInfo,
-  maskParagraphs,
   parseMaskOrNull,
 } from "../mask";
 import {
@@ -91,14 +90,7 @@ describe("mask", () => {
     expect(parseMaskOrNull(undefined)).toBeNull();
   });
 
-  it("says how the masking works in two sentences, the method from the file", () => {
-    expect(maskParagraphs(info)).toEqual([
-      "Shifted by a seed.",
-      "The seed stays on my machine, so the shifts cannot be undone.",
-    ]);
-  });
-
-  it("says the mask in one sentence in the hero", () => {
+  it("says the mask in one sentence", () => {
     expect(MASK_NOTE).toBe(
       "Health numbers here are masked with a private seed; apps, counts and dates are real.",
     );

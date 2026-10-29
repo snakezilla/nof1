@@ -9,12 +9,11 @@ const ready = () => ({ status: "ready" as const, data: publicData() });
 
 afterEach(() => vi.unstubAllGlobals());
 
-/** One story: a chapter title per stop, then the masking note, and no other h2s. */
+/** One story: a chapter title per stop, and no other h2s. */
 const KEPT_H2S = [
   "A cancer diagnostics lab, running itself",
   "Twelve apps measured me. None of them talked to each other.",
   "A sunrise lamp for travel",
-  "How the masking works",
 ];
 
 describe("App", () => {
@@ -46,6 +45,8 @@ describe("App", () => {
       "What a joined year looks like",
       "Redrawn from my sketch",
       "Waking up in light sleep",
+      "How the masking works",
+      "Built with Claude Code",
     ].forEach((cut) => expect(text).not.toContain(cut));
     expect(
       container.querySelectorAll("input, button[type=submit]"),
@@ -75,6 +76,31 @@ describe("App", () => {
         2,
       );
     });
+  });
+
+  it("keeps the footer to two links: the source code and byahsan.com", () => {
+    const { container } = render(<App state={ready()} />);
+    const footer = container.querySelector("footer")!;
+    expect(
+      [...footer.querySelectorAll("a")].map((a) => [
+        a.textContent,
+        a.getAttribute("href"),
+      ]),
+    ).toEqual([
+      ["Source code", "https://github.com/snakezilla/nof1"],
+      ["More on byahsan.com", "https://www.byahsan.com"],
+    ]);
+    expect(footer.textContent).toBe("Source code More on byahsan.com");
+  });
+
+  it("keeps the masked note in On me, with no link to a section that is gone", () => {
+    const { container } = render(<App state={ready()} />);
+    const note = container.querySelector("#chapter-me .mask-note")!;
+    expect(note).toHaveTextContent(
+      "Health numbers here are masked with a private seed; apps, counts and dates are real.",
+    );
+    expect(note.querySelector("a")).toBeNull();
+    expect(container.querySelector('a[href="#how-the-masking-works"]')).toBeNull();
   });
 
   it("keeps every paragraph to two sentences at most", () => {

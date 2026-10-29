@@ -1,4 +1,4 @@
-/* The one-line mask note in On me, and the closing section on how the masking works. */
+/* The one-line mask note in On me. */
 
 .mask-note {
   display: flex;
@@ -25,25 +25,10 @@
   line-height: 1.55;
 }
 
-.mask-note__text a {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--target);
-  margin-block: calc(-1 * var(--space-3));
-  white-space: nowrap;
-}
-
 @media (min-width: 48rem) {
   .mask-note {
     flex-direction: row;
     align-items: baseline;
     gap: var(--space-4);
   }
-}
-
-/* How the masking works */
-
-.mask__para {
-  max-width: var(--measure);
-  margin-top: var(--space-3);
 }

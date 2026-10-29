@@ -47,7 +47,7 @@ const main = async () => {
   const figures = await readOptional("figures", "figures");
   const rawStream = await readOptional("raw-stream", "the raw signal");
   const mask = await readOptional("mask", "the masking note");
-  const projects = await readOptional("projects", "the lab, bedside and next chapters");
+  const projects = await readOptional("projects", "the lab and bedside chapters");
   const raw = {
     ...(await readData()),
     ...(figures === undefined ? {} : { figures }),

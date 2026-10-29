@@ -1,5 +1,5 @@
 import { LAB_DIAGRAM, LAB_LABEL, LAB_SUMMARY } from "../../lib/lab-figure";
-import { splitLine, type ProjectStep } from "../../lib/projects";
+import { splitLine, splitTitles, type ProjectStep } from "../../lib/projects";
 import {
   WAKE_DIAGRAM,
   WAKE_LABEL,
@@ -45,7 +45,9 @@ export function StepChapter({ step }: { step?: ProjectStep }) {
       <div className="chapter__body">
         {step.text.map((t) => (
           <p className="chapter__text" key={t}>
-            {t}
+            {splitTitles(t).map((r, i) =>
+              r.title ? <cite key={i}>{r.text}</cite> : r.text,
+            )}
           </p>
         ))}
         {step.media === "wakelight" && <WakeLightMedia />}

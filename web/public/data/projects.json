@@ -1,5 +1,5 @@
 {
-  "source": "Hand-written with Ahsan, 2026-10-29, from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live). The chapters around the n-of-1 chapter, in page order: the lab, the bedside. The patent sentence is his wording, word for word; the WakeLight facts, including waking in light sleep, are as he states them. The lab diagram's first lane is redrawn from byahsan-live/public/project-media/delphi-sketch.svg.",
+  "source": "Hand-written with Ahsan, 2026-10-29, from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live). The chapters around the n-of-1 chapter, in page order: the lab, the bedside. The patent sentence is his wording, word for word; the WakeLight facts, including waking in light sleep, are as he states them. *Protocols* is Huberman's Protocols: An Operating Manual for the Human Body, title confirmed on hubermanlab.com/protocols-book (2026-10-29); no lux figure is taken from it. The lab diagram's first lane is redrawn from byahsan-live/public/project-media/delphi-sketch.svg.",
   "steps": [
     {
       "id": "lab",
@@ -9,7 +9,7 @@
       "href": "https://www.byahsan.com/projects/delphi",
       "media": "lab",
       "text": [
-        "I wrote the lab's tools, and I'm building an AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center."
+        "I wrote the lab's tools, and I built an AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center."
       ]
     },
     {
@@ -20,7 +20,7 @@
       "href": "https://www.byahsan.com/projects/wakelight",
       "media": "wakelight",
       "text": [
-        "My Philips wake-up light gave a few hundred lux, so I built a travel lamp that costs under $20 to make. I'm adding organic, cartoon-like motion so it feels like part of the room."
+        "My Philips wake-up light gave a few hundred lux, so I built a travel lamp that costs under $20 to make and follows the morning-light protocol in Andrew Huberman's book *Protocols*. It moves with organic, cartoon-like motion so it feels like part of the room."
       ]
     }
   ],

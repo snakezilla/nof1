@@ -8,12 +8,11 @@ import { DataError } from "./components/DataError";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
-import { MaskSection } from "./components/sources/MaskSection";
 import { OnMe } from "./components/story/OnMe";
 import { Results } from "./components/story/Results";
 import { StepChapter } from "./components/story/StepChapter";
 
-/** One story in three chapters: the lab, me, the bedside. Then the masking note. */
+/** One story in three chapters: the lab, me, the bedside. */
 function Page({ data }: { data: Dataset }) {
   const { patterns, meta, figures, mask, projects } = data;
   const masked = mask !== null;
@@ -30,9 +29,8 @@ function Page({ data }: { data: Dataset }) {
           <Results patterns={patterns} claims={figures?.claims} />
         </OnMe>
         <StepChapter step={stepFor(projects, "bedside")} />
-        <MaskSection mask={mask} />
       </main>
-      <Footer repo={meta.repo} masked={masked} more={projects?.more} />
+      <Footer repo={meta.repo} more={projects?.more} />
     </>
   );
 }

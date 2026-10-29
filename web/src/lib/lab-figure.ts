@@ -10,10 +10,10 @@ export const LAB_LABEL =
   "Diagram of the lab's tools and the slide-scoring AI, in two lanes";
 
 export const LAB_SUMMARY =
-  "Lane one, the lab tools I wrote: a requisition goes to intake, which logs the samples, then the calculator, which runs the numbers, then reports, which sends results out, and a loop back to intake shows that it runs itself. Lane two, the slide-scoring AI I am building: a breast cancer slide after chemo goes to the AI, which scores it. If the AI is confident, the score goes to the report. If it is unsure, the slide goes to a pathologist.";
+  "Lane one, the lab tools I wrote: a requisition goes to intake, which logs the samples, then the calculator, which runs the numbers, then reports, which sends results out, and a loop back to intake shows that it runs itself. Lane two, the slide-scoring AI I built: a breast cancer slide after chemo goes to the AI, which scores it. If the AI is confident, the score goes to the report. If it is unsure, the slide goes to a pathologist.";
 
 const LANE_1 = "Lab tools I wrote";
-const LANE_2 = "Slide-scoring AI I'm building";
+const LANE_2 = "Slide-scoring AI I built";
 const LOOP = "runs itself";
 
 const TOOLS = [

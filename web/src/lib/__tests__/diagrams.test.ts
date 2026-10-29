@@ -86,7 +86,7 @@ describe("the lab diagram", () => {
         "runs itself",
       ].forEach((w) => expect(words).toContain(w));
       [
-        "Slide-scoring AI I'm building",
+        "Slide-scoring AI I built",
         "AI scores it",
         "Report",
         "if confident",

@@ -4,6 +4,7 @@ import {
   isProjects,
   parseProjectsOrNull,
   splitLine,
+  splitTitles,
 } from "../projects";
 import { publicRaw } from "../../test/fixtures";
 
@@ -108,6 +109,17 @@ describe("projects.json", () => {
       "A ",
       "cancer diagnostics",
       " lab, running itself",
+    ]);
+  });
+
+  it("marks a *starred* book title for italics and leaves plain text alone", () => {
+    expect(splitTitles("in the book *Protocols*. It moves")).toEqual([
+      { text: "in the book ", title: false },
+      { text: "Protocols", title: true },
+      { text: ". It moves", title: false },
+    ]);
+    expect(splitTitles("no title here")).toEqual([
+      { text: "no title here", title: false },
     ]);
   });
 });

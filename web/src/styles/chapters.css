@@ -54,14 +54,14 @@
   margin-top: var(--space-4);
 }
 
-/* The words under a chapter's diagram. In the bedside chapter the clip and the render sit beside
+/* The words under a chapter's diagram. In the bedside chapter the two clips sit beside
    them from 64rem, so the chapter stays as long as the other two. */
 .chapter__body {
   display: flex;
   flex-direction: column;
 }
 
-/* WakeLight's pictures: the clip and the render are both 9:16, so two equal columns share one
+/* WakeLight's pictures: the travel clip and the motion loop are both 9:16, so two equal columns share one
    height at every width. Each has one mono label. */
 .feature__media {
   display: grid;
@@ -71,8 +71,7 @@
   margin-top: var(--space-5);
 }
 
-.feature__media video,
-.feature__media img {
+.feature__media video {
   display: block;
   width: 100%;
   height: auto;

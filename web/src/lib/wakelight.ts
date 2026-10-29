@@ -12,12 +12,16 @@ export const WAKELIGHT = {
       "Video: the printed shade of the travel lamp, pressed flat between its yellow base and cap, springs back up.",
     caption: "The travel lamp",
   },
-  /* Rebuilt from trifold-10k/concept/concept.scad and drawn lit; 10,000 lux is computed, not measured. */
-  foldout: {
-    src: "/media/wakelight-foldout.jpg",
-    width: 720,
-    height: 1280,
-    alt: "Render of the fold-out version lit: three glowing panels on a desk, the side panels angled in.",
-    caption: "The fold-out version, rendered",
+  /* Recorded from the cam viewer (WakeLight share/wakelight-cam-viewer), one frame per degree of
+     the base cam, 12 seconds a turn. */
+  motion: {
+    webm: "/media/wakelight-motion.webm",
+    mp4: "/media/wakelight-motion.mp4",
+    poster: "/media/wakelight-motion-poster.jpg",
+    width: 540,
+    height: 960,
+    label:
+      "Animation: the lamp's top rises, leans and nods in small steps, with a pause between each move, as the cam in its base turns.",
+    caption: "How it moves",
   },
 } as const;

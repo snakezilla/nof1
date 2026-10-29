@@ -50,7 +50,7 @@ describe("The story", () => {
     });
   });
 
-  it("runs lab, me, bedside, then the masking note, each chapter under one h2", () => {
+  it("runs lab, me, bedside, each chapter under one h2, and nothing after them", () => {
     const { container } = page();
     const list = chapters(container);
     expect(list.map((c) => c.querySelector("h2")?.textContent)).toEqual(
@@ -66,8 +66,8 @@ describe("The story", () => {
       "chapter-lab",
       "chapter-me",
       "chapter-bedside",
-      "how-the-masking-works",
     ]);
+    expect(container.querySelector("#how-the-masking-works")).toBeNull();
   });
 
   it("cuts On me to the mask note, the funnel and three result lines", () => {
@@ -161,7 +161,7 @@ describe("The story", () => {
     const texts = [...lab.querySelectorAll(".chapter__text")];
     expect(texts).toHaveLength(1);
     expect(texts[0].textContent).toBe(
-      "I wrote the lab's tools, and I'm building an AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center.",
+      "I wrote the lab's tools, and I built an AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center.",
     );
   });
 
@@ -208,6 +208,23 @@ describe("The story", () => {
       name: "More on byahsan.com",
     });
     expect(more).toHaveAttribute("href", "https://www.byahsan.com");
+  });
+
+  it("says everything as built: no building, adding, on paper, will, next step or plan", () => {
+    const { container } = page();
+    const said = [
+      container.textContent ?? "",
+      ...[...container.querySelectorAll("[aria-label], [alt]")].map(
+        (el) => `${el.getAttribute("aria-label") ?? ""} ${el.getAttribute("alt") ?? ""}`,
+      ),
+    ].join(" ");
+    expect(said).not.toMatch(
+      /\b(building|adding|on paper|will|plan|plans|planned|rendered|render)\b|I'm|next (step|version|chapter)/i,
+    );
+    expect(said).toContain("I built an AI that scores breast cancer slides");
+    expect(said).toContain("It moves with organic, cartoon-like motion");
+    expect(said).toContain("Slide-scoring AI I built");
+    expect(said).toContain("fold-out version reaches 10,000 lux");
   });
 
   it("keeps On me when projects.json is missing, and drops the other chapters and their links", () => {

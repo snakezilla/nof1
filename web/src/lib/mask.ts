@@ -25,20 +25,9 @@ export const isMaskInfo = (v: unknown): v is MaskInfo =>
 export const parseMaskOrNull = (v: unknown): MaskInfo | null =>
   isMaskInfo(v) ? v : null;
 
-export const MASK_ID = "how-the-masking-works";
-
 /** Said once, at the head of the part drawn from masked rows. */
 export const MASKED_LABEL = "Masked data.";
 
-/** The hero block, word for word. */
+/** The one-line note at the head of On me, word for word. */
 export const MASK_NOTE =
   "Health numbers here are masked with a private seed; apps, counts and dates are real.";
-
-const capitalise = (s: string): string =>
-  s.charAt(0).toUpperCase() + s.slice(1);
-
-/** The closing section, two sentences, the method from mask.json. */
-export const maskParagraphs = (m: MaskInfo): readonly string[] => [
-  `${capitalise(m.method.trim().replace(/[.]$/, ""))}.`,
-  "The seed stays on my machine, so the shifts cannot be undone.",
-];
