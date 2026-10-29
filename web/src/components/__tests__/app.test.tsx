@@ -68,12 +68,9 @@ describe("App", () => {
 
   it("keeps every paragraph to two sentences at most", () => {
     const { container } = render(<App state={ready()} />);
-    // Visible paragraphs only; the hidden figure summaries are read in place of a drawing. The
-    // patent sub-line is the lead's wording, word for word, and is the one exception.
+    // Visible paragraphs only; the hidden figure summaries are read in place of a drawing.
     container
-      .querySelectorAll(
-        "main p:not(.visually-hidden):not(.elsewhere__sub), footer p",
-      )
+      .querySelectorAll("main p:not(.visually-hidden), footer p")
       .forEach((p) => {
         // A link that ends a paragraph ("How the data got here") is a way on, not a sentence.
         const tail = p.lastElementChild?.matches("a:last-child")

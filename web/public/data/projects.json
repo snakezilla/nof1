@@ -1,48 +1,37 @@
 {
-  "source": "Hand-curated from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live), 2026-10-28. Lines are his wording in sentence case; sub-lines are cut from each project's own description.",
-  "items": [
+  "source": "Hand-written with Ahsan, 2026-10-29, from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live). One arc, health and tech, in three steps. The patent sentence is his wording, word for word; the WakeLight facts are as he states them.",
+  "title": "Health and tech, from the lab to my bedside",
+  "steps": [
     {
-      "id": "delphi",
+      "id": "lab",
+      "label": "In the lab",
       "line": "A cancer diagnostics lab, running itself",
       "emphasis": "cancer diagnostics",
-      "sub": "I wrote the tools that take in requisitions and print specimen labels. They run on the lab's own machines, offline.",
       "href": "https://www.byahsan.com/projects/delphi",
-      "lead": true
+      "text": [
+        "I'm also building an AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center."
+      ]
     },
     {
-      "id": "patent",
-      "line": "AI that scores breast cancer slides after chemo",
-      "emphasis": "breast cancer slides",
-      "sub": "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center. Pathologists review the cases it is unsure of.",
-      "lead": true
+      "id": "me",
+      "label": "On me",
+      "line": "My own health, in one place",
+      "emphasis": "own health",
+      "text": [
+        "This page is that step. Above, my apps and the strap I hacked become one row per day."
+      ]
     },
     {
-      "id": "japan",
-      "line": "Working on a cargo ship in the Japan Sea",
-      "emphasis": "cargo ship",
-      "sub": "A season on a cargo ship, crossing the Japan Sea.",
-      "href": "https://www.byahsan.com/japan"
-    },
-    {
-      "id": "villasola",
-      "line": "Helping build 198 units of senior living",
-      "emphasis": "senior living",
-      "sub": "A community in Orillia. I'm supporting the build-out and the software to run the place.",
-      "href": "https://www.byahsan.com/projects/villasola"
-    },
-    {
-      "id": "beecolony",
-      "line": "Managing my beehive with edge compute + infrared",
-      "emphasis": "edge compute + infrared",
-      "sub": "A Pi Zero 2 with a NoIR camera above the hive entrance counts bees in and out.",
-      "href": "https://www.byahsan.com/projects/beecolony"
-    },
-    {
-      "id": "oversite",
-      "line": "Site inspection through smart glasses",
-      "emphasis": "smart glasses",
-      "sub": "An inspector walks a site wearing smart glasses. The system watches, listens and writes the report.",
-      "href": "https://www.byahsan.com/projects/oversite"
+      "id": "bedside",
+      "label": "At the bedside",
+      "line": "A sunrise lamp for travel",
+      "emphasis": "sunrise lamp",
+      "href": "https://www.byahsan.com/projects/wakelight",
+      "media": "wakelight",
+      "text": [
+        "It syncs to my phone automatically and costs under $20 to make. I'm adding organic, cartoon-like motion so it feels like part of the room.",
+        "My Philips wake-up light gave a few hundred lux, and on paper the fold-out version reaches 10,000 lux at about 30 W. Next, the lamp could wake me in light sleep using the strap signal this page pulls out."
+      ]
     }
   ],
   "more": {

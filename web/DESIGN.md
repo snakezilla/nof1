@@ -486,3 +486,26 @@ the time when you tap Connect, and you save the alarm by hand (travel-v1/softwar
 list price on 2026-10-29 (XIAO ESP32-C3 $4.90, Adafruit 5807 $5.95, Pololu 4945 $7.95, TPS2553
 carrier GBP 3.87), before LEDs, switches, fuse, antenna, print and metal. So the full build is over
 $20 and the page does not say "under $20". QA run 32 clean in 13 frames.
+
+## Aside as one arc: health and tech (2026-10-29)
+
+The aside is now one theme in three steps, as an `<ol>` with a hairline rail on the left: "In the
+lab" (the lab, linked, with the patent in the same step), "On me" (this page, no link, no numbers,
+since the hero has them), "At the bedside" (WakeLight with its clip and render). Each step is a mono
+label, one 27 px Fraunces line with one phrase in the accent, and one or two paragraphs of at most
+two sentences. The heading names the arc in `--text`. The quiet list (cargo ship, senior living,
+beehive, smart glasses) and the `todo` and `lead` fields are gone. projects.json now has `title`,
+`steps` (`label`, `line`, `emphasis`, optional `href`, `text` of one or two strings, optional
+`media: "wakelight"` on one step at most) and `more`. All the words live in projects.json, and
+`src/lib/wakelight.ts` keeps only the pictures.
+
+Changed on purpose: the WakeLight copy now says "syncs to my phone automatically" and "costs under
+$20 to make", because Ahsan stated these. The notes above (the app sets the alarm by hand, the
+boards are about $24) are older than his statement. Waking in light sleep from the strap signal is
+written as next, not done.
+
+Rubric: one idea 5 (one arc, lab to bedside); memorable thing 4 (the lit fold-out render); type 5;
+space 4; colour 5 (no new tokens); layout 5 (the rail encodes the path); motion 5; states 4; copy 4
+(the last paragraph is four lines on phones); proof 5 (QA run 35 clean in 13 frames; the aside was
+checked at 390 and 1440 in both themes after the lazy image loaded). Removed one thing: "data" from
+"My own health data, in one place", so the line fits two short lines on phones.

@@ -1,20 +1,22 @@
-/** projects.json: the other things I'm building, hand-curated from byahsan.com. */
-export interface ProjectItem {
+/** projects.json: one arc of the other things I'm building, health and tech, in three steps. */
+export interface ProjectStep {
   readonly id: string;
-  /** Set while an item is not confirmed. An item with a todo never renders. */
-  readonly todo?: string;
+  /** The small mono label over the step ("In the lab"). */
+  readonly label: string;
   readonly line: string;
   /** One phrase inside `line`, set in the accent. */
   readonly emphasis: string;
-  readonly sub: string;
-  /** Absent only on an item shown with its sub-line instead of a link. */
+  /** Absent on a step with nothing to link to (this page is the "On me" step). */
   readonly href?: string;
-  /** Set on the items shown large, after WakeLight; the rest follow as a quiet list. */
-  readonly lead?: true;
+  /** One or two short paragraphs under the line. */
+  readonly text: readonly string[];
+  /** The one step with pictures: the WakeLight clip and render, from src/lib/wakelight.ts. */
+  readonly media?: "wakelight";
 }
 
 export interface Projects {
-  readonly items: readonly ProjectItem[];
+  readonly title: string;
+  readonly steps: readonly ProjectStep[];
   readonly more: { readonly text: string; readonly href: string };
 }
 
@@ -34,29 +36,31 @@ const isOurLink = (v: unknown): boolean =>
 export const breaksCopyRules = (s: string): boolean =>
   /[—!]/.test(s) || /\b(customers?|pilots?|managexr|luke)\b/i.test(s);
 
-const isShown = (v: Rec): boolean =>
-  isFilled(v.line) &&
-  isFilled(v.emphasis) &&
-  v.line.includes(v.emphasis) &&
-  isFilled(v.sub) &&
-  /* No link is allowed only because the sub-line is then shown in its place. */
-  (v.href === undefined || isOurLink(v.href)) &&
-  ![v.line, v.sub].some(breaksCopyRules);
+const isText = (v: unknown): v is readonly string[] =>
+  Array.isArray(v) &&
+  v.length >= 1 &&
+  v.length <= 2 &&
+  v.every((t) => isFilled(t) && !breaksCopyRules(t));
 
-const isItem = (v: unknown): v is ProjectItem =>
+const isStep = (v: unknown): v is ProjectStep =>
   isObj(v) &&
   isFilled(v.id) &&
-  (v.lead === undefined || v.lead === true) &&
-  (v.todo === undefined
-    ? isShown(v)
-    : isFilled(v.todo) &&
-      ["line", "emphasis", "sub", "href"].every((k) => isStr(v[k])));
+  [v.label, v.line, v.emphasis].every(isFilled) &&
+  (v.line as string).includes(v.emphasis as string) &&
+  ![v.label, v.line].some((s) => breaksCopyRules(s as string)) &&
+  (v.href === undefined || isOurLink(v.href)) &&
+  isText(v.text) &&
+  (v.media === undefined || v.media === "wakelight");
 
 export const isProjects = (v: unknown): v is Projects =>
   isObj(v) &&
-  Array.isArray(v.items) &&
-  v.items.every(isItem) &&
-  new Set(v.items.map((i: ProjectItem) => i.id)).size === v.items.length &&
+  isFilled(v.title) &&
+  !breaksCopyRules(v.title) &&
+  Array.isArray(v.steps) &&
+  v.steps.length > 0 &&
+  v.steps.every(isStep) &&
+  new Set(v.steps.map((s: ProjectStep) => s.id)).size === v.steps.length &&
+  v.steps.filter((s: ProjectStep) => s.media !== undefined).length <= 1 &&
   isObj(v.more) &&
   isFilled(v.more.text) &&
   !breaksCopyRules(v.more.text) &&
@@ -66,18 +70,14 @@ export const isProjects = (v: unknown): v is Projects =>
 export const parseProjectsOrNull = (v: unknown): Projects | null =>
   isProjects(v) ? v : null;
 
-/** Only confirmed items reach the page. */
-export const shownItems = (p: Projects): readonly ProjectItem[] =>
-  p.items.filter((i) => i.todo === undefined);
-
 /** "A cancer diagnostics lab" -> ["A ", "cancer diagnostics", " lab"]. */
 export const splitLine = (
-  item: Pick<ProjectItem, "line" | "emphasis">,
+  step: Pick<ProjectStep, "line" | "emphasis">,
 ): readonly [string, string, string] => {
-  const at = item.line.indexOf(item.emphasis);
+  const at = step.line.indexOf(step.emphasis);
   return [
-    item.line.slice(0, at),
-    item.emphasis,
-    item.line.slice(at + item.emphasis.length),
+    step.line.slice(0, at),
+    step.emphasis,
+    step.line.slice(at + step.emphasis.length),
   ];
 };

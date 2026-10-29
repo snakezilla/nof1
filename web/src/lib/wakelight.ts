@@ -1,16 +1,8 @@
 /**
- * WakeLight, the one project in the aside with pictures. The figures behind the three lines are
- * cited in DESIGN.md ("WakeLight"), not on the page. 10,000 lux is the fold-out concept's computed
- * figure (trifold-10k/calc/optics.py), so the copy says "on paper"; the travel lamp gets no figure.
- * "About $24" is the four boards in the R6 BOM at list price; the app sets the alarm by hand.
+ * The pictures for the WakeLight step of the aside; its words live in projects.json. 10,000 lux is
+ * the fold-out concept's computed figure (trifold-10k/calc/optics.py), so the label says "on paper".
  */
 export const WAKELIGHT = {
-  line: "A sunrise lamp for travel",
-  emphasis: "sunrise lamp",
-  href: "https://www.byahsan.com/projects/wakelight",
-  why: "My Philips wake-up light gave a few hundred lux, and morning light routines call for far more.",
-  how: "I set it from my phone, and I'm giving the light an organic, cartoon-like motion so it feels like part of the room.",
-  cost: "The boards inside cost about $24, and on paper a fold-out version reaches 10,000 lux at about 30 W.",
   clip: {
     src: "/media/wakelight-bellows.mp4",
     poster: "/media/wakelight-bellows-poster.jpg",

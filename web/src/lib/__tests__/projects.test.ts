@@ -3,127 +3,106 @@ import {
   breaksCopyRules,
   isProjects,
   parseProjectsOrNull,
-  shownItems,
   splitLine,
 } from "../projects";
 import { publicRaw } from "../../test/fixtures";
 
-const item = {
-  id: "bees",
-  line: "Managing my beehive with edge compute + infrared",
-  emphasis: "edge compute + infrared",
-  sub: "A Pi Zero 2 counts bees in and out.",
-  href: "https://www.byahsan.com/projects/beecolony",
+const step = {
+  id: "lab",
+  label: "In the lab",
+  line: "A cancer diagnostics lab, running itself",
+  emphasis: "cancer diagnostics",
+  href: "https://www.byahsan.com/projects/delphi",
+  text: ["One sentence."],
 };
 const more = {
-  text: "And more on byahsan.com",
+  text: "More on byahsan.com",
   href: "https://www.byahsan.com",
 };
-const file = (items: unknown[]) => ({ items, more });
+const file = (steps: unknown[]) => ({ title: "Health and tech", steps, more });
 
 describe("projects.json", () => {
   it("accepts the shipped file", () => {
     expect(isProjects(publicRaw().projects)).toBe(true);
+    expect(isProjects(file([step]))).toBe(true);
   });
 
-  it("leads with the lab, then the filed patent with no link, and nothing still a todo", () => {
+  it("is three steps, lab to bedside, with the patent in the lab step as filed", () => {
     const p = parseProjectsOrNull(publicRaw().projects)!;
-    expect(p.items.some((i) => i.todo !== undefined)).toBe(false);
-    const patent = shownItems(p)[1];
-    expect(patent).toEqual({
-      id: "patent",
-      line: "AI that scores breast cancer slides after chemo",
-      emphasis: "breast cancer slides",
-      sub: "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center. Pathologists review the cases it is unsure of.",
-      lead: true,
-    });
+    expect(p.steps.map((s) => s.id)).toEqual(["lab", "me", "bedside"]);
+    const patent = p.steps[0].text.join(" ");
+    expect(patent).toContain(
+      "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center.",
+    );
     // No month, application number, inventor or assignee on the page.
-    expect(patent.sub).not.toMatch(
+    expect(patent).not.toMatch(
       /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\d{2}\/\d|inventor|assign/i,
     );
-    expect(shownItems(p).map((i) => i.id)).toEqual([
-      "delphi",
-      "patent",
-      "japan",
-      "villasola",
-      "beecolony",
-      "oversite",
-    ]);
-    // Only the lab and the patent are set large with WakeLight; the rest are the quiet list.
-    expect(shownItems(p).filter((i) => i.lead).map((i) => i.id)).toEqual([
-      "delphi",
-      "patent",
+    expect(p.steps.filter((s) => s.media).map((s) => s.id)).toEqual([
+      "bedside",
     ]);
   });
 
-  it("takes lead only as true", () => {
-    expect(isProjects(file([{ ...item, lead: true }]))).toBe(true);
-    expect(isProjects(file([{ ...item, lead: false }]))).toBe(false);
-    expect(isProjects(file([{ ...item, lead: "yes" }]))).toBe(false);
-  });
-
-  it("links only to byahsan.com", () => {
-    expect(isProjects(file([{ ...item, href: "https://example.com/x" }]))).toBe(
+  it("links only to byahsan.com, and a step may have no link", () => {
+    const { href: _, ...unlinked } = step;
+    expect(isProjects(file([unlinked]))).toBe(true);
+    expect(isProjects(file([{ ...step, href: "https://example.com/x" }]))).toBe(
       false,
     );
     expect(
-      isProjects(file([{ ...item, href: "https://www.byahsan.com.evil.io" }])),
+      isProjects(file([{ ...step, href: "https://www.byahsan.com.evil.io" }])),
     ).toBe(false);
     expect(
-      isProjects({ items: [item], more: { ...more, href: "http://x.io" } }),
+      isProjects({ ...file([step]), more: { ...more, href: "http://x.io" } }),
     ).toBe(false);
   });
 
   it("needs the accent phrase to be inside the line", () => {
-    expect(isProjects(file([{ ...item, emphasis: "radar" }]))).toBe(false);
+    expect(isProjects(file([{ ...step, emphasis: "radar" }]))).toBe(false);
+  });
+
+  it("takes one or two paragraphs per step, never empty", () => {
+    expect(isProjects(file([{ ...step, text: ["A.", "B."] }]))).toBe(true);
+    expect(isProjects(file([{ ...step, text: [] }]))).toBe(false);
+    expect(isProjects(file([{ ...step, text: ["A.", "B.", "C."] }]))).toBe(
+      false,
+    );
+    expect(isProjects(file([{ ...step, text: ["  "] }]))).toBe(false);
+    expect(isProjects(file([{ ...step, text: "A." }]))).toBe(false);
+  });
+
+  it("takes media only as wakelight, on one step at most", () => {
+    const pictured = { ...step, media: "wakelight" };
+    expect(isProjects(file([pictured]))).toBe(true);
+    expect(isProjects(file([{ ...step, media: "video" }]))).toBe(false);
+    expect(isProjects(file([pictured, { ...pictured, id: "b" }]))).toBe(false);
   });
 
   it("refuses copy that breaks the page rules or the public-safety words", () => {
-    expect(isProjects(file([{ ...item, sub: "Bees — lots" }]))).toBe(false);
-    expect(isProjects(file([{ ...item, sub: "Bees!" }]))).toBe(false);
-    expect(isProjects(file([{ ...item, sub: "Two pilots so far." }]))).toBe(
+    expect(isProjects(file([{ ...step, text: ["Labs — lots"] }]))).toBe(false);
+    expect(isProjects(file([{ ...step, text: ["Labs!"] }]))).toBe(false);
+    expect(isProjects(file([{ ...step, text: ["Two pilots so far."] }]))).toBe(
       false,
     );
+    expect(isProjects(file([{ ...step, label: "Now!" }]))).toBe(false);
+    expect(isProjects({ ...file([step]), title: "Health — tech" })).toBe(false);
     expect(breaksCopyRules("Our customers love it")).toBe(true);
     expect(breaksCopyRules("A field test with a design partner.")).toBe(false);
   });
 
-  it("allows a todo item to be empty, but a shown item never", () => {
-    const todo = {
-      id: "p",
-      todo: "fill in",
-      line: "",
-      emphasis: "",
-      sub: "",
-      href: "",
-    };
-    expect(isProjects(file([todo, item]))).toBe(true);
-    const { todo: _, ...blank } = todo;
-    expect(isProjects(file([blank, item]))).toBe(false);
-  });
-
-  it("allows an item with no link only when it has a sub-line", () => {
-    const { href: _, ...unlinked } = item;
-    expect(isProjects(file([unlinked]))).toBe(true);
-    expect(isProjects(file([{ ...unlinked, sub: "" }]))).toBe(false);
-    expect(isProjects(file([{ ...unlinked, sub: "  " }]))).toBe(false);
-    expect(isProjects(file([{ ...item, href: "https://example.com" }]))).toBe(
-      false,
-    );
-    expect(isProjects(file([{ ...unlinked, sub: "Our pilots." }]))).toBe(false);
-  });
-
-  it("refuses duplicate ids and a wrong shape", () => {
-    expect(isProjects(file([item, item]))).toBe(false);
-    expect(parseProjectsOrNull({ items: "many" })).toBeNull();
+  it("refuses duplicate ids, no steps, no title and a wrong shape", () => {
+    expect(isProjects(file([step, step]))).toBe(false);
+    expect(isProjects(file([]))).toBe(false);
+    expect(isProjects({ steps: [step], more })).toBe(false);
+    expect(parseProjectsOrNull({ steps: "many" })).toBeNull();
     expect(parseProjectsOrNull(undefined)).toBeNull();
   });
 
   it("splits a line around its accent phrase", () => {
-    expect(splitLine(item)).toEqual([
-      "Managing my beehive with ",
-      "edge compute + infrared",
-      "",
+    expect(splitLine(step)).toEqual([
+      "A ",
+      "cancer diagnostics",
+      " lab, running itself",
     ]);
   });
 });

@@ -2,68 +2,57 @@ import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import App from "../../App";
 import { breaksCopyRules } from "../../lib/projects";
-import { WAKELIGHT } from "../../lib/wakelight";
 import { publicData } from "../../test/fixtures";
 import { OtherProjects } from "../OtherProjects";
-import { WakeLight } from "../WakeLight";
+import { WakeLightMedia } from "../WakeLight";
+
+const bedside = () => {
+  render(<OtherProjects projects={publicData().projects} />);
+  return screen.getByRole("listitem", { name: "A sunrise lamp for travel" });
+};
 
 describe("WakeLight", () => {
-  it("is the first item in the aside, right under its title", () => {
-    render(<OtherProjects projects={publicData().projects} />);
-    const aside = screen.getByRole("complementary");
-    const block = within(aside).getByRole("group", {
-      name: "A sunrise lamp for travel",
-    });
-    const first = within(aside).getAllByRole("listitem")[0];
-    expect(block.parentElement).toBe(first);
-    expect(first.parentElement?.previousElementSibling).toHaveClass(
-      "elsewhere__title",
-    );
-  });
-
-  it("links the line to its byahsan.com page, with the accent on one phrase", () => {
-    render(<WakeLight />);
-    const link = screen.getByRole("link", {
-      name: "A sunrise lamp for travel",
-    });
-    expect(link).toHaveAttribute(
-      "href",
-      "https://www.byahsan.com/projects/wakelight",
-    );
-    expect(link).toHaveClass("elsewhere__line");
-    expect(link.querySelector(".elsewhere__em")).toHaveTextContent(
+  it("is the last step: label, line, the two pictures, then two short paragraphs", () => {
+    const step = bedside();
+    expect(screen.getAllByRole("listitem").at(-1)).toBe(step);
+    expect([...step.children].map((c) => c.className)).toEqual([
+      "step__label",
+      "elsewhere__line",
+      "feature__media",
+      "step__text",
+      "step__text",
+    ]);
+    expect(step.querySelector(".elsewhere__em")).toHaveTextContent(
       /^sunrise lamp$/,
     );
+    // Only this step has pictures.
+    expect(
+      screen.getByRole("complementary").querySelectorAll("figure"),
+    ).toHaveLength(2);
   });
 
-  it("is the line, the two pictures in one row, then three one-sentence lines", () => {
-    const { container } = render(<WakeLight />);
-    const block = container.firstElementChild as HTMLElement;
-    expect([...block.children].map((c) => c.tagName)).toEqual([
-      "A",
-      "DIV",
-      "P",
-      "P",
-      "P",
-    ]);
-    const lines = [...block.querySelectorAll(":scope > p")].map(
-      (p) => p.textContent,
-    );
-    expect(lines).toEqual([WAKELIGHT.why, WAKELIGHT.how, WAKELIGHT.cost]);
-    lines.forEach((l) => expect(l?.match(/[.?]/g)).toHaveLength(1));
-    const text = block.textContent ?? "";
+  it("says the lamp's facts as Ahsan states them, in three sentences and one line of next", () => {
+    const step = bedside();
+    const text = [...step.querySelectorAll(".step__text")]
+      .map((p) => p.textContent)
+      .join(" ");
     expect(breaksCopyRules(text)).toBe(false);
+    expect(text).toContain("syncs to my phone automatically");
+    expect(text).toContain("under $20 to make");
+    expect(text).toContain("organic, cartoon-like motion");
+    expect(text).toContain("feels like part of the room");
+    expect(text).toContain("Philips wake-up light gave a few hundred lux");
     // 10,000 lux is computed for the fold-out concept, never measured; the copy says so.
-    expect(text).toContain("on paper a fold-out version reaches 10,000 lux");
-    expect(text).not.toMatch(/300 lux|night light|bright enough/i);
-    // The app sets the alarm by hand, and the boards alone are over $20 (DESIGN.md, WakeLight).
-    expect(text).toContain("set it from my phone");
-    expect(text).toContain("about $24");
-    expect(text).not.toMatch(/automatic|under \$20|not a gadget/i);
+    expect(text).toContain(
+      "on paper the fold-out version reaches 10,000 lux at about 30 W",
+    );
+    // Waking in light sleep is next, not done.
+    expect(text).toMatch(/Next, the lamp could wake me in light sleep/);
+    expect(text.match(/[.?](\s|$)/g)).toHaveLength(4);
   });
 
   it("labels each picture with one short line: the clip now, the render next", () => {
-    const { container } = render(<WakeLight />);
+    const { container } = render(<WakeLightMedia />);
     const figures = [...container.querySelectorAll(".feature__media > figure")];
     expect(figures.map((f) => f.firstElementChild?.tagName)).toEqual([
       "VIDEO",
@@ -76,7 +65,7 @@ describe("WakeLight", () => {
   });
 
   it("never autoplays the clip, and gives it its own frame as poster, a size and controls", () => {
-    const { container } = render(<WakeLight />);
+    const { container } = render(<WakeLightMedia />);
     const videos = container.querySelectorAll("video");
     expect(videos).toHaveLength(1);
     const v = videos[0];
@@ -97,7 +86,7 @@ describe("WakeLight", () => {
   });
 
   it("shows the fold-out render lazily, at the clip's size, with a description", () => {
-    render(<WakeLight />);
+    render(<WakeLightMedia />);
     const img = screen.getByRole("img", { name: /render of the fold-out/i });
     expect(img).toHaveAttribute("src", "/media/wakelight-foldout.jpg");
     expect(img).toHaveAttribute("width", "720");
@@ -113,5 +102,8 @@ describe("WakeLight", () => {
       />,
     );
     expect(screen.queryByText(/sunrise lamp/)).toBeNull();
+    expect(
+      within(document.body).queryByRole("img", { name: /fold-out/i }),
+    ).toBeNull();
   });
 });
