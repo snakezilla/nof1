@@ -100,7 +100,9 @@ describe("App", () => {
       "Health numbers here are masked with a private seed; apps, counts and dates are real.",
     );
     expect(note.querySelector("a")).toBeNull();
-    expect(container.querySelector('a[href="#how-the-masking-works"]')).toBeNull();
+    expect(
+      container.querySelector('a[href="#how-the-masking-works"]'),
+    ).toBeNull();
   });
 
   it("keeps every paragraph to two sentences at most", () => {

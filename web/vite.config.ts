@@ -2,6 +2,8 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
+  // Served at https://www.byahsan.com/healthtech/ through a rewrite, so every URL carries this base.
+  base: "/healthtech/",
   plugins: [react()],
   test: {
     environment: "jsdom",

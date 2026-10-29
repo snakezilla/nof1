@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  MASK_NOTE,
-  isMaskInfo,
-  parseMaskOrNull,
-} from "../mask";
+import { MASK_NOTE, isMaskInfo, parseMaskOrNull } from "../mask";
 import {
   appsThatMeasured,
   countWord,

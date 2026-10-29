@@ -1,4 +1,5 @@
 import type { Dataset } from "./types";
+import { asset } from "./asset";
 import { DATA_FILES, parseDataset } from "./dataset";
 
 type Fetcher = (url: string) => Promise<Response>;
@@ -22,7 +23,7 @@ const fetchOptional = (fetcher: Fetcher, url: string): Promise<unknown> =>
 
 export const loadDataset = async (
   fetcher: Fetcher,
-  base = "/data",
+  base = asset("data"),
 ): Promise<Dataset> => {
   const [figures, rawStream, mask, projects, ...required] = await Promise.all([
     fetchOptional(fetcher, `${base}/figures.json`),

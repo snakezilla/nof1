@@ -109,7 +109,10 @@ describe("WakeLight", () => {
     const v = container.querySelectorAll("video")[0];
     expect(v).not.toHaveAttribute("autoplay");
     expect(v.autoplay).toBe(false);
-    expect(v).toHaveAttribute("poster", "/media/wakelight-bellows-poster.jpg");
+    expect(v).toHaveAttribute(
+      "poster",
+      `${import.meta.env.BASE_URL}media/wakelight-bellows-poster.jpg`,
+    );
     expect(v).toHaveAttribute("preload", "none");
     expect(v).toHaveAttribute("controls");
     expect(v).toHaveAttribute("playsinline");
@@ -118,7 +121,10 @@ describe("WakeLight", () => {
     expect(v).toHaveAttribute("width", "720");
     expect(v).toHaveAttribute("height", "1280");
     const source = v.querySelector("source");
-    expect(source).toHaveAttribute("src", "/media/wakelight-bellows.mp4");
+    expect(source).toHaveAttribute(
+      "src",
+      `${import.meta.env.BASE_URL}media/wakelight-bellows.mp4`,
+    );
     expect(source).toHaveAttribute("type", "video/mp4");
   });
 
@@ -126,7 +132,10 @@ describe("WakeLight", () => {
     const { container } = render(<WakeLightMedia />);
     const v = container.querySelectorAll("video")[1];
     expect(v).not.toHaveAttribute("autoplay");
-    expect(v).toHaveAttribute("poster", "/media/wakelight-motion-poster.jpg");
+    expect(v).toHaveAttribute(
+      "poster",
+      `${import.meta.env.BASE_URL}media/wakelight-motion-poster.jpg`,
+    );
     expect(v).toHaveAttribute("preload", "none");
     expect(v).toHaveAttribute("playsinline");
     expect(v).toHaveAttribute("loop");
@@ -140,8 +149,8 @@ describe("WakeLight", () => {
         s.getAttribute("type"),
       ]),
     ).toEqual([
-      ["/media/wakelight-motion.webm", "video/webm"],
-      ["/media/wakelight-motion.mp4", "video/mp4"],
+      [`${import.meta.env.BASE_URL}media/wakelight-motion.webm`, "video/webm"],
+      [`${import.meta.env.BASE_URL}media/wakelight-motion.mp4`, "video/mp4"],
     ]);
   });
 
@@ -171,7 +180,9 @@ describe("WakeLight", () => {
         disconnect() {}
       },
     );
-    const play = vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, "play")
+      .mockResolvedValue();
     const pause = vi
       .spyOn(HTMLMediaElement.prototype, "pause")
       .mockImplementation(() => {});

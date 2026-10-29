@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
 import { Loader } from "./Loader";
+import { asset } from "./lib/asset";
 import { readEmbedded } from "./lib/dataset";
 import "./styles/fonts.css";
 import "./styles/tokens.css";
@@ -25,7 +26,7 @@ if (root && embedded) {
 } else if (root) {
   createRoot(root).render(
     <StrictMode>
-      <Loader base={`${import.meta.env.BASE_URL}data`} />
+      <Loader base={asset("data")} />
     </StrictMode>,
   );
 }

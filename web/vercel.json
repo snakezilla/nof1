@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "/healthtech/", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/healthtech", "destination": "/index.html" },
+    { "source": "/healthtech/(.*)", "destination": "/$1" }
+  ]
+}

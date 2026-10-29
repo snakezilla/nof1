@@ -61,12 +61,7 @@ describe("The story", () => {
       [...container.querySelectorAll("main > *")].map(
         (el) => el.id || el.className,
       ),
-    ).toEqual([
-      "hero",
-      "chapter-lab",
-      "chapter-me",
-      "chapter-bedside",
-    ]);
+    ).toEqual(["hero", "chapter-lab", "chapter-me", "chapter-bedside"]);
     expect(container.querySelector("#how-the-masking-works")).toBeNull();
   });
 
@@ -215,7 +210,8 @@ describe("The story", () => {
     const said = [
       container.textContent ?? "",
       ...[...container.querySelectorAll("[aria-label], [alt]")].map(
-        (el) => `${el.getAttribute("aria-label") ?? ""} ${el.getAttribute("alt") ?? ""}`,
+        (el) =>
+          `${el.getAttribute("aria-label") ?? ""} ${el.getAttribute("alt") ?? ""}`,
       ),
     ].join(" ");
     expect(said).not.toMatch(
