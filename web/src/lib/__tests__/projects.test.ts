@@ -27,9 +27,9 @@ describe("projects.json", () => {
     expect(isProjects(file([step]))).toBe(true);
   });
 
-  it("is three chapters, lab, bedside, next, with the patent in the lab as filed", () => {
+  it("is two chapters, lab and bedside, with the patent in the lab as filed", () => {
     const p = parseProjectsOrNull(publicRaw().projects)!;
-    expect(p.steps.map((s) => s.id)).toEqual(["lab", "bedside", "next"]);
+    expect(p.steps.map((s) => s.id)).toEqual(["lab", "bedside"]);
     const patent = p.steps[0].text.join(" ");
     expect(patent).toContain(
       "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center.",
@@ -38,11 +38,7 @@ describe("projects.json", () => {
     expect(patent).not.toMatch(
       /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\d{2}\/\d|inventor|assign/i,
     );
-    expect(p.steps.map((s) => s.media)).toEqual([
-      "lab-sketch",
-      "wakelight",
-      undefined,
-    ]);
+    expect(p.steps.map((s) => s.media)).toEqual(["lab", "wakelight"]);
   });
 
   it("links only to byahsan.com, and a step may have no link", () => {
@@ -73,11 +69,11 @@ describe("projects.json", () => {
     expect(isProjects(file([{ ...step, text: "A." }]))).toBe(false);
   });
 
-  it("takes media only as wakelight, on one step at most", () => {
+  it("takes media only as lab or wakelight, each on one step at most", () => {
     const pictured = { ...step, media: "wakelight" };
     expect(isProjects(file([pictured]))).toBe(true);
     expect(isProjects(file([{ ...step, media: "video" }]))).toBe(false);
-    expect(isProjects(file([pictured, { ...pictured, id: "next" }]))).toBe(
+    expect(isProjects(file([pictured, { ...pictured, id: "bedside" }]))).toBe(
       false,
     );
   });
@@ -99,6 +95,8 @@ describe("projects.json", () => {
   it("refuses duplicate ids, unknown ids, no steps and a wrong shape", () => {
     expect(isProjects(file([step, step]))).toBe(false);
     expect(isProjects(file([{ ...step, id: "me" }]))).toBe(false);
+    // The Next chapter is gone; its id is refused.
+    expect(isProjects(file([{ ...step, id: "next" }]))).toBe(false);
     expect(isProjects(file([]))).toBe(false);
     expect(isProjects({ steps: [step] })).toBe(false);
     expect(parseProjectsOrNull({ steps: "many" })).toBeNull();

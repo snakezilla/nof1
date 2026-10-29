@@ -167,3 +167,7 @@ html.js .no-js-only {
   font-family: var(--font-mono);
   font-size: var(--text-s);
 }
+
+.footer__note a + a {
+  margin-left: var(--space-4);
+}

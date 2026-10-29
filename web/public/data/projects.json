@@ -1,5 +1,5 @@
 {
-  "source": "Hand-written with Ahsan, 2026-10-29, from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live). The chapters around the n-of-1 chapter, in page order: the lab, the bedside, next. The tools sentence follows the delphi description on byahsan.com; the patent sentence is his wording, word for word; the WakeLight facts are as he states them. The lab sketch is redrawn from byahsan-live/public/project-media/delphi-sketch.svg.",
+  "source": "Hand-written with Ahsan, 2026-10-29, from the projects list on https://www.byahsan.com (src/pages/index.astro and src/data/projects/*.json in byahsan-live). The chapters around the n-of-1 chapter, in page order: the lab, the bedside. The patent sentence is his wording, word for word; the WakeLight facts, including waking in light sleep, are as he states them. The lab diagram's first lane is redrawn from byahsan-live/public/project-media/delphi-sketch.svg.",
   "steps": [
     {
       "id": "lab",
@@ -7,10 +7,9 @@
       "line": "A cancer diagnostics lab, running itself",
       "emphasis": "cancer diagnostics",
       "href": "https://www.byahsan.com/projects/delphi",
-      "media": "lab-sketch",
+      "media": "lab",
       "text": [
-        "I wrote the tools that take in requisitions, run results into the lab's system and print specimen labels, on the lab's own machines.",
-        "I'm also building an AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center."
+        "I wrote the lab's tools, and I'm building an AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center."
       ]
     },
     {
@@ -21,17 +20,7 @@
       "href": "https://www.byahsan.com/projects/wakelight",
       "media": "wakelight",
       "text": [
-        "It syncs to my phone automatically and costs under $20 to make. I'm adding organic, cartoon-like motion so it feels like part of the room.",
-        "My Philips wake-up light gave a few hundred lux, and on paper the fold-out version reaches 10,000 lux at about 30 W."
-      ]
-    },
-    {
-      "id": "next",
-      "label": "Next",
-      "line": "Waking up in light sleep",
-      "emphasis": "light sleep",
-      "text": [
-        "I plan to have the lamp wake me in light sleep, using the signal from the strap. I also plan to join the raw strap signal, second by second, with the daily rows."
+        "My Philips wake-up light gave a few hundred lux, so I built a travel lamp that costs under $20 to make. I'm adding organic, cartoon-like motion so it feels like part of the room."
       ]
     }
   ],

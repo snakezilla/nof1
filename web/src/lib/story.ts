@@ -18,7 +18,7 @@ export type ChapterKey = StepId | "me";
 /** The n-of-1 chapter: always on the page, so its label lives here, not in projects.json. */
 export const ME_LABEL = "On me";
 
-const ORDER: readonly ChapterKey[] = ["lab", "me", "bedside", "next"];
+const ORDER: readonly ChapterKey[] = ["lab", "me", "bedside"];
 
 export const chapterId = (key: ChapterKey): string => `chapter-${key}`;
 

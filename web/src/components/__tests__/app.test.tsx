@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../../App";
 import { Loader } from "../../Loader";
@@ -14,7 +14,6 @@ const KEPT_H2S = [
   "A cancer diagnostics lab, running itself",
   "Twelve apps measured me. None of them talked to each other.",
   "A sunrise lamp for travel",
-  "Waking up in light sleep",
   "How the masking works",
 ];
 
@@ -41,29 +40,41 @@ describe("App", () => {
       "Why through Apple Health",
       "Everything else in my Health store",
       "Left out, and why",
+      "Where my data lived",
+      "How I got it out",
+      "Joining it",
+      "What a joined year looks like",
+      "Redrawn from my sketch",
+      "Waking up in light sleep",
     ].forEach((cut) => expect(text).not.toContain(cut));
     expect(
       container.querySelectorAll("input, button[type=submit]"),
     ).toHaveLength(0);
   });
 
-  it("titles the first finding with its number, from the masked data", () => {
-    render(<App state={ready()} />);
-    expect(screen.getAllByRole("heading", { level: 4 })[0]).toHaveTextContent(
-      "The raw signal",
+  it("titles the first result with its number, from the masked data, and has no h3 or h4", () => {
+    const { container } = render(<App state={ready()} />);
+    expect(container.querySelector(".results__claim")).toHaveTextContent(
+      "Weekends cost me 24 minutes of sleep",
     );
-    const part = screen.getByRole("region", {
-      name: "What a joined year looks like",
+    expect(container.querySelectorAll("h3, h4")).toHaveLength(0);
+  });
+
+  it("gives each chapter one diagram, each an image with a label and a hidden summary", () => {
+    const { container } = render(<App state={ready()} />);
+    const chapters = [...container.querySelectorAll("main > .chapter")];
+    chapters.forEach((c) => {
+      const figs = c.querySelectorAll("figure.diagram");
+      expect(figs, c.id).toHaveLength(1);
+      const img = figs[0].querySelector('[role="img"]');
+      expect(img?.getAttribute("aria-label")?.length).toBeGreaterThan(20);
+      expect(
+        figs[0].querySelector(".visually-hidden")?.textContent?.length,
+      ).toBeGreaterThan(60);
+      expect(figs[0].querySelectorAll("svg[aria-hidden='true']")).toHaveLength(
+        2,
+      );
     });
-    expect(
-      within(part)
-        .getAllByRole("heading", { level: 4 })
-        .map((h) => h.textContent),
-    ).toEqual([
-      "Weekends cost me 24 minutes of sleep.",
-      "I do not catch up the next night",
-      "Training days do not cost sleep",
-    ]);
   });
 
   it("keeps every paragraph to two sentences at most", () => {
@@ -130,7 +141,7 @@ describe("Loader (dev path)", () => {
     render(<Loader base="/data" />);
     expect(screen.getByRole("status")).toHaveTextContent("Loading");
     expect(
-      await screen.findByRole("heading", { name: "How I got it out" }),
+      await screen.findByRole("heading", { name: /measured me/ }),
     ).toBeInTheDocument();
   });
 

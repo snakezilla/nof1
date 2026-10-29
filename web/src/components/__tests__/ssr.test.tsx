@@ -21,11 +21,11 @@ describe("prerender", () => {
     expect(html).toContain(
       '<span class="chapter__em">Twelve</span> apps measured me.',
     );
-    expect(html).toContain("Weekends cost me 24 minutes of sleep.");
-    expect(html).toContain('class="finding__line"');
+    expect(html).toContain("Weekends cost me 24 minutes of sleep<");
+    expect(html).toContain('class="results"');
     expect(html).not.toContain("Show all 60 nights");
     expect(html.replace(/<[^>]+>/g, " ")).not.toMatch(/\bnone\b/);
-    expect(html).toContain("Masked data.");
+    expect(html).toContain('<p class="mask-note__label">Masked</p>');
   });
 
   it("refuses to render when the data shape is wrong, so the build fails", () => {
@@ -85,13 +85,13 @@ describe("prerender", () => {
     );
   });
 
-  it("puts the h1 and the four chapter labels on the social card", () => {
+  it("puts the h1 and the three chapter labels on the social card", () => {
     const og = renderOg(publicRaw());
     expect(og).toContain(
       "<h1><span>Health and tech</span>, from the lab to my bedside.</h1>",
     );
     expect(og).toContain(
-      "<span>In the lab</span><span>On me</span><span>At the bedside</span><span>Next</span><span>health values masked</span>",
+      "<span>In the lab</span><span>On me</span><span>At the bedside</span><span>health values masked</span>",
     );
   });
 });

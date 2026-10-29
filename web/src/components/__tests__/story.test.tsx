@@ -9,12 +9,11 @@ const page = () =>
   render(<App state={{ status: "ready", data: publicData() }} />);
 
 const HERO = "Health and tech, from the lab to my bedside.";
-const LABELS = ["In the lab", "On me", "At the bedside", "Next"];
+const LABELS = ["In the lab", "On me", "At the bedside"];
 const CHAPTER_TITLES = [
   "A cancer diagnostics lab, running itself",
   "Twelve apps measured me. None of them talked to each other.",
   "A sunrise lamp for travel",
-  "Waking up in light sleep",
 ];
 
 const chapters = (container: HTMLElement) => [
@@ -37,7 +36,7 @@ describe("The story", () => {
     expect(hero.textContent).not.toMatch(/\d/);
   });
 
-  it("indexes the four chapters under the hero, each label linking to its chapter", () => {
+  it("indexes the three chapters under the hero, each label linking to its chapter", () => {
     const { container } = page();
     const nav = screen.getByRole("navigation", { name: "Chapters" });
     const links = within(nav).getAllByRole("link");
@@ -51,7 +50,7 @@ describe("The story", () => {
     });
   });
 
-  it("runs lab, me, bedside, next, then the masking note, each chapter under one h2", () => {
+  it("runs lab, me, bedside, then the masking note, each chapter under one h2", () => {
     const { container } = page();
     const list = chapters(container);
     expect(list.map((c) => c.querySelector("h2")?.textContent)).toEqual(
@@ -67,23 +66,78 @@ describe("The story", () => {
       "chapter-lab",
       "chapter-me",
       "chapter-bedside",
-      "chapter-next",
       "how-the-masking-works",
     ]);
   });
 
-  it("puts the n-of-1 sections inside On me as h3s, in order", () => {
-    page();
+  it("cuts On me to the mask note, the funnel and three result lines", () => {
+    const { container } = page();
     const me = screen.getByRole("region", { name: CHAPTER_TITLES[1] });
-    expect(
-      within(me)
-        .getAllByRole("heading", { level: 3 })
-        .map((h) => h.textContent),
-    ).toEqual([
+    expect([...me.children].map((c) => c.className)).toEqual([
+      "chapter__label",
+      "chapter__title",
+      "mask-note",
+      "fig diagram diagram--funnel",
+      "results",
+    ]);
+    expect(within(me).queryAllByRole("heading", { level: 3 })).toHaveLength(0);
+    [
       "Where my data lived",
       "How I got it out",
       "Joining it",
       "What a joined year looks like",
+      "The raw signal",
+      "WHOOP had my sleep",
+    ].forEach((cut) => expect(container.textContent).not.toContain(cut));
+    expect(
+      container.querySelector(
+        ".stats, .flow, .years, .pipe, .sources, .cal, .strip-row, .findings, .intro",
+      ),
+    ).toBeNull();
+  });
+
+  it("draws the funnel: the twelve apps, WHOOP hacked, Apple Health, my export app, one row per day", () => {
+    page();
+    const me = screen.getByRole("region", { name: CHAPTER_TITLES[1] });
+    const img = within(me).getByRole("img", {
+      name: /health apps feeding Apple Health/,
+    });
+    const words = img.textContent ?? "";
+    [
+      "WHOOP",
+      "Strava",
+      "Garmin Connect",
+      "Wim Hof Method",
+      "Apple Health",
+      "Export app",
+      "One row per day",
+      "267,399",
+      "363,564",
+      "365 days",
+    ].forEach((w) => expect(words).toContain(w));
+    expect(words).toMatch(/hacked: raw signal/);
+    expect(img.nextElementSibling).toHaveClass("visually-hidden");
+    expect(img.nextElementSibling?.textContent).toMatch(
+      /^12 apps wrote into Apple Health/,
+    );
+  });
+
+  it("says the three findings as short lines with their verdict words", () => {
+    page();
+    const list = screen.getByRole("list", {
+      name: "What the joined year showed",
+    });
+    expect(
+      within(list)
+        .getAllByRole("listitem")
+        .map((li) => [
+          li.querySelector(".results__claim")?.textContent,
+          li.querySelector(".verdict")?.textContent,
+        ]),
+    ).toEqual([
+      ["Weekends cost me 24 minutes of sleep", "at the edge"],
+      ["I do not catch up the next night", "holds"],
+      ["Training days do not cost sleep", "not shown"],
     ]);
   });
 
@@ -97,62 +151,63 @@ describe("The story", () => {
     ).toBeNull();
   });
 
-  it("says what the lab tools do and keeps the patent wording, linked to the lab page", () => {
+  it("puts two sentences under the lab diagram, the patent word for word, linked to the lab page", () => {
     page();
     const lab = screen.getByRole("region", { name: CHAPTER_TITLES[0] });
     expect(within(lab).getByRole("link")).toHaveAttribute(
       "href",
       "https://www.byahsan.com/projects/delphi",
     );
-    expect(lab).toHaveTextContent(
-      "I wrote the tools that take in requisitions, run results into the lab's system and print specimen labels",
-    );
-    expect(lab).toHaveTextContent(
-      "AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center.",
+    const texts = [...lab.querySelectorAll(".chapter__text")];
+    expect(texts).toHaveLength(1);
+    expect(texts[0].textContent).toBe(
+      "I wrote the lab's tools, and I'm building an AI that scores breast cancer slides after chemo. Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center.",
     );
   });
 
-  it("pictures the lab with the byahsan.com sketch, drawn in the page's tokens", () => {
+  it("leads the lab with one diagram in two lanes, drawn in the page's tokens", () => {
     page();
     const lab = screen.getByRole("region", { name: CHAPTER_TITLES[0] });
-    const figure = lab.querySelector("figure.sketch");
+    const figure = lab.querySelector("figure.diagram--lab");
     expect(figure?.previousElementSibling).toHaveClass("chapter__title");
-    expect(within(lab).getByRole("img")).toHaveAccessibleName(
-      /hand-drawn sketch of the lab's tools/,
-    );
+    const img = within(lab).getByRole("img", { name: /two lanes/ });
+    expect(img.nextElementSibling?.textContent).toMatch(/Lane one.*Lane two/);
     // A column for phones and a row for wider screens; CSS shows one.
     const svgs = [...lab.querySelectorAll("svg")];
     expect(svgs.map((s) => s.getAttribute("class"))).toEqual([
-      "sketch__svg is-column",
-      "sketch__svg is-row",
+      "scene is-column",
+      "scene is-row",
     ]);
     svgs.forEach((svg) => {
       expect(
-        [...svg.querySelectorAll(".sketch__name")].map((t) => t.textContent),
-      ).toEqual(["Intake", "Calculator", "Reports"]);
+        [...svg.querySelectorAll(".scene__name")].map((t) => t.textContent),
+      ).toEqual([
+        "Intake",
+        "Calculator",
+        "Reports",
+        "AI scores it",
+        "Report",
+        "Pathologist",
+      ]);
+      expect(svg.textContent).toContain("runs itself");
+      expect(svg.textContent).toContain("if confident");
+      expect(svg.textContent).toContain("if unsure");
       // Token colours only: nothing hard-coded in the drawing.
       expect(svg.outerHTML).not.toMatch(/#[0-9a-f]{3,6}\b|fill="|stroke="/i);
     });
-    expect(figure?.querySelector("figcaption")).toHaveTextContent(
-      "Redrawn from my sketch on byahsan.com",
-    );
-    expect(lab.querySelector("img")).toBeNull();
+    expect(lab.textContent).not.toContain("Redrawn from my sketch");
+    expect(lab.querySelector("img, figcaption")).toBeNull();
   });
 
-  it("writes Next as plans, says each plan once, and ends with the way to byahsan.com", () => {
+  it("has no Next chapter, says light sleep as done, and moves the way to byahsan.com into the footer", () => {
     const { container } = page();
-    const next = screen.getByRole("region", { name: CHAPTER_TITLES[3] });
-    const text = next.querySelector(".chapter__text")?.textContent ?? "";
-    expect(text).toMatch(/^I plan to have the lamp wake me in light sleep/);
-    expect(text).toContain(
-      "join the raw strap signal, second by second, with the daily rows",
-    );
-    const more = within(next).getAllByRole("link").at(-1);
-    expect(more).toHaveTextContent(/^More on byahsan.com$/);
+    expect(container.querySelector("#chapter-next")).toBeNull();
+    expect(container.textContent).not.toContain("Waking up in light sleep");
+    expect(container.textContent).not.toMatch(/I plan to/);
+    const more = within(container.querySelector("footer")!).getByRole("link", {
+      name: "More on byahsan.com",
+    });
     expect(more).toHaveAttribute("href", "https://www.byahsan.com");
-    const all = container.textContent ?? "";
-    expect(all.match(/light sleep/g)).toHaveLength(2);
-    expect(all).not.toContain("Next: fuse");
   });
 
   it("keeps On me when projects.json is missing, and drops the other chapters and their links", () => {

@@ -7,12 +7,9 @@ import "./styles/fonts.css";
 import "./styles/tokens.css";
 import "./styles/base.css";
 import "./styles/hero.css";
-import "./styles/findings.css";
-import "./styles/figures.css";
-import "./styles/calendar.css";
-import "./styles/provenance.css";
-import "./styles/sources.css";
 import "./styles/chapters.css";
+import "./styles/diagrams.css";
+import "./styles/mask.css";
 import "./styles/print.css";
 
 const root = document.getElementById("root");

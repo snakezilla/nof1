@@ -11,16 +11,20 @@ const bedside = () => {
 };
 
 describe("WakeLight", () => {
-  it("is the bedside chapter: label, line, the two pictures, then two short paragraphs", () => {
+  it("is the bedside chapter: label, line, the wake timeline, then the words and the two pictures", () => {
     const step = bedside();
     expect(step.id).toBe("chapter-bedside");
     expect([...step.children].map((c) => c.className)).toEqual([
       "chapter__label",
       "chapter__title",
-      "feature__media",
-      "chapter__text",
-      "chapter__text",
+      "fig diagram diagram--wake",
+      "chapter__body",
     ]);
+    expect(
+      [...step.querySelector(".chapter__body")!.children].map(
+        (c) => c.className,
+      ),
+    ).toEqual(["chapter__text", "feature__media"]);
     expect(step.querySelector(".chapter__em")).toHaveTextContent(
       /^sunrise lamp$/,
     );
@@ -36,27 +40,43 @@ describe("WakeLight", () => {
     ).toHaveLength(2);
   });
 
-  it("says the lamp's facts as Ahsan states them, in three sentences, and leaves next to Next", () => {
+  it("says the lamp's facts as Ahsan states them, in two sentences, and leaves the rest to the timeline", () => {
     const step = bedside();
     const text = [...step.querySelectorAll(".chapter__text")]
       .map((p) => p.textContent)
       .join(" ");
     expect(breaksCopyRules(text)).toBe(false);
-    expect(text).toContain("syncs to my phone automatically");
+    expect(text).toContain("Philips wake-up light gave a few hundred lux");
     expect(text).toContain("under $20 to make");
     expect(text).toContain("organic, cartoon-like motion");
-    expect(text).toContain("feels like part of the room");
-    expect(text).toContain("Philips wake-up light gave a few hundred lux");
-    // 10,000 lux is computed for the fold-out concept, never measured; the copy says so.
-    expect(text).toContain(
-      "on paper the fold-out version reaches 10,000 lux at about 30 W",
-    );
-    // Waking in light sleep is a plan, said once in the Next chapter.
-    expect(text).not.toMatch(/light sleep/);
-    expect(text.match(/[.?](\s|$)/g)).toHaveLength(3);
+    expect(text.match(/[.?](\s|$)/g)).toHaveLength(2);
+    // Waking in light sleep is done, and said in the timeline, not as a plan.
+    const all = step.textContent ?? "";
+    expect(all).toMatch(/light sleep/);
+    expect(all).not.toMatch(/\b(next|plan to|will)\b/i);
   });
 
-  it("labels each picture with one short line: the clip now, the render next", () => {
+  it("draws the wake sequence with its marks, as one image with a hidden summary", () => {
+    const step = bedside();
+    const img = within(step).getByRole("img", {
+      name: /timeline of a wake-up/i,
+    });
+    const words = img.textContent ?? "";
+    [
+      "strap senses",
+      "light sleep",
+      "lamp starts",
+      "dim",
+      "daylight white",
+      "awake",
+      "syncs to my phone automatically",
+      "fold-out version: 10,000 lux on paper",
+    ].forEach((w) => expect(words).toContain(w));
+    expect(img.nextElementSibling).toHaveClass("visually-hidden");
+    expect(img.nextElementSibling?.textContent).toMatch(/Over 30 minutes/);
+  });
+
+  it("labels each picture with one short line", () => {
     const { container } = render(<WakeLightMedia />);
     const figures = [...container.querySelectorAll(".feature__media > figure")];
     expect(figures.map((f) => f.firstElementChild?.tagName)).toEqual([
@@ -65,7 +85,7 @@ describe("WakeLight", () => {
     ]);
     expect(
       figures.map((f) => f.querySelector("figcaption")?.textContent),
-    ).toEqual(["Now: the travel lamp", "Next: fold-out, 10,000 lux on paper"]);
+    ).toEqual(["The travel lamp", "The fold-out version, rendered"]);
     expect(container.querySelectorAll("figcaption")).toHaveLength(2);
   });
 

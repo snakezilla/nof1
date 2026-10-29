@@ -1,27 +1,15 @@
 import type { ReactNode } from "react";
-import type { Stat } from "../../lib/figure-types";
-import { MASK_ID, MASK_NOTE } from "../../lib/mask";
-import { SECTION_ID } from "../../lib/provenance";
 import {
-  flowLabel,
-  type Headline,
-  type SourceLine,
-} from "../../lib/sources-text";
+  FUNNEL_LABEL,
+  funnelDiagram,
+  funnelSummary,
+  type Funnel,
+} from "../../lib/funnel";
+import { MASK_ID, MASK_NOTE } from "../../lib/mask";
+import type { Headline } from "../../lib/sources-text";
 import { ME_LABEL } from "../../lib/story";
-import { StatRow } from "../figures/StatRow";
 import { Chapter } from "./Chapter";
-
-interface Props {
-  headline: Headline;
-  deck: string;
-  /** Off when the data is not masked, so the page never claims it is. */
-  masked: boolean;
-  stats?: readonly Stat[] | null;
-  /** Under the counts: the window and the way the records came. */
-  source?: SourceLine | null;
-  /** The sections of the chapter, each under an h3. */
-  children: ReactNode;
-}
+import { DiagramFigure } from "./Diagram";
 
 function MaskNote() {
   return (
@@ -34,44 +22,21 @@ function MaskNote() {
   );
 }
 
-/** The window, the four steps joined by drawn arrows, any side branch, and the link to how. */
-function SourceFlow({ source }: { source: SourceLine }) {
-  return (
-    <div className="intro__source">
-      <p className="intro__window">{source.window}</p>
-      <ol className="flow" role="list" aria-label={flowLabel(source.steps)}>
-        {source.steps.map((step, i) => (
-          <li className="flow__step" key={step.label}>
-            {i > 0 && <span className="flow__arrow" aria-hidden="true" />}
-            <span className="flow__node">
-              <span
-                className={step.mine ? "flow__label is-mine" : "flow__label"}
-              >
-                {step.label}
-              </span>
-              {step.branch && (
-                <span className="flow__branch">{step.branch}</span>
-              )}
-            </span>
-          </li>
-        ))}
-      </ol>
-      <p className="intro__how">
-        <a href={`#${SECTION_ID}`}>How the data got here</a>
-      </p>
-    </div>
-  );
-}
-
-/** The n-of-1 chapter: the computed title, the deck, the mask, the counts, the flow, then its sections. */
+/** The n-of-1 chapter: the computed title, the mask, the fusion funnel, then the results. */
 export function OnMe({
   headline,
-  deck,
   masked,
-  stats,
-  source,
+  funnel,
   children,
-}: Props) {
+}: {
+  headline: Headline;
+  /** Off when the data is not masked, so the page never claims it is. */
+  masked: boolean;
+  /** Null without all_sources or fusion; the chapter then has no diagram. */
+  funnel: Funnel | null;
+  /** The results under the diagram. */
+  children: ReactNode;
+}) {
   return (
     <Chapter
       chapter="me"
@@ -85,17 +50,15 @@ export function OnMe({
         </>
       }
     >
-      <div className="intro">
-        <p className="intro__deck">{deck}</p>
-        {masked && <MaskNote />}
-        {stats && stats.length > 0 && (
-          <StatRow
-            stats={stats}
-            label="Where the data came from, in four numbers"
-          />
-        )}
-        {source && <SourceFlow source={source} />}
-      </div>
+      {masked && <MaskNote />}
+      {funnel && (
+        <DiagramFigure
+          name="funnel"
+          diagram={funnelDiagram(funnel)}
+          label={FUNNEL_LABEL}
+          summary={funnelSummary(funnel)}
+        />
+      )}
       {children}
     </Chapter>
   );

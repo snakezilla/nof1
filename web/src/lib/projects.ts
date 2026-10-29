@@ -1,8 +1,8 @@
 /** projects.json: the chapters around the n-of-1 chapter, in page order. */
-export const STEP_IDS = ["lab", "bedside", "next"] as const;
+export const STEP_IDS = ["lab", "bedside"] as const;
 export type StepId = (typeof STEP_IDS)[number];
 
-const MEDIA = ["lab-sketch", "wakelight"] as const;
+const MEDIA = ["lab", "wakelight"] as const;
 export type Media = (typeof MEDIA)[number];
 
 export interface ProjectStep {
@@ -12,11 +12,11 @@ export interface ProjectStep {
   readonly line: string;
   /** One phrase inside `line`, set in the accent. */
   readonly emphasis: string;
-  /** Absent on a step with nothing to link to yet ("Next"). */
+  /** Absent on a step with nothing to link to. */
   readonly href?: string;
   /** One or two short paragraphs under the line. */
   readonly text: readonly string[];
-  /** The chapter's one picture: the lab sketch (src/lib/lab-sketch.ts) or the WakeLight clip and render (src/lib/wakelight.ts). */
+  /** The chapter's diagram: the two lab lanes (src/lib/lab-figure.ts), or the wake timeline with the WakeLight clip and render (src/lib/wake-timeline.ts, src/lib/wakelight.ts). */
   readonly media?: Media;
 }
 
