@@ -1,4 +1,5 @@
-import { headline, sourceStats } from "../lib/sources-text";
+import { splitLine } from "../lib/projects";
+import { HERO, chapterLinks } from "../lib/story";
 import type { Dataset } from "../lib/types";
 
 const FONTS =
@@ -17,11 +18,9 @@ h1 span { color: var(--accent); }
 `;
 
 export function OgCard({ data }: { data: Dataset }) {
-  const h = headline(data.meta.provenance);
+  const [before, em, after] = splitLine(HERO);
   const items = [
-    ...(sourceStats(data.meta.provenance) ?? [])
-      .slice(0, 3)
-      .map((s) => `${s.value} ${s.label}`),
+    ...chapterLinks(data.projects).map((c) => c.label),
     ...(data.mask ? ["health values masked"] : []),
   ];
   return (
@@ -35,8 +34,9 @@ export function OgCard({ data }: { data: Dataset }) {
       <body>
         <p className="mark">nof1</p>
         <h1>
-          {h.figure && <span>{h.figure}</span>}
-          {h.rest}
+          {before}
+          <span>{em}</span>
+          {after}
         </h1>
         <p className="meta">
           {items.map((item) => (

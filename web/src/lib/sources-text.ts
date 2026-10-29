@@ -63,10 +63,6 @@ export const headlineText = (h: Headline): string => `${h.figure}${h.rest}`;
 export const DECK =
   "WHOOP had my sleep, Strava my rides, my phone my steps, a scale my weight. I got them out and joined them into one row per day.";
 
-/** The short form of the deck, for the meta description. */
-export const SUMMARY =
-  "How I got my health data out of each app and joined it into one row per day.";
-
 const YEAR_MS = 365.25 * 86_400_000;
 
 /** First to last record across every source. */
@@ -126,7 +122,8 @@ export interface SourceLine {
 const FLOW: readonly FlowStep[] = [
   {
     label: "WHOOP strap",
-    spoken: "WHOOP strap, which I also hacked to read the raw signal over Bluetooth",
+    spoken:
+      "WHOOP strap, which I also hacked to read the raw signal over Bluetooth",
     mine: false,
     branch: "Hacked: raw signal over Bluetooth",
   },
@@ -155,6 +152,3 @@ export const fusionLines = (f: Fusion): readonly string[] => [
   `${capitalise(countWord(f.dropped_streams))} ${f.dropped_streams === 1 ? "stream" : "streams"} dropped for the wrong units.`,
   `One row per day: ${plural(f.days, "day")}.`,
 ];
-
-export const FUSION_NEXT =
-  "Next: fuse the raw strap signal, a second each, with the daily rows.";

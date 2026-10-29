@@ -23,9 +23,9 @@ export function Provenance({
       id={SECTION_ID}
       aria-labelledby={TITLE_ID}
     >
-      <h2 className="section__title" id={TITLE_ID}>
+      <h3 className="section__title" id={TITLE_ID}>
         How I got it out
-      </h2>
+      </h3>
       {provenance ? (
         <>
           <ol className="prov__flow">

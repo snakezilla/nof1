@@ -11,9 +11,9 @@ export function JoinedYear({
 }) {
   return (
     <section className="section part" aria-labelledby="joined-title">
-      <h2 className="part__title" id="joined-title">
+      <h3 className="section__title" id="joined-title">
         What a joined year looks like
-      </h2>
+      </h3>
       {masked && <p className="part__mask">{MASKED_LABEL}</p>}
       {children}
     </section>

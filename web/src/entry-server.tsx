@@ -5,7 +5,7 @@ import { OgCard } from "./components/OgCard";
 import { embedJson, toState, type RawDataset } from "./lib/dataset";
 import { isMaskInfo } from "./lib/mask";
 import { isProjects } from "./lib/projects";
-import { SUMMARY, headline, headlineText } from "./lib/sources-text";
+import { HERO, STORY_SUMMARY } from "./lib/story";
 import { isRawStream } from "./lib/raw-stream";
 import { parseFigures } from "./lib/validate-figures";
 
@@ -40,17 +40,13 @@ export const renderOg = (raw: RawDataset): string => {
   return `<!doctype html>${renderToStaticMarkup(<OgCard data={state.data} />)}`;
 };
 
-/** The headline as plain text, for the og:image alt text. */
-export const heroSentence = (raw: RawDataset): string => {
-  const state = toState(raw);
-  return state.status === "ready"
-    ? headlineText(headline(state.data.meta.provenance))
-    : "nof1";
-};
+/** The h1 as plain text, for og:title and the og:image alt text. */
+export const heroSentence = (raw: RawDataset): string =>
+  toState(raw).status === "ready" ? HERO.line : "nof1";
 
-/** The meta description: the headline, then what the page shows, under 160 characters. */
+/** The meta description: the h1, then what the page shows, under 160 characters. */
 export const description = (raw: RawDataset): string =>
-  `${heroSentence(raw)} ${SUMMARY}`;
+  `${heroSentence(raw)} ${STORY_SUMMARY}`;
 
 /**
  * The public build ships masked values only. Throws unless mask.json says so and meta.json

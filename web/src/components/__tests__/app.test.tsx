@@ -9,12 +9,12 @@ const ready = () => ({ status: "ready" as const, data: publicData() });
 
 afterEach(() => vi.unstubAllGlobals());
 
-/** The lean page: these h2s and no others, in this order. */
+/** One story: a chapter title per stop, then the masking note, and no other h2s. */
 const KEPT_H2S = [
-  "Where my data lived",
-  "How I got it out",
-  "Joining it",
-  "What a joined year looks like",
+  "A cancer diagnostics lab, running itself",
+  "Twelve apps measured me. None of them talked to each other.",
+  "A sunrise lamp for travel",
+  "Waking up in light sleep",
   "How the masking works",
 ];
 
@@ -22,7 +22,7 @@ describe("App", () => {
   it("has exactly the kept h2s, in order", () => {
     const { container } = render(<App state={ready()} />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Twelve apps measured me. None of them talked to each other.",
+      "Health and tech, from the lab to my bedside.",
     );
     expect(
       [...container.querySelectorAll("h2")].map((h) => h.textContent),
@@ -49,7 +49,7 @@ describe("App", () => {
 
   it("titles the first finding with its number, from the masked data", () => {
     render(<App state={ready()} />);
-    expect(screen.getAllByRole("heading", { level: 3 })[0]).toHaveTextContent(
+    expect(screen.getAllByRole("heading", { level: 4 })[0]).toHaveTextContent(
       "The raw signal",
     );
     const part = screen.getByRole("region", {
@@ -57,7 +57,7 @@ describe("App", () => {
     });
     expect(
       within(part)
-        .getAllByRole("heading", { level: 3 })
+        .getAllByRole("heading", { level: 4 })
         .map((h) => h.textContent),
     ).toEqual([
       "Weekends cost me 24 minutes of sleep.",

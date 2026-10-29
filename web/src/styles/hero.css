@@ -19,20 +19,57 @@
   text-wrap: balance;
 }
 
-.hero__figure {
+.hero__em {
   color: var(--accent);
-  white-space: nowrap;
 }
 
-.hero__deck {
+.hero__deck,
+.intro__deck {
   max-width: var(--measure);
   font-size: var(--text-l);
   line-height: 1.45;
   letter-spacing: -0.005em;
 }
 
+/* The chapter index: the same mono labels that open each chapter, as one row of links. */
+.index__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-5);
+  margin-top: calc(-1 * var(--space-3));
+  padding: 0;
+  list-style: none;
+}
+
+.index__link {
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--target);
+  min-height: var(--target);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration-color: var(--rule);
+  white-space: nowrap;
+}
+
+.index__link:hover {
+  color: var(--text);
+  text-decoration-color: var(--muted);
+}
+
+/* The On me chapter's opening: the deck, the mask, the counts, the flow. */
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+}
+
 /* The window, the way the records came as four small steps, and the link to how. */
-.hero__source {
+.intro__source {
   display: grid;
   justify-items: start;
   gap: var(--space-2);
@@ -122,17 +159,13 @@
 }
 
 /* A 44 px target that does not open up the line it sits in. */
-.hero__source a {
+.intro__source a {
   display: inline-flex;
   align-items: center;
   /* A full 44 px box; the negative margin keeps the 11 px line from opening up. */
   min-height: var(--target);
   margin-block: calc((1.5em - var(--target)) / 2);
   white-space: nowrap;
-}
-
-.hero + .section {
-  margin-top: 0;
 }
 
 @media (min-width: 40rem) {

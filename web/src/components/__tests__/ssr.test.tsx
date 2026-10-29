@@ -16,7 +16,10 @@ describe("prerender", () => {
   it("renders the whole page to a string", () => {
     const html = render(publicRaw());
     expect(html).toContain(
-      '<span class="hero__figure">Twelve</span> apps measured me.',
+      "Health and tech</span>, from the lab to my bedside.</h1>",
+    );
+    expect(html).toContain(
+      '<span class="chapter__em">Twelve</span> apps measured me.',
     );
     expect(html).toContain("Weekends cost me 24 minutes of sleep.");
     expect(html).toContain('class="finding__line"');
@@ -59,10 +62,10 @@ describe("prerender", () => {
 
   it("builds the social card and the alt text from the data", () => {
     expect(heroSentence(publicRaw())).toBe(
-      "Twelve apps measured me. None of them talked to each other.",
+      "Health and tech, from the lab to my bedside.",
     );
     expect(description(publicRaw())).toBe(
-      "Twelve apps measured me. None of them talked to each other. How I got my health data out of each app and joined it into one row per day.",
+      "Health and tech, from the lab to my bedside. A cancer lab that runs itself, my own health data in one row per day, and a sunrise lamp.",
     );
     expect(description(publicRaw()).length).toBeLessThanOrEqual(160);
     expect(renderOg(publicRaw())).toMatch(/^<!doctype html><html lang="en">/);
@@ -82,9 +85,13 @@ describe("prerender", () => {
     );
   });
 
-  it("puts the headline on the social card", () => {
+  it("puts the h1 and the four chapter labels on the social card", () => {
     const og = renderOg(publicRaw());
-    expect(og).toContain("<span>Twelve</span> apps measured me.");
-    expect(og).toContain("health values masked");
+    expect(og).toContain(
+      "<h1><span>Health and tech</span>, from the lab to my bedside.</h1>",
+    );
+    expect(og).toContain(
+      "<span>In the lab</span><span>On me</span><span>At the bedside</span><span>Next</span><span>health values masked</span>",
+    );
   });
 });

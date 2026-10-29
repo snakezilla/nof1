@@ -19,7 +19,7 @@ const more = {
   text: "More on byahsan.com",
   href: "https://www.byahsan.com",
 };
-const file = (steps: unknown[]) => ({ title: "Health and tech", steps, more });
+const file = (steps: unknown[]) => ({ steps, more });
 
 describe("projects.json", () => {
   it("accepts the shipped file", () => {
@@ -27,9 +27,9 @@ describe("projects.json", () => {
     expect(isProjects(file([step]))).toBe(true);
   });
 
-  it("is three steps, lab to bedside, with the patent in the lab step as filed", () => {
+  it("is three chapters, lab, bedside, next, with the patent in the lab as filed", () => {
     const p = parseProjectsOrNull(publicRaw().projects)!;
-    expect(p.steps.map((s) => s.id)).toEqual(["lab", "me", "bedside"]);
+    expect(p.steps.map((s) => s.id)).toEqual(["lab", "bedside", "next"]);
     const patent = p.steps[0].text.join(" ");
     expect(patent).toContain(
       "Provisional patent filed 2026, in collaboration with MD Anderson Cancer Center.",
@@ -38,8 +38,10 @@ describe("projects.json", () => {
     expect(patent).not.toMatch(
       /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\d{2}\/\d|inventor|assign/i,
     );
-    expect(p.steps.filter((s) => s.media).map((s) => s.id)).toEqual([
-      "bedside",
+    expect(p.steps.map((s) => s.media)).toEqual([
+      "lab-sketch",
+      "wakelight",
+      undefined,
     ]);
   });
 
@@ -75,7 +77,9 @@ describe("projects.json", () => {
     const pictured = { ...step, media: "wakelight" };
     expect(isProjects(file([pictured]))).toBe(true);
     expect(isProjects(file([{ ...step, media: "video" }]))).toBe(false);
-    expect(isProjects(file([pictured, { ...pictured, id: "b" }]))).toBe(false);
+    expect(isProjects(file([pictured, { ...pictured, id: "next" }]))).toBe(
+      false,
+    );
   });
 
   it("refuses copy that breaks the page rules or the public-safety words", () => {
@@ -85,15 +89,18 @@ describe("projects.json", () => {
       false,
     );
     expect(isProjects(file([{ ...step, label: "Now!" }]))).toBe(false);
-    expect(isProjects({ ...file([step]), title: "Health — tech" })).toBe(false);
+    expect(
+      isProjects({ ...file([step]), more: { ...more, text: "More — here" } }),
+    ).toBe(false);
     expect(breaksCopyRules("Our customers love it")).toBe(true);
     expect(breaksCopyRules("A field test with a design partner.")).toBe(false);
   });
 
-  it("refuses duplicate ids, no steps, no title and a wrong shape", () => {
+  it("refuses duplicate ids, unknown ids, no steps and a wrong shape", () => {
     expect(isProjects(file([step, step]))).toBe(false);
+    expect(isProjects(file([{ ...step, id: "me" }]))).toBe(false);
     expect(isProjects(file([]))).toBe(false);
-    expect(isProjects({ steps: [step], more })).toBe(false);
+    expect(isProjects({ steps: [step] })).toBe(false);
     expect(parseProjectsOrNull({ steps: "many" })).toBeNull();
     expect(parseProjectsOrNull(undefined)).toBeNull();
   });

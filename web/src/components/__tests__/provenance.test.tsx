@@ -8,13 +8,12 @@ import { publicRaw } from "../../test/fixtures";
 const withMeta = (meta: unknown) => toState({ ...publicRaw(), meta });
 
 describe("Sources, joining and masking", () => {
-  it("leads with the sources, then the mask note with its link to the end of the page", () => {
+  it("opens On me with the sources, then the mask note with its link to the end of the page", () => {
     render(<App state={toState(publicRaw())} />);
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Twelve apps measured me. None of them talked to each other.",
-    );
-    const hero = screen.getByRole("region", { name: "Summary" });
-    expect(hero.querySelector(".hero__deck")?.textContent).toBe(
+    const hero = screen.getByRole("region", {
+      name: "Twelve apps measured me. None of them talked to each other.",
+    });
+    expect(hero.querySelector(".intro__deck")?.textContent).toBe(
       "WHOOP had my sleep, Strava my rides, my phone my steps, a scale my weight. I got them out and joined them into one row per day.",
     );
     const note = hero.querySelector(".mask-note");
@@ -67,9 +66,8 @@ describe("Sources, joining and masking", () => {
       "One stream dropped for the wrong units.",
       "One row per day: 365 days.",
     ]);
-    expect(section).toHaveTextContent(
-      "Next: fuse the raw strap signal, a second each, with the daily rows.",
-    );
+    // What comes next is said once, in the Next chapter.
+    expect(section).not.toHaveTextContent(/next/i);
   });
 
   it("draws where each source lived, with the window shaded", () => {
@@ -196,9 +194,12 @@ describe("Sources, joining and masking", () => {
         screen.queryByRole("region", { name: "Where my data lived" }),
       ).toBeNull();
       expect(screen.queryByRole("region", { name: "Joining it" })).toBeNull();
-      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-        "My apps measured me. None of them talked to each other.",
-      );
+      expect(
+        screen.getByRole("heading", {
+          level: 2,
+          name: "My apps measured me. None of them talked to each other.",
+        }),
+      ).toBeInTheDocument();
       unmount();
     });
   });

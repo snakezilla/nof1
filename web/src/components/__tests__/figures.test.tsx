@@ -32,7 +32,7 @@ describe("figures on the page", () => {
     const part = screen.getByRole("region", {
       name: "What a joined year looks like",
     });
-    expect(part.querySelector("h2")?.nextElementSibling).toHaveTextContent(
+    expect(part.querySelector("h3")?.nextElementSibling).toHaveTextContent(
       /^Masked data\.$/,
     );
     expect(container.textContent?.match(/Masked data\./g)).toHaveLength(1);
@@ -55,7 +55,7 @@ describe("figures on the page", () => {
     ]);
     expect(stats.previousElementSibling).toHaveClass("mask-note");
     const source = stats.nextElementSibling as HTMLElement;
-    expect(source).toHaveClass("hero__source");
+    expect(source).toHaveClass("intro__source");
     expect(source.firstElementChild).toHaveTextContent(
       /^May 2024 to April 2025$/,
     );
@@ -118,7 +118,7 @@ describe("figures on the page", () => {
     expect(findings).toHaveLength(3);
     findings.forEach((f) => {
       const fig = f.querySelector(".fig--strips");
-      expect(fig?.previousElementSibling?.tagName).toBe("H3");
+      expect(fig?.previousElementSibling?.tagName).toBe("H4");
       expect(fig?.nextElementSibling).toHaveClass("finding__line");
       expect(fig?.querySelector(".strip-row__dots.is-accent")).not.toBeNull();
       expect(fig?.querySelector(".strip-row__dots.is-ink")).not.toBeNull();

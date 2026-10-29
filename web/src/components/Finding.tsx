@@ -33,7 +33,7 @@ export function Finding({
 }) {
   return (
     <li className="finding" id={findingAnchor(pattern.id)}>
-      <h3 className="finding__title">{title ?? pattern.title}</h3>
+      <h4 className="finding__title">{title ?? pattern.title}</h4>
       {pair && <SleepStrips pair={pair} />}
       <p className="finding__line">
         {numbersLine(pattern)}

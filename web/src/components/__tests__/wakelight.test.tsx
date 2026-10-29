@@ -3,37 +3,42 @@ import { describe, expect, it } from "vitest";
 import App from "../../App";
 import { breaksCopyRules } from "../../lib/projects";
 import { publicData } from "../../test/fixtures";
-import { OtherProjects } from "../OtherProjects";
 import { WakeLightMedia } from "../WakeLight";
 
 const bedside = () => {
-  render(<OtherProjects projects={publicData().projects} />);
-  return screen.getByRole("listitem", { name: "A sunrise lamp for travel" });
+  render(<App state={{ status: "ready", data: publicData() }} />);
+  return screen.getByRole("region", { name: "A sunrise lamp for travel" });
 };
 
 describe("WakeLight", () => {
-  it("is the last step: label, line, the two pictures, then two short paragraphs", () => {
+  it("is the bedside chapter: label, line, the two pictures, then two short paragraphs", () => {
     const step = bedside();
-    expect(screen.getAllByRole("listitem").at(-1)).toBe(step);
+    expect(step.id).toBe("chapter-bedside");
     expect([...step.children].map((c) => c.className)).toEqual([
-      "step__label",
-      "elsewhere__line",
+      "chapter__label",
+      "chapter__title",
       "feature__media",
-      "step__text",
-      "step__text",
+      "chapter__text",
+      "chapter__text",
     ]);
-    expect(step.querySelector(".elsewhere__em")).toHaveTextContent(
+    expect(step.querySelector(".chapter__em")).toHaveTextContent(
       /^sunrise lamp$/,
     );
-    // Only this step has pictures.
+    expect(within(step).getByRole("link")).toHaveAttribute(
+      "href",
+      "https://www.byahsan.com/projects/wakelight",
+    );
+    // Only this chapter has pictures.
     expect(
-      screen.getByRole("complementary").querySelectorAll("figure"),
+      document.querySelectorAll(
+        "main figure.feature__media, .feature__media figure",
+      ),
     ).toHaveLength(2);
   });
 
-  it("says the lamp's facts as Ahsan states them, in three sentences and one line of next", () => {
+  it("says the lamp's facts as Ahsan states them, in three sentences, and leaves next to Next", () => {
     const step = bedside();
-    const text = [...step.querySelectorAll(".step__text")]
+    const text = [...step.querySelectorAll(".chapter__text")]
       .map((p) => p.textContent)
       .join(" ");
     expect(breaksCopyRules(text)).toBe(false);
@@ -46,9 +51,9 @@ describe("WakeLight", () => {
     expect(text).toContain(
       "on paper the fold-out version reaches 10,000 lux at about 30 W",
     );
-    // Waking in light sleep is next, not done.
-    expect(text).toMatch(/Next, the lamp could wake me in light sleep/);
-    expect(text.match(/[.?](\s|$)/g)).toHaveLength(4);
+    // Waking in light sleep is a plan, said once in the Next chapter.
+    expect(text).not.toMatch(/light sleep/);
+    expect(text.match(/[.?](\s|$)/g)).toHaveLength(3);
   });
 
   it("labels each picture with one short line: the clip now, the render next", () => {
@@ -95,7 +100,7 @@ describe("WakeLight", () => {
     expect(img).toHaveAttribute("decoding", "async");
   });
 
-  it("stays out of the page when the aside is dropped", () => {
+  it("stays out of the page when projects.json is dropped", () => {
     render(
       <App
         state={{ status: "ready", data: { ...publicData(), projects: null } }}

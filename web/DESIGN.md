@@ -509,3 +509,76 @@ space 4; colour 5 (no new tokens); layout 5 (the rail encodes the path); motion 
 (the last paragraph is four lines on phones); proof 5 (QA run 35 clean in 13 frames; the aside was
 checked at 390 and 1440 in both themes after the lazy image loaded). Removed one thing: "data" from
 "My own health data, in one place", so the line fits two short lines on phones.
+
+## One story: health and tech, from the lab to the bedside (2026-10-29)
+
+The arc that lived in the aside is now the whole page. The n-of-1 work is one chapter of it.
+
+**Brief.** Subject: health and tech, in four stops (the lab, my own data, my bedside, next).
+Reader: a hiring manager or founder on a phone, thirty seconds. Job: see one person carry the same
+idea from a cancer lab to their own body to a lamp, and scroll into the middle chapter. Voice:
+plain, dry, specific; never a portfolio grid. Constraints: same tokens, fonts and components; no new
+data; pre-render, masking guards and data-driven numbers stay.
+
+**Order.**
+1. Hero: h1 "Health and tech, from the lab to my bedside." with "Health and tech" in the accent.
+   One deck sentence that names the stops. Under it a chapter index: four mono labels, each a
+   link to its chapter. No stat row.
+2. In the lab (from projects.json): h2 "A cancer diagnostics lab, running itself" (linked), one
+   sentence on what the tools do, then the slide-scoring AI and the patent line.
+3. On me (the biggest chapter): h2 is the computed "Twelve apps measured me. None of them talked
+   to each other."; the deck, the mask note, the four counts, the four-step flow; then h3 "Where
+   my data lived", "How I got it out", "Joining it", "What a joined year looks like". Findings and
+   "The raw signal" step down to h4.
+4. At the bedside (projects.json): the WakeLight line, clip and render, two paragraphs.
+5. Next (projects.json): two plan sentences.
+6. How the masking works (h2, not a chapter), then the footer.
+
+**Structure, not decoration.** Each chapter opens with the same mono label as its index link, then
+a Fraunces h2 with one phrase in the accent. A chapter starts on a 1 px `--text` rule with a
+`--space-9` gap; sections inside a chapter keep the `--rule` hairline. Two rule weights, one
+meaning each: chapter versus section. No numbers (round two removed numbered markers), no left
+rail (the inner figures need the full width).
+
+**Type.** h1 as before (42 px phones, 84 px from 768). Chapter h2: Fraunces, 27 px on phones,
+42 px from 768. h3 inside a chapter: the old section title (Inter 500, 21 px); "What a joined year
+looks like" loses its own Fraunces style so all h3s match. Labels: mono 11 px, uppercase, tracked,
+muted, like the window line.
+
+**Copy cuts so nothing is said twice.** "Next: fuse the raw strap signal..." leaves "Joining it",
+and "Next, the lamp could wake me in light sleep..." leaves the bedside chapter; the Next chapter
+says both. The "On me" step text and the return marker go, since the chapter is the page.
+
+**Meta.** og:title and the og image carry the new h1; the card's mono line is the four chapter
+labels plus "health values masked". The description is the h1 plus one short summary.
+
+**The one memorable thing.** The h1 as a promise, kept by four labels that walk you down the page.
+
+Rubric: one idea 5 (one arc, four stops, the index promises it); memorable thing 4 (the h1 with
+its accent, kept by the four labels); type 5 (no new sizes; chapter h2 27/42 px); space 4 (scale
+only; the hero's bottom padding is the gap to the first chapter); colour 5 (no new tokens; the
+chapter rule is `--text`); layout 5 (left-aligned, one column, two rule weights); motion 5; states 4
+(without projects.json the page is the hero, On me and the index with one link); copy 4 (each plan
+said once); proof 5 (QA run 38 clean in 13 frames; the no-webfonts console error is the blocked font
+request, as in run 35; 390 and 1440 read in both themes after the lazy image loaded). Removed one
+thing: the hairline over the chapter index, which boxed the index against the first chapter rule.
+Page heights after the lazy image: 9,893 px at 390, 6,402 px at 1440.
+
+## One picture per chapter (2026-10-29)
+
+In the lab: the Delphi box sketch from byahsan.com (byahsan-live/public/project-media/delphi-sketch.svg),
+redrawn inline in the page's tokens: accent marker strokes with the same overshooting corners,
+Fraunces names in `--text` (21 px accent would miss 4.5:1), mono notes in `--muted`, the loop at 0.6
+opacity. Two drawings at 1:1, a column under 640 px and a row above, as the pipeline figure does,
+so 11 px notes stay 11 px and the drawing follows dark mode. Boxes renamed from "intake / DAC /
+reporting" to "Intake / Calculator / Reports" so a stranger can read them. No bytes added.
+On me: the figures are the pictures. At the bedside: the clip and render as before (EXIF checked,
+none). Hero: no portrait; the byahsan photo is a jet ski on a lake and does not belong to this arc.
+
+Rejected: the intake-tool screenshot (exec-brief-2026-10-21/intake-tool-read-handwritten-v2.png).
+The patient is a test patient, but the form prints the client's logo, the lab's address, CLIA ID,
+phone numbers and the medical director's real name, and Delphi documents are on hold until the lab
+reviews them. Cropping would leave only a generic form.
+
+QA run 41 clean in 13 frames (the no-webfonts error is the blocked font request). Heights after the
+lazy image: 10,262 px at 390, 6,655 px at 1440. Removed one thing: the accent on the sketch's names.

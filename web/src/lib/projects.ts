@@ -1,21 +1,26 @@
-/** projects.json: one arc of the other things I'm building, health and tech, in three steps. */
+/** projects.json: the chapters around the n-of-1 chapter, in page order. */
+export const STEP_IDS = ["lab", "bedside", "next"] as const;
+export type StepId = (typeof STEP_IDS)[number];
+
+const MEDIA = ["lab-sketch", "wakelight"] as const;
+export type Media = (typeof MEDIA)[number];
+
 export interface ProjectStep {
-  readonly id: string;
-  /** The small mono label over the step ("In the lab"). */
+  readonly id: StepId;
+  /** The small mono label over the chapter and in the index ("In the lab"). */
   readonly label: string;
   readonly line: string;
   /** One phrase inside `line`, set in the accent. */
   readonly emphasis: string;
-  /** Absent on a step with nothing to link to (this page is the "On me" step). */
+  /** Absent on a step with nothing to link to yet ("Next"). */
   readonly href?: string;
   /** One or two short paragraphs under the line. */
   readonly text: readonly string[];
-  /** The one step with pictures: the WakeLight clip and render, from src/lib/wakelight.ts. */
-  readonly media?: "wakelight";
+  /** The chapter's one picture: the lab sketch (src/lib/lab-sketch.ts) or the WakeLight clip and render (src/lib/wakelight.ts). */
+  readonly media?: Media;
 }
 
 export interface Projects {
-  readonly title: string;
   readonly steps: readonly ProjectStep[];
   readonly more: { readonly text: string; readonly href: string };
 }
@@ -32,7 +37,7 @@ export const PROJECTS_ORIGIN = "https://www.byahsan.com";
 const isOurLink = (v: unknown): boolean =>
   isStr(v) && (v === PROJECTS_ORIGIN || v.startsWith(`${PROJECTS_ORIGIN}/`));
 
-/** The page's copy rules, plus the public-safety words this aside must never use. */
+/** The page's copy rules, plus the public-safety words these chapters must never use. */
 export const breaksCopyRules = (s: string): boolean =>
   /[—!]/.test(s) || /\b(customers?|pilots?|managexr|luke)\b/i.test(s);
 
@@ -42,33 +47,42 @@ const isText = (v: unknown): v is readonly string[] =>
   v.length <= 2 &&
   v.every((t) => isFilled(t) && !breaksCopyRules(t));
 
+const isStepId = (v: unknown): v is StepId => STEP_IDS.some((id) => id === v);
+
 const isStep = (v: unknown): v is ProjectStep =>
   isObj(v) &&
-  isFilled(v.id) &&
+  isStepId(v.id) &&
   [v.label, v.line, v.emphasis].every(isFilled) &&
   (v.line as string).includes(v.emphasis as string) &&
   ![v.label, v.line].some((s) => breaksCopyRules(s as string)) &&
   (v.href === undefined || isOurLink(v.href)) &&
   isText(v.text) &&
-  (v.media === undefined || v.media === "wakelight");
+  (v.media === undefined || MEDIA.some((m) => m === v.media));
+
+/** Each picture belongs to one chapter at most. */
+const oncePerMedia = (steps: readonly ProjectStep[]): boolean =>
+  MEDIA.every((m) => steps.filter((s) => s.media === m).length <= 1);
 
 export const isProjects = (v: unknown): v is Projects =>
   isObj(v) &&
-  isFilled(v.title) &&
-  !breaksCopyRules(v.title) &&
   Array.isArray(v.steps) &&
   v.steps.length > 0 &&
   v.steps.every(isStep) &&
   new Set(v.steps.map((s: ProjectStep) => s.id)).size === v.steps.length &&
-  v.steps.filter((s: ProjectStep) => s.media !== undefined).length <= 1 &&
+  oncePerMedia(v.steps) &&
   isObj(v.more) &&
   isFilled(v.more.text) &&
   !breaksCopyRules(v.more.text) &&
   isOurLink(v.more.href);
 
-/** A missing or wrong projects.json drops the aside; the build refuses a wrong one. */
+/** A missing or wrong projects.json drops its chapters; the build refuses a wrong one. */
 export const parseProjectsOrNull = (v: unknown): Projects | null =>
   isProjects(v) ? v : null;
+
+export const stepFor = (
+  projects: Projects | null,
+  id: StepId,
+): ProjectStep | undefined => projects?.steps.find((s) => s.id === id);
 
 /** "A cancer diagnostics lab" -> ["A ", "cancer diagnostics", " lab"]. */
 export const splitLine = (

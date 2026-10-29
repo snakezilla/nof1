@@ -5,7 +5,7 @@ export function RawSignal({ stream }: { stream: RawStream | null }) {
   if (!stream) return null;
   return (
     <div className="prov__block">
-      <h3 className="prov__heading">The raw signal</h3>
+      <h4 className="prov__heading">The raw signal</h4>
       <p className="prov__para">{rawSignalText(stream)}</p>
     </div>
   );

@@ -1,0 +1,169 @@
+/* The story's four chapters. Each opens on a 1 px rule in --text, the one heavier rule on the page,
+   so a chapter break never reads like the --rule hairline between sections inside it. Then the
+   mono label from the index and a Fraunces h2 with one phrase in the accent. The h2 is 27 px or
+   more, so the accent passes the 3:1 large-text bar. */
+
+.chapter {
+  margin-top: var(--space-9);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--text);
+}
+
+/* The hero's own bottom padding is the gap before the first chapter. */
+.hero + .chapter {
+  margin-top: 0;
+}
+
+.chapter__label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chapter__title {
+  max-width: 22ch;
+  margin-top: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-variation-settings:
+    "SOFT" 0,
+    "WONK" 0;
+  text-wrap: balance;
+}
+
+.chapter__title a {
+  text-decoration-color: var(--rule);
+}
+
+.chapter__title a:hover {
+  text-decoration-color: var(--muted);
+}
+
+.chapter__em {
+  color: var(--accent);
+}
+
+.chapter__text {
+  max-width: var(--measure);
+  margin-top: var(--space-4);
+}
+
+/* WakeLight's pictures: the clip (now) and the render (next) are both 9:16, so two equal columns
+   share one height at every width. Each has one mono label. */
+.feature__media {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  width: min(100%, 22rem);
+  margin-top: var(--space-5);
+}
+
+.feature__media video,
+.feature__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.feature__media figcaption {
+  margin-top: var(--space-2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.chapter__more {
+  margin-top: var(--space-4);
+  color: var(--muted);
+  font-size: var(--text-s);
+}
+
+.chapter__more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+}
+
+@media (min-width: 40rem) {
+  .feature__media {
+    width: min(100%, 30rem);
+  }
+}
+
+@media (min-width: 48rem) {
+  .chapter__title {
+    font-size: var(--text-2xl);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* The lab sketch: the byahsan.com marker boxes, drawn at 1:1 in accent strokes with Fraunces names and
+   mono notes, on the page itself rather than on a card. A column on phones, a row from 640 px. */
+.sketch {
+  margin-top: var(--space-5);
+}
+
+.sketch__svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.sketch__svg.is-row {
+  display: none;
+}
+
+.sketch path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sketch__loop {
+  opacity: 0.6;
+}
+
+/* Names in --text: at 21 px the accent would miss 4.5:1, so it stays on the strokes. */
+.sketch__name {
+  fill: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  letter-spacing: -0.01em;
+}
+
+.sketch__note {
+  fill: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.sketch figcaption {
+  margin-top: var(--space-3);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+@media (min-width: 40rem) {
+  .sketch__svg.is-column {
+    display: none;
+  }
+
+  .sketch__svg.is-row {
+    display: block;
+  }
+}
