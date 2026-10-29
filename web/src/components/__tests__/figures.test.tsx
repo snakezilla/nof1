@@ -60,7 +60,7 @@ describe("figures on the page", () => {
       /^May 2024 to April 2025$/,
     );
     const flow = within(source).getByRole("list", {
-      name: "How the data got here: WHOOP strap, then Apple Health, then an export app I wrote, then this page",
+      name: "How the data got here: WHOOP strap, which I also hacked to read the raw signal over Bluetooth, then Apple Health, then an export app I wrote, then this page",
     });
     expect(flow.tagName).toBe("OL");
     expect(
@@ -68,7 +68,7 @@ describe("figures on the page", () => {
         .getAllByRole("listitem")
         .map((li) => li.textContent),
     ).toEqual([
-      "WHOOP strap",
+      "WHOOP strapHacked: raw signal over Bluetooth",
       "Apple Health",
       "Export app I wrote",
       "This page",
@@ -83,6 +83,14 @@ describe("figures on the page", () => {
         (l) => l.textContent,
       ),
     ).toEqual(["Export app I wrote"]);
+    // One branch, under the strap only: a muted note, not a step with a box.
+    const branches = flow.querySelectorAll(".flow__branch");
+    expect(branches).toHaveLength(1);
+    expect(branches[0].closest("li")).toBe(flow.firstElementChild);
+    expect(branches[0].querySelector(".flow__label")).toBeNull();
+    expect(branches[0]).toHaveTextContent(
+      /^Hacked: raw signal over Bluetooth$/,
+    );
     expect(flow.nextElementSibling).toHaveTextContent(
       /^How the data got here$/,
     );

@@ -68,6 +68,32 @@
   white-space: nowrap;
 }
 
+.flow__node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* A side road off a step: a dashed hairline down from the box, then a muted note with no box,
+   so it never reads as a fifth step. Set in case, not capitals, for the same reason. */
+.flow__branch {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  padding-left: var(--space-6);
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.flow__branch::before {
+  content: "";
+  height: calc(var(--space-3) + 0.75em);
+  border-left: 1px dashed var(--muted);
+}
+
 /* The app I wrote: the one accented step, as in the pipeline figure. */
 .flow__label.is-mine {
   border-color: var(--accent);
@@ -120,6 +146,17 @@
     width: var(--space-5);
     height: 1px;
     margin: 0 var(--space-2);
+  }
+
+  /* In the row the branch hangs under its box and the list keeps room for it below. */
+  .flow:has(.flow__branch) {
+    padding-bottom: calc(var(--space-3) + 1.5em);
+  }
+
+  .flow__branch {
+    position: absolute;
+    top: 100%;
+    left: 0;
   }
 
   .flow__arrow::after {

@@ -406,3 +406,68 @@ so it shows its sub-line in place of one; the validator allows a missing href on
 is there. Its sub-line is three sentences, the lead's wording word for word, and is the one
 exception to the two-sentence rule (the test names it). After this item, 1440 is 5,101 px and 390
 is 8,706 px.
+
+## WHOOP branch and WakeLight (2026-10-29)
+
+**Hero branch.** The WHOOP strap step has one side road: a dashed hairline down from its box to a
+muted note, "Hacked: raw signal over Bluetooth", set in case and with no box so it never reads as a
+fifth step. On phones it sits under the stacked strap step, indented past the solid arrows; from
+640 px it hangs under the box and the list keeps room for it below. The list's accessible name
+reads "...WHOOP strap, which I also hacked to read the raw signal over Bluetooth, then...".
+Changed on purpose: the lead asked for the word "hacked" here. The "read, never hacked" rule above
+still holds for "How I got it out".
+
+**WakeLight (lean, after Ahsan: "clean, lean and skimmable").** A block after the aside's list,
+before "More on byahsan.com", with four children only: the line in the aside's style ("A sunrise
+lamp for travel", accent on "sunrise lamp", linked to byahsan.com/projects/wakelight; "bright enough
+to matter" was dropped because the travel build targets 200 to 300 lux),
+one video 13rem wide, then two one-sentence lines in `--text-s`. No captions, no second image, no
+spec list. Copy lives in `src/lib/wakelight.ts`. The clip never autoplays: it has controls, a
+poster, `preload="none"` and loops; `muted` is set by a ref because React leaves it out of server
+HTML and the prop breaks hydration (the clip has no sound track anyway). The clip's poster is its own frame
+at 0.3 s. Next to it, at the same 9:16 and height, is the fold-out render as an `<img>` (lazy, sized);
+one row from 40rem (30rem wide), stacked under it on phones (15rem wide). Each has one mono label,
+"Now: the travel lamp" and "Next: fold-out, 10,000 lux on paper", the only text besides the line and
+the two sentences. "On paper" because 10,000 lux is computed (`trifold-10k/calc/optics.py`: 10,000
+lux at 30 cm takes about 30 W of LEDs with assumed diffuser and cavity losses), not measured.
+Rejected: the render as the clip's poster (pressing play swapped one build for another).
+Tried and rejected: render and clip side by side with captions and two paragraphs (round one of
+this item), too much for an aside.
+
+Media in `public/media/`, 548 KB in all, each stripped of metadata (`-map_metadata -1`, then
+`exiftool -all=`; checked with exiftool and ffprobe in `dist/media`, no GPS, make, model or lens;
+the source .mov had the home GPS position):
+- `wakelight-bellows.mp4`: the user's 4.8 s iPhone clip of the printed R7 bellows shade pressed flat,
+  H.264 720x1280, no audio, 514 KB. Frames checked first: a hand and a desk, no face, no screen.
+- `wakelight-bellows-poster.jpg`: the clip's frame at 0.3 s.
+- `wakelight-foldout.jpg`: a new render, 720x1280, of the tri-fold concept rebuilt in three.js r160
+  from `trifold-10k/concept/concept.scad` with its own dimensions (three 120 x 150 x 14 mm panels,
+  2.5 mm walls, wings at 30 degrees, knuckle hinges, a 20 degree kickstand), the opal diffusers drawn
+  past white with bloom, a pool of light on the desk in front. A look, not a photometric simulation.
+  An earlier render of the spiral R7 shade is in ClaudeTrash.
+
+**Facts behind the copy, and what was softened.**
+- Philips: the HF3520 and HF3650 spec pages (philips.co.uk, usa.philips.com) render their specs by
+  script and gave no lux figure when fetched. The project's own GOAL.md cites about 300 lux for
+  dawn simulation (Gabel et al. 2014). The page says "a few hundred lux", not a number, and
+  compares it with "a morning outside" (daylight outdoors is well above that even when overcast;
+  common knowledge, not a fetched source).
+- Huberman: the 10,000 lux figure was not found on a fetched page. His newsletter "Using light for
+  health" (hubermanlab.com/newsletter/using-light-for-health) says to use bright artificial light
+  when it is dark and to turn on as many bright indoor lights as possible when the weather blocks
+  the sun. The copy says "morning light routines call for far more" and names no one.
+- The lamp: travel-v1 README and BUILD.md give one high-CRI 5000 K channel, a XIAO ESP32-C3, an
+  iPhone app over Bluetooth, and a design target of 200 to 300 lux at the pillow ("an engineering
+  target, not measured performance"). The firmware ramps for 30 minutes by default (1 to 60).
+  `trifold-10k/calc/optics.py` computes that 10,000 lux at 30 cm needs about 30 W of LEDs, for a
+  separate tri-fold concept. So the page names no lux figure for the lamp. It has no night-light
+  mode and no warm channel, so "dims to a warm night light" is left out.
+
+Rubric (this item): one idea 5 (a lamp, why, what); memorable thing 4 (the lit render as poster);
+type 5 (the aside's own styles, nothing new); space 4 (scale only, the 13rem clip is a choice by
+eye); colour 5 (no new tokens); layout 4 (left-aligned, one column); motion 5 (nothing plays
+unasked); states 4 (poster before play, no-js shows the poster and controls); copy 4 (two plain
+sentences, see the headline note below); proof 5 (QA run 27 clean in 13 frames, 390 and 1440 read in
+both themes). Removed one thing: the clip's extra margin, and it went from 15rem to 13rem wide.
+
+Imperfect: on phones the two 9:16 pictures stack to about 800 px. QA run 30 is clean in 13 frames.

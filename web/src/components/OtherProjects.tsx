@@ -1,9 +1,10 @@
 import { shownItems, splitLine, type Projects } from "../lib/projects";
+import { WakeLight } from "./WakeLight";
 
 /**
  * An aside of the other things I'm building, one linked line each, from projects.json. An item
  * with no link shows its sub-line instead, and a quiet line after it marks the way back. Renders
- * nothing without the file.
+ * nothing without the file. WakeLight follows the list, the one item shown with pictures.
  */
 export function OtherProjects({ projects }: { projects: Projects | null }) {
   const items = projects ? shownItems(projects) : [];
@@ -40,6 +41,7 @@ export function OtherProjects({ projects }: { projects: Projects | null }) {
             );
           })}
         </ul>
+        <WakeLight />
         <p className="elsewhere__more">
           <a href={projects.more.href}>{projects.more.text}</a>
         </p>

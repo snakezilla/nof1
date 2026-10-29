@@ -58,6 +58,57 @@ a.elsewhere__line:hover {
   color: var(--accent);
 }
 
+/* WakeLight: the one item with pictures, after a hairline. The clip (now) and the render (next)
+   are both 9:16, so two equal columns share one height; on phones they stack. Each has one mono
+   label, the only text besides the line and the two sentences. */
+.feature {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: var(--hairline);
+}
+
+/* Two narrow pictures side by side at every width, so the aside stays short on phones. */
+.feature__media {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  width: min(100%, 22rem);
+  margin-block: var(--space-2);
+}
+
+.feature__media video,
+.feature__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.feature__media figcaption {
+  margin-top: var(--space-2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+@media (min-width: 40rem) {
+  .feature__media {
+    width: min(100%, 30rem);
+  }
+}
+
+.feature__text {
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: var(--text-s);
+  line-height: 1.5;
+}
+
 .elsewhere__more {
   margin-top: var(--space-5);
   color: var(--muted);

@@ -46,6 +46,7 @@ describe("Other things I'm building", () => {
       "Helping build 198 units of senior living",
       "Managing my beehive with edge compute + infrared",
       "Site inspection through smart glasses",
+      "A sunrise lamp for travel",
       "More on byahsan.com",
     ]);
     expect(links[0]).toHaveAttribute(
@@ -56,7 +57,8 @@ describe("Other things I'm building", () => {
     expect(aside.querySelectorAll(".elsewhere__em")[1]).toHaveTextContent(
       /^cancer diagnostics$/,
     );
-    expect(aside.querySelectorAll("img")).toHaveLength(0);
+    // Only WakeLight, after the list, carries pictures.
+    expect(aside.querySelectorAll(".elsewhere__list img")).toHaveLength(0);
     // Only the unlinked patent item carries a sub-line.
     expect(aside.querySelectorAll(".elsewhere__sub")).toHaveLength(1);
   });

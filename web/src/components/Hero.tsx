@@ -25,7 +25,7 @@ function MaskNote() {
   );
 }
 
-/** The window, the four steps joined by drawn arrows, and the link to how. */
+/** The window, the four steps joined by drawn arrows, any side branch, and the link to how. */
 function SourceFlow({ source }: { source: SourceLine }) {
   return (
     <div className="hero__source">
@@ -34,8 +34,15 @@ function SourceFlow({ source }: { source: SourceLine }) {
         {source.steps.map((step, i) => (
           <li className="flow__step" key={step.label}>
             {i > 0 && <span className="flow__arrow" aria-hidden="true" />}
-            <span className={step.mine ? "flow__label is-mine" : "flow__label"}>
-              {step.label}
+            <span className="flow__node">
+              <span
+                className={step.mine ? "flow__label is-mine" : "flow__label"}
+              >
+                {step.label}
+              </span>
+              {step.branch && (
+                <span className="flow__branch">{step.branch}</span>
+              )}
             </span>
           </li>
         ))}

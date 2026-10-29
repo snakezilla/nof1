@@ -114,6 +114,8 @@ export interface FlowStep {
   readonly spoken: string;
   /** The app I wrote: the one step outlined in the accent, as in the pipeline figure. */
   readonly mine: boolean;
+  /** A side road off this step, drawn under it as a dashed line and a muted note. */
+  readonly branch?: string;
 }
 
 export interface SourceLine {
@@ -122,7 +124,12 @@ export interface SourceLine {
 }
 
 const FLOW: readonly FlowStep[] = [
-  { label: "WHOOP strap", spoken: "WHOOP strap", mine: false },
+  {
+    label: "WHOOP strap",
+    spoken: "WHOOP strap, which I also hacked to read the raw signal over Bluetooth",
+    mine: false,
+    branch: "Hacked: raw signal over Bluetooth",
+  },
   { label: "Apple Health", spoken: "Apple Health", mine: false },
   { label: "Export app I wrote", spoken: "an export app I wrote", mine: true },
   { label: "This page", spoken: "this page", mine: false },
@@ -137,7 +144,7 @@ export const sourceLine = (p?: Provenance): SourceLine | null =>
       }
     : null;
 
-/** "How the data got here: WHOOP strap, then Apple Health, then an export app I wrote, then this page" */
+/** "How the data got here: WHOOP strap, which I also hacked to read the raw signal over Bluetooth, then Apple Health, then an export app I wrote, then this page" */
 export const flowLabel = (steps: readonly FlowStep[]): string =>
   `How the data got here: ${steps.map((s) => s.spoken).join(", then ")}`;
 

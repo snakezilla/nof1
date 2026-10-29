@@ -123,8 +123,18 @@ describe("hero copy", () => {
 
   it("names the flow as one sentence for screen readers", () => {
     expect(flowLabel(sourceLine(prov([]))?.steps ?? [])).toBe(
-      "How the data got here: WHOOP strap, then Apple Health, then an export app I wrote, then this page",
+      "How the data got here: WHOOP strap, which I also hacked to read the raw signal over Bluetooth, then Apple Health, then an export app I wrote, then this page",
     );
+  });
+
+  it("branches once, from the strap, with a note that obeys the copy rules", () => {
+    const steps = sourceLine(prov([]))?.steps ?? [];
+    expect(steps.map((s) => s.branch ?? null)).toEqual([
+      "Hacked: raw signal over Bluetooth",
+      null,
+      null,
+      null,
+    ]);
   });
 });
 
