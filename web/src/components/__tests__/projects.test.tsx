@@ -7,7 +7,7 @@ import { publicData, publicRaw } from "../../test/fixtures";
 import { OtherProjects } from "../OtherProjects";
 
 describe("Other things I'm building", () => {
-  it("sits between the join and the joined year, as an aside", () => {
+  it("sits between the join and the joined year, as an aside, with the return marker after it", () => {
     render(<App state={{ status: "ready", data: publicData() }} />);
     const aside = screen.getByRole("complementary", {
       name: "Other things I'm building",
@@ -15,7 +15,11 @@ describe("Other things I'm building", () => {
     expect(aside.previousElementSibling).toBe(
       screen.getByRole("region", { name: "Joining it" }),
     );
-    expect(aside.nextElementSibling).toBe(
+    const back = aside.nextElementSibling as HTMLElement;
+    expect(back.tagName).toBe("P");
+    expect(back).toHaveTextContent(/^Back to the n-of-1 project$/);
+    expect(back.querySelector("a")).toBeNull();
+    expect(back.nextElementSibling).toBe(
       screen.getByRole("region", { name: "What a joined year looks like" }),
     );
   });

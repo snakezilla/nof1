@@ -70,8 +70,30 @@ a.elsewhere__line:hover {
   min-height: var(--target);
 }
 
+/* A quiet return marker under the aside: small, muted, a short hairline before it. */
+.elsewhere__return {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  color: var(--muted);
+  font-size: var(--text-s);
+  line-height: 1.5;
+}
+
+.elsewhere__return::before {
+  content: "";
+  width: var(--space-5);
+  border-top: var(--hairline);
+}
+
 /* The aside's bottom hairline is the next section's top rule, so the two never double up. */
-.elsewhere + .section {
+.elsewhere + .section,
+.elsewhere__return + .section {
   margin-top: 0;
   border-top: 0;
+}
+
+.elsewhere__return + .section {
+  padding-top: var(--space-3);
 }

@@ -55,8 +55,36 @@ describe("figures on the page", () => {
     ]);
     expect(stats.previousElementSibling).toHaveClass("mask-note");
     const source = stats.nextElementSibling as HTMLElement;
-    expect(source.textContent).toBe(
-      "May 2024 to April 2025. WHOOP strap → Apple Health → an export app I wrote → this page. How the data got here",
+    expect(source).toHaveClass("hero__source");
+    expect(source.firstElementChild).toHaveTextContent(
+      /^May 2024 to April 2025$/,
+    );
+    const flow = within(source).getByRole("list", {
+      name: "How the data got here: WHOOP strap, then Apple Health, then an export app I wrote, then this page",
+    });
+    expect(flow.tagName).toBe("OL");
+    expect(
+      within(flow)
+        .getAllByRole("listitem")
+        .map((li) => li.textContent),
+    ).toEqual([
+      "WHOOP strap",
+      "Apple Health",
+      "Export app I wrote",
+      "This page",
+    ]);
+    // Three drawn arrows, hidden from screen readers; no arrow glyphs in the text.
+    const arrows = flow.querySelectorAll(".flow__arrow");
+    expect(arrows).toHaveLength(3);
+    arrows.forEach((a) => expect(a).toHaveAttribute("aria-hidden", "true"));
+    expect(source.textContent).not.toContain("→");
+    expect(
+      [...flow.querySelectorAll(".flow__label.is-mine")].map(
+        (l) => l.textContent,
+      ),
+    ).toEqual(["Export app I wrote"]);
+    expect(flow.nextElementSibling).toHaveTextContent(
+      /^How the data got here$/,
     );
     expect(
       within(source).getByRole("link", { name: "How the data got here" }),

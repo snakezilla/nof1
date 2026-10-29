@@ -31,15 +31,68 @@
   letter-spacing: -0.005em;
 }
 
-/* One mono line: the window, the way the records came, and the link to how. */
+/* The window, the way the records came as four small steps, and the link to how. */
 .hero__source {
-  max-width: var(--measure);
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   line-height: 1.5;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+/* On phones the steps stack, joined by down arrows; from 640 px they run in one row. */
+.flow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  list-style: none;
+}
+
+.flow__step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.flow__label {
+  padding: var(--space-1) var(--space-2);
+  border: var(--hairline);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* The app I wrote: the one accented step, as in the pipeline figure. */
+.flow__label.is-mine {
+  border-color: var(--accent);
+}
+
+/* A hairline with a small open arrowhead, drawn in CSS. */
+.flow__arrow {
+  position: relative;
+  width: 1px;
+  height: var(--space-4);
+  margin: var(--space-1) 0 var(--space-1) var(--space-4);
+  background: var(--muted);
+}
+
+.flow__arrow::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-right: 1px solid var(--muted);
+  border-bottom: 1px solid var(--muted);
+  transform: translate(-50%, 0) rotate(45deg);
+  transform-origin: center;
 }
 
 /* A 44 px target that does not open up the line it sits in. */
@@ -54,6 +107,28 @@
 
 .hero + .section {
   margin-top: 0;
+}
+
+@media (min-width: 40rem) {
+  .flow,
+  .flow__step {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .flow__arrow {
+    width: var(--space-5);
+    height: 1px;
+    margin: 0 var(--space-2);
+  }
+
+  .flow__arrow::after {
+    top: 50%;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    transform: translate(0, -50%) rotate(-45deg);
+  }
 }
 
 @media (min-width: 48rem) {

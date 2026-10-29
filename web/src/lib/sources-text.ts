@@ -108,11 +108,38 @@ export const sourceStats = (p?: Provenance): readonly Stat[] | null => {
   ];
 };
 
-/** The mono line under the counts: "May 2024 to April 2025. WHOOP strap → Apple Health → an export app I wrote → this page." */
-export const sourceLine = (p?: Provenance): string | null =>
+export interface FlowStep {
+  readonly label: string;
+  /** How the step reads inside a sentence, for the list's accessible name. */
+  readonly spoken: string;
+  /** The app I wrote: the one step outlined in the accent, as in the pipeline figure. */
+  readonly mine: boolean;
+}
+
+export interface SourceLine {
+  readonly window: string;
+  readonly steps: readonly FlowStep[];
+}
+
+const FLOW: readonly FlowStep[] = [
+  { label: "WHOOP strap", spoken: "WHOOP strap", mine: false },
+  { label: "Apple Health", spoken: "Apple Health", mine: false },
+  { label: "Export app I wrote", spoken: "an export app I wrote", mine: true },
+  { label: "This page", spoken: "this page", mine: false },
+];
+
+/** The window in words and the four steps the records took to get here. Null without provenance. */
+export const sourceLine = (p?: Provenance): SourceLine | null =>
   p
-    ? `${formatMonthYearLong(p.window.from)} to ${formatMonthYearLong(p.window.to)}. WHOOP strap → Apple Health → an export app I wrote → this page.`
+    ? {
+        window: `${formatMonthYearLong(p.window.from)} to ${formatMonthYearLong(p.window.to)}`,
+        steps: FLOW,
+      }
     : null;
+
+/** "How the data got here: WHOOP strap, then Apple Health, then an export app I wrote, then this page" */
+export const flowLabel = (steps: readonly FlowStep[]): string =>
+  `How the data got here: ${steps.map((s) => s.spoken).join(", then ")}`;
 
 /** "Joining it": four counts from provenance.fusion, one short line each. */
 export const fusionLines = (f: Fusion): readonly string[] => [

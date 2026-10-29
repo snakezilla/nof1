@@ -10,6 +10,7 @@ import {
   appsThatMeasured,
   countWord,
   DECK,
+  flowLabel,
   fusionLines,
   headline,
   headlineText,
@@ -99,17 +100,31 @@ describe("hero copy", () => {
     );
   });
 
-  it("dates the window in words and draws the way in, in the mono line", () => {
-    expect(sourceLine(prov([]))).toBe(
-      "May 2024 to April 2025. WHOOP strap → Apple Health → an export app I wrote → this page.",
-    );
+  it("dates the window in words and lists the four steps, only mine accented", () => {
+    const line = sourceLine(prov([]));
+    expect(line?.window).toBe("May 2024 to April 2025");
+    expect(line?.steps.map((s) => s.label)).toEqual([
+      "WHOOP strap",
+      "Apple Health",
+      "Export app I wrote",
+      "This page",
+    ]);
+    expect(line?.steps.filter((s) => s.mine).map((s) => s.label)).toEqual([
+      "Export app I wrote",
+    ]);
     expect(
       sourceLine({
         ...prov([]),
         window: { from: "2023-01-01", to: "2023-12-31" },
-      }),
-    ).toMatch(/^January 2023 to December 2023\. /);
+      })?.window,
+    ).toBe("January 2023 to December 2023");
     expect(sourceLine(undefined)).toBeNull();
+  });
+
+  it("names the flow as one sentence for screen readers", () => {
+    expect(flowLabel(sourceLine(prov([]))?.steps ?? [])).toBe(
+      "How the data got here: WHOOP strap, then Apple Health, then an export app I wrote, then this page",
+    );
   });
 });
 
